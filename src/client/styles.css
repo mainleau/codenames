@@ -1,0 +1,18 @@
+@import 'interfaces/game/styles.css';
+
+@font-face {
+    font-family: 'Inter';
+    src: url(./media/fonts/Inter.ttf);
+}
+
+body {
+    margin: 0;
+}
+
+span {
+    font-family: Inter;
+}
+
+#app {
+    height: 100vh;
+}

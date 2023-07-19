@@ -1,0 +1,10 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@discordjs/collection": "^1.5.1",
+    "dotenv": "^16.3.1",
+    "pg": "^8.11.1",
+    "uuid": "^9.0.0",
+    "ws": "^8.13.0"
+  }
+}

@@ -1,0 +1,59 @@
+#game {
+    display: flex;
+    height: inherit;
+}
+
+.team {
+    background-color: whitesmoke;
+    margin-top: 100px;
+    height: 400px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.team .title {
+    margin-top: 20px;
+    font-size: 1.4em;
+}
+
+#left-panel {
+    background-color: bisque;
+    width: 23vw;
+}
+
+#middle-panel {
+    display: flex;
+    flex-direction: column;
+    width: 54vw;
+}
+
+#board {
+    margin-top: 50px;
+    background-color: lightcoral;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 6px;
+    height: fit-content;
+}
+
+#bottom-board {
+    background-color: beige;
+    height: 100%;
+}
+
+.card {
+    background-color: grey;
+    aspect-ratio: 3/2;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Inter';
+    font-size: 20px;
+}
+
+#right-panel {
+    background-color: royalblue;
+    width: 23vw;
+}
