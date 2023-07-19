@@ -14,7 +14,11 @@ export default class Game {
 		player.emit('game-joined', {
 			words: this.words,
 			id: player.id,
-			team: 0
+			team: 0,
+			players: this.players.map(player => ({
+				id: player.id,
+				team: player.team
+			}))
 		});
 
 		this.players.forEach(

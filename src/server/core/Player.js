@@ -8,7 +8,7 @@ export default class Player {
         this.id = uuid.v4();
         this.username = 'Player ' + this.id.slice(-3);
 
-        this.team = null;
+        this.team = 0;
 
         socket.onmessage = message => this.handle(message);
     }

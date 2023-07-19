@@ -23,10 +23,15 @@ export default class Game {
             case 'game-joined':
                 this.words = data.words;
                 this.add({ id: data.id, team: data.team });
+                data.players.forEach(p => this.add(p));
                 this.board.rerender(this);
                 break;
             case 'team-changed':
                 this.players.find(player => player.id === data.player).team = data.team;
+                this.board.rerender(this);
+                break;
+            case 'player-joined':
+                this.add({ id: data.id, team: data.team });
                 this.board.rerender(this);
                 break;
         }
