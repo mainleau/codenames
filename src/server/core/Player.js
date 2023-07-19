@@ -21,10 +21,10 @@ export default class Player {
         const [event, data] = JSON.parse(message.data);
 
         switch (event) {
-            case 'choose-team':
-                this.team = data.id;
-                this.game.players.forEach(p => p.emit('player-changed', {
-                    team: this.team,
+            case 'change-team':
+                this.team = data.team;
+                this.game.players.forEach(p => p.emit('team-changed', {
+                    team: data.team,
                     player: this.id
                 }))
                 break;

@@ -2,6 +2,7 @@ import Interface from '../../core/Interface.js';
 import Game from '../../core/Game.js';
 import Board from './components/Board.js';
 import LeftPanel from './components/LeftPanel.js';
+import RightPanel from './components/RightPanel.js';
 
 export default class GameInterface extends Interface {
     constructor(app) {
@@ -20,7 +21,7 @@ export default class GameInterface extends Interface {
         const element = document.createElement('div');
         element.id = 'game'
 
-        const leftPanel = new LeftPanel().create();
+        const leftPanel = new LeftPanel(game).create();
 
         const middlePanel = document.createElement('div');
         middlePanel.id = 'middle-panel';
@@ -32,8 +33,7 @@ export default class GameInterface extends Interface {
 
         middlePanel.append(this.board, bottomBoard);
 
-        const rightPanel = document.createElement('div');
-        rightPanel.id = 'right-panel';
+        const rightPanel = new RightPanel(game).create();
 
         element.append(leftPanel, middlePanel, rightPanel);
         return element;

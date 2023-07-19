@@ -12,15 +12,19 @@ export default class Game {
 	add(socket) {
 		const player = new Player(this, socket);
 		player.emit('game-joined', {
-			words: this.words
+			words: this.words,
+			id: player.id,
+			team: 0
 		});
-		this.players.set(player.id, player);
 
 		this.players.forEach(
 			p => p.emit('player-joined', {
-				id: player.id
+				id: player.id,
+				team: player.team
 			})
 		);
+
+		this.players.set(player.id, player);
 	}
 
 	start() {
