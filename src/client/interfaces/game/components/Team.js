@@ -12,7 +12,7 @@ export default class Team extends Component {
         element.className = 'team';
         
         const title = document.createElement('span');
-        title.className = 'title';
+        title.className = 'team-title';
         title.textContent = `Equipe ${this.team ? 'rouge' : 'bleue'}`;
 
         const list = document.createElement('div');

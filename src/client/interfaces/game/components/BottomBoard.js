@@ -1,4 +1,5 @@
 import Component from '../../../core/Component.js';
+import ClueCountSelector from './ClueCountSelector.js';
 
 export default class BottomBoard extends Component {
     constructor(game) {
@@ -9,9 +10,25 @@ export default class BottomBoard extends Component {
     create() {
         const element = document.createElement('div');
         element.id = 'bottom-board';
+        
+        const clueBar = document.createElement('div');
+        clueBar.id = 'clue-bar';
 
         const clueCountContainer = document.createElement('div');
         clueCountContainer.id = 'clue-count-container';
+        clueCountContainer.onclick = () => {
+            clueCountSelector.style.visibility =
+                clueCountSelector.style.visibility === 'hidden' ? 'visible'
+                : 'hidden';
+        }
+
+        const clueCountText = document.createElement('span');
+        clueCountText.id = 'clue-count-text'
+        clueCountText.textContent = '-';
+
+        clueCountContainer.appendChild(clueCountText);
+
+        const clueCountSelector = new ClueCountSelector(this.game).create(clueCountText);
 
         const clueNameInput = document.createElement('input');
         clueNameInput.spellcheck = false;
@@ -26,7 +43,9 @@ export default class BottomBoard extends Component {
 
         giveClueCTA.appendChild(giveClueText);
 
-        element.append(clueCountContainer, clueNameInput, giveClueCTA);
+        clueBar.append(clueCountSelector, clueCountContainer, clueNameInput, giveClueCTA);
+
+        element.appendChild(clueBar);
         return element;
     }
 }

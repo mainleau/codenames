@@ -33,7 +33,7 @@ export default class Game {
                 localStorage.setItem('id', data.id);
                 history.replaceState(null, '', data.id);
                 this.words = data.words;
-                this.add({ id: data.id, team: data.team }, ...data.players);
+                this.add({ id: data.id, team: data.team });
                 this.board.rerender(this);
                 break;
             case 'team-changed':

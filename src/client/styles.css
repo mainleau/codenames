@@ -6,12 +6,17 @@
     src: url(./media/fonts/Inter.ttf);
 }
 
+@font-face {
+    font-family: 'VarelaRound';
+    src: url(./media/fonts/VarelaRound.ttf);
+}
+
 body {
     margin: 0;
 }
 
-span {
-    font-family: Inter;
+span, input {
+    font-family: VarelaRound;
     user-select: none;
 }
 
