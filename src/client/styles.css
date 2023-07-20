@@ -1,4 +1,5 @@
 @import 'interfaces/game/styles.css';
+@import 'interfaces/game/styles.medium.css';
 
 @font-face {
     font-family: 'Inter';
@@ -11,6 +12,12 @@ body {
 
 span {
     font-family: Inter;
+    user-select: none;
+}
+
+input {
+    outline: none;
+    border: none;
 }
 
 #app {

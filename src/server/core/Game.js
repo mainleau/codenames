@@ -1,45 +1,45 @@
 import * as uuid from 'uuid';
 import { Collection } from '@discordjs/collection';
-import Player from './Player.js';
+import Server from './Server.js';
 
-export default class Game {
+export default class Game extends Server {
 	constructor(words) {
+		super();
+
 		this.id = uuid.v4();
 		this.players = new Collection();
 		this.words = words;
 	}
 
-	add(socket) {
-		const player = new Player(this, socket);
+	handle(player, message) {
+        const [event, data] = JSON.parse(message.data);
+
+        switch (event) {
+            case 'change-team':
+                player.team = data.team;
+                this.broadcast('team-changed', {
+                    target: player.id,
+                    team: data.team
+                });
+                break;
+        }
+    }
+
+	add(player) {
+        player.socket.onmessage = message => this.handle(player, message);
+
 		player.emit('game-joined', {
-			words: this.words,
-			id: player.id,
-			team: 0,
-			players: this.players.map(player => ({
-				id: player.id,
-				team: player.team
-			}))
+			id: this.id,
+			words: this.words
 		});
 
-		this.players.forEach(
-			p => p.emit('player-joined', {
-				id: player.id,
-				team: player.team
-			})
-		);
+		this.broadcast('player-joined', {
+			id: player.id,
+			team: player.team
+		});
 
 		this.players.set(player.id, player);
-	}
 
-	start() {
-
-		this.players.forEach((player, index) => {
-			player.ws.send(JSON.stringify(['game-started',{
-				gameId: this.id,
-				player: player.data,
-				opponent: this.players.find(p => player !== p).data,
-				turn: !index
-			}]));
-		});
+		player.emit('player-list', this.players.map(p => ({ id: p.id, team: p.team })));
 	}
 }

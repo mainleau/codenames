@@ -1,6 +1,5 @@
 export default class Component {
-    constructor(game = null, props = {}) {
+    constructor(game = null) {
         this.game = game;
-        this.props = props;
     }
 } 

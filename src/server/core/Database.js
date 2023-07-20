@@ -13,6 +13,7 @@ export default class Database {
 
     async query(...params) {
         const response = await this.client.query(...params);
+
         return response.rows;
     }
 

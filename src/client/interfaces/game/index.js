@@ -3,6 +3,7 @@ import Game from '../../core/Game.js';
 import Board from './components/Board.js';
 import LeftPanel from './components/LeftPanel.js';
 import RightPanel from './components/RightPanel.js';
+import BottomBoard from './components/BottomBoard.js';
 
 export default class GameInterface extends Interface {
     constructor(app) {
@@ -28,8 +29,7 @@ export default class GameInterface extends Interface {
 
         this.board = new Board(game, { size: 5 }).create();
 
-        const bottomBoard = document.createElement('div');
-        bottomBoard.id = 'bottom-board';
+        const bottomBoard = new BottomBoard(game).create();
 
         middlePanel.append(this.board, bottomBoard);
 

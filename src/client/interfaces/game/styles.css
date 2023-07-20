@@ -31,30 +31,27 @@
 
 #left-panel {
     background-color: bisque;
-    width: 23vw;
+    width: 350px;
 }
 
 #middle-panel {
     display: flex;
     flex-direction: column;
-    width: 54vw;
+    flex: 1;
 }
 
 #board {
-    margin-top: 50px;
-    background-color: lightcoral;
+    margin: 50px 100px 0;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-gap: 6px;
     height: fit-content;
-}
-
-#bottom-board {
-    background-color: beige;
-    height: 100%;
+    min-width: 0;
 }
 
 .card {
+    min-width: 0;
+    overflow: hidden;
     background-color: grey;
     aspect-ratio: 3/2;
     border-radius: 20px;
@@ -65,7 +62,37 @@
     font-size: 20px;
 }
 
+#bottom-board {
+    background-color: beige;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+}
+
+#bottom-board #clue-count-container {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+}
+
+#bottom-board #clue-name-input {
+    width: 450px;
+    height: 50px;
+    font-size: 2em;
+    padding: 0 10px;
+}
+
+#bottom-board #give-clue-cta {
+    cursor: pointer;
+    padding: 20px 40px;
+    background-color: white;
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
 #right-panel {
     background-color: royalblue;
-    width: 23vw;
+    width: 350px;
 }
