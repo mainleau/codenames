@@ -17,14 +17,16 @@ export default class BottomBoard extends Component {
         const clueCountContainer = document.createElement('div');
         clueCountContainer.id = 'clue-count-container';
         clueCountContainer.onclick = () => {
+            if(clueCountContainer.classList.contains('disabled')) return;
             clueCountSelector.style.visibility =
                 clueCountSelector.style.visibility === 'hidden' ? 'visible'
                 : 'hidden';
         }
+        if(this.game.selectedCards.size) clueCountContainer.classList.add('disabled');
 
         const clueCountText = document.createElement('span');
         clueCountText.id = 'clue-count-text'
-        clueCountText.textContent = '-';
+        clueCountText.textContent = this.game.selectedCards.size ? this.game.selectedCards.size : '-';
 
         clueCountContainer.appendChild(clueCountText);
 
@@ -39,7 +41,7 @@ export default class BottomBoard extends Component {
         giveClueCTA.id = 'give-clue-cta';
 
         const giveClueText = document.createElement('span');
-        giveClueText.textContent = 'Envoyer';
+        giveClueText.textContent = 'Transmettre';
 
         giveClueCTA.appendChild(giveClueText);
 

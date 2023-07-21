@@ -6,9 +6,10 @@ export default class Player extends Socket {
         super(socket);
 
         this.id = uuid.v4();
-        this.username = 'Player ' + this.id.slice(-3);
+        this.username = `Joueur ${this.id.slice(-3)}`;
 
         this.team = null;
+        this.role = null;
     }
 
     join(game) {

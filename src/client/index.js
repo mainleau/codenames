@@ -8,3 +8,5 @@ window.onload = () => {
 
     document.body.appendChild(app);
 }
+
+document.oncontextmenu = e => e.preventDefault();

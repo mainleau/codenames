@@ -12,9 +12,12 @@ export default class LeftPanel extends Component {
         const element = document.createElement('div');
         element.id = 'left-panel';
 
+        const upBanner = document.createElement('div');
+        upBanner.className = 'up-banner';
+
         const team = new Team(this.game, this.team).create();
 
-        element.appendChild(team);
+        element.append(upBanner, team);
         return element;
     }
 }

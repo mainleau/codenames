@@ -1,4 +1,5 @@
 import { isUUID } from '../util/index.js';
+import Collection from './Collection.js';
 
 export default class Game {
     constructor(board) {
@@ -13,6 +14,8 @@ export default class Game {
         this.socket = new WebSocket(url);
 
         this.players = [];
+
+        this.selectedCards = new Map();
 
         this.socket.onmessage = message => this.handle(message);
     }
@@ -30,23 +33,50 @@ export default class Game {
 
         switch (event) {
             case 'game-joined':
-                localStorage.setItem('id', data.id);
+                localStorage.setItem('last-game-id', data.id);
+                this.playerId = data.playerId;
                 history.replaceState(null, '', data.id);
-                this.words = data.words;
-                this.add({ id: data.id, team: data.team });
+                this.words = data.words.reduce((col, word) => {
+                    return col.set(word.name, { name: word.name });
+                }, new Collection());
+                this.add({ id: data.id, username: data.username, team: data.team, role: data.role });
                 this.board.rerender(this);
                 break;
-            case 'team-changed':
-                this.players.find(player => player.id === data.target).team = data.team;
+            case 'team-role-changed':
+                var player = this.players.find(player => player.id === data.target);
+                if(player.id === this.playerId) {
+                    this.team = data.team;
+                    this.role = data.role
+                }
+                player.team = data.team;
+                player.role = data.role;
+                this.board.rerender(this);
+                break;
+            case 'username-changed':
+                var player = this.players.find(player => player.id === data.target);
+                player.username = data.username;
                 this.board.rerender(this);
                 break;
             case 'player-joined':
-                this.add({ id: data.id, team: data.team });
+                this.add({ id: data.id, username: data.username, team: data.team, role: data.role });
                 this.board.rerender(this);
                 break;
             case 'player-list':
                 this.players = data;
                 this.board.rerender(this);
+                break;
+            case 'card-selected':
+                data.selected ? this.selectedCards.set(data.target) : this.selectedCards.delete(data.target);
+                this.board.rerender(this);
+                break;
+            case 'game-started':
+                if(data.words) {
+                    this.words = data.words.reduce((col, word) => {
+                        return col.set(word.name, { name: word.name, team: word.team });
+                    }, new Collection());
+                    this.board.rerender(this);
+                }
+                break;
         }
     }
 }

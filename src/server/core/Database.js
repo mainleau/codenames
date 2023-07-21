@@ -8,7 +8,7 @@ const { Client } = pg;
 export default class Database {
     constructor() {
         this.client = new Client();
-        this.client.connect().then(() => this.init());
+        this.client.connect().then(() => false && this.init());
     }
 
     async query(...params) {

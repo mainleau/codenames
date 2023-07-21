@@ -13,29 +13,44 @@ export default class Team extends Component {
         
         const title = document.createElement('span');
         title.className = 'team-title';
-        title.textContent = `Equipe ${this.team ? 'rouge' : 'bleue'}`;
+        title.textContent = `EQUIPE ${this.team ? 'ROUGE' : 'BLEUE'}`;
 
-        const list = document.createElement('div');
-        list.className = 'list';
-        const players = this.game.players.map(player => {
-            if(player.team !== this.team) return [];
-            const line = document.createElement('div');
+        const listContainer = document.createElement('div');
+        listContainer.className = 'list-container';
 
-            const id = document.createElement('span');
-            id.textContent = player.id;
+        const [firstList, secondList] = [0, 1].map(role => {
+            const subtitle = document.createElement('span');
+            subtitle.style.cursor = 'pointer';
+            subtitle.className = 'team-subtitle';
+            subtitle.textContent = role ? 'ESPIONS' : 'AGENTS';
+            subtitle.onclick = () => this.game.emit('change-team-role', {
+                team: this.team,
+                role
+            });
 
-            line.append(id);
-            return line
+            const list = document.createElement('div');
+            list.className = 'list';
+
+            const players = this.game.players.map(player => {
+                if(player.team !== this.team || player.role !== role) return [];
+                const line = document.createElement('div');
+
+                const username = document.createElement('span');
+                username.className = 'username';
+                username.textContent = player.username;
+
+                line.append(username);
+                return line
+            });
+
+            list.append(subtitle, ...players);
+
+            return list;
         });
 
-        list.append(...players);
+        listContainer.append(firstList, secondList);
 
-        const joinCTA = document.createElement('span');
-        joinCTA.className = 'join-cta';
-        joinCTA.textContent = "Rejoindre l'équipe";
-        joinCTA.onclick = () => this.game.emit('change-team', { team: this.team });
-        
-        element.append(title, list, joinCTA);
+        element.append(title, listContainer);
         return element;
     }
 }

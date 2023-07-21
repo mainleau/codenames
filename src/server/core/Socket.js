@@ -1,8 +1,6 @@
 export default class Socket {
     constructor(socket) {
         this.socket = socket;
-
-        
     }
 
     emit(event, data) {
