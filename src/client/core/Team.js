@@ -1,8 +1,7 @@
-import { Collection } from '@discordjs/collection';
+import Collection from './Collection.js';
 
 export default class Team {
     constructor() {
-        this.words = null;
         this.clues = new Collection();
     }
 }

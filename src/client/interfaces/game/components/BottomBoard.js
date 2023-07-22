@@ -32,22 +32,52 @@ export default class BottomBoard extends Component {
 
         const clueCountSelector = new ClueCountSelector(this.game).create(clueCountText);
 
-        const clueNameInput = document.createElement('input');
-        clueNameInput.spellcheck = false;
-        clueNameInput.style.textTransform = true ? 'uppercase' : 'none';
-        clueNameInput.id = 'clue-name-input';
+        const clueWordInput = document.createElement('input');
+        if(this.game.clue) clueWordInput.value = this.game.clue;
+        clueWordInput.spellcheck = false;
+        clueWordInput.style.textTransform = true ? 'uppercase' : 'none';
+        clueWordInput.id = 'clue-word-input';
+        clueWordInput.oninput = () => {
+            this.game.clue = clueWordInput.value;
+        }
 
         const giveClueCTA = document.createElement('div');
         giveClueCTA.id = 'give-clue-cta';
+        giveClueCTA.onclick = () => {
+            giveClueCTA.onclick = null;
+            this.game.emit('give-clue', {
+                word: clueWordInput.value.toUpperCase(),
+                count: !isNaN(clueCountText.textContent)
+                    ? parseInt(clueCountText.textContent) : clueCountText.textContent
+            });
+        }
 
         const giveClueText = document.createElement('span');
         giveClueText.textContent = 'Transmettre';
 
         giveClueCTA.appendChild(giveClueText);
 
-        clueBar.append(clueCountSelector, clueCountContainer, clueNameInput, giveClueCTA);
+        clueBar.append(clueCountSelector, clueCountContainer, clueWordInput, giveClueCTA);
+        
+        const clueWordContainer = document.createElement('div');
+        clueWordContainer.id = 'clue-word-container';
 
-        element.appendChild(clueBar);
+        const clueWordText = document.createElement('span');
+        clueWordText.textContent = this.game.lastClue.word;
+
+        const clueWordCount = document.createElement('span');
+        clueWordCount.textContent = this.game.lastClue.count;
+
+        clueWordContainer.append(clueWordText, clueWordCount);
+
+        if (this.game.turn.role === 0) {
+            element.appendChild(clueWordContainer);
+        } else if (this.game.turn.role === 1) {
+            if(this.game.turn.team === this.game.player.team && this.game.turn.role === this.game.player.role) {
+                element.appendChild(clueBar);
+            }
+        }
+
         return element;
     }
 }

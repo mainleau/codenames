@@ -11,6 +11,11 @@
     src: url(./media/fonts/VarelaRound.ttf);
 }
 
+::selection {
+    color: bisque;
+    background: rosybrown;
+}
+
 body {
     margin: 0;
 }
