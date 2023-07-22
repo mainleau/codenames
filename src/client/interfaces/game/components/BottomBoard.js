@@ -43,6 +43,7 @@ export default class BottomBoard extends Component {
 
         const giveClueCTA = document.createElement('div');
         giveClueCTA.id = 'give-clue-cta';
+        giveClueCTA.className = 'cta';
         giveClueCTA.onclick = () => {
             giveClueCTA.onclick = null;
             this.game.emit('give-clue', {
@@ -70,12 +71,28 @@ export default class BottomBoard extends Component {
 
         clueWordContainer.append(clueWordText, clueWordCount);
 
+        const startGameCTA = document.createElement('div');
+        startGameCTA.id = 'start-game-cta';
+        startGameCTA.className = 'cta';
+        startGameCTA.onclick = () => {
+            this.game.emit('start-game');
+        }
+
+        const startGameText = document.createElement('span');
+        startGameText.textContent = 'Lancer la partie';
+
+        startGameCTA.append(startGameText);
+
         if (this.game.turn.role === 0) {
             element.appendChild(clueWordContainer);
         } else if (this.game.turn.role === 1) {
             if(this.game.turn.team === this.game.player.team && this.game.turn.role === this.game.player.role) {
                 element.appendChild(clueBar);
             }
+        }
+
+        if(this.game.turn.team === null) {
+            element.appendChild(startGameCTA);
         }
 
         return element;

@@ -18,6 +18,7 @@ export default class Board extends Component {
             if('reversed' in word) {
                 card.classList.add('reversed');
             }
+            if(this.game.reversedCards.has(index)) card.classList.add('reversed');
             if(this.game.selectedCards.has(index)) card.classList.add('selected');
 
             if([0, 1, -1, null].includes(word.team)) {

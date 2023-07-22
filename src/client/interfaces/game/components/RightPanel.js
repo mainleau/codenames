@@ -17,7 +17,7 @@ export default class RightPanel extends Component {
         upBanner.className = 'up-banner';
 
         const options = document.createElement('div');
-        options.id = 'options';
+        options.className = 'options';
 
         const changeUsernameModal = new ChangeUsernameModal(this.game);
 

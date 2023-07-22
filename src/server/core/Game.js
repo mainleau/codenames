@@ -13,8 +13,10 @@ export default class Game extends Server {
 		this.players = new Collection();
 		this.teams = [new Team(), new Team()];
 
+		this.started = false;
+
 		this.turn = {
-			team: Math.round(Math.random()),
+			team: null,
 			role: 1
 		}
 	}
@@ -62,7 +64,6 @@ export default class Game extends Server {
 					target: player.id,
 					username: data.username
 				});
-				this.start();
 				break;
 			case 'select-card':
 				this.broadcastSpymasters('card-selected', {
@@ -85,11 +86,14 @@ export default class Game extends Server {
 				break;
 			case 'use-card':
                 const word = this.words.at(data.target);
-				if(word.team === player.team && this.remainder > 0) {
-					this.remainder -= 1;
-				} else {
-					this.turn.team ^= true;
-					this.turn.role ^= true;
+
+				if(!isNaN(this.remainder)) {
+					if(word.team === player.team && this.remainder > 0) {
+						this.remainder -= 1;
+					} else {
+						this.turn.team ^= true;
+						this.turn.role ^= true;
+					}
 				}
 
 				this.broadcast('card-used', {
@@ -97,17 +101,23 @@ export default class Game extends Server {
 					team: word.team,
 					remainder: this.remainder
 				});
+
+				if (word.team === -1) {
+					this.stop();
+				}
 				break;
+			case 'start-game':
+				this.started = true;
+				this.start();
         }
     }
 
 	add(player) {
-        player.socket.onmessage = message => this.handle(player, message);
-
 		player.emit('game-joined', {
 			id: this.id,
 			playerId: player.id,
 			username: player.username,
+			turn: this.turn,
 			words: this.words.map(word => ({ name: word.name }))
 		});
 
@@ -128,7 +138,16 @@ export default class Game extends Server {
 		})));
 	}
 
+	stop() {
+		this.turn.team = null;
+		this.turn.role = null;
+
+		this.broadcast('game-ended')
+	}
+
 	start() {
+		this.started = true;
+		this.turn.team = Math.round(Math.random());
 		this.words.forEach(word => delete word.team);
 		const shuffledWords = this.words.random(this.words.size);
 
@@ -150,7 +169,7 @@ export default class Game extends Server {
 
 		this.broadcastOperatives('game-started', {
 			turn: this.turn
-		});
+		}, true);
 
 		this.broadcastSpymasters('game-started', {
 			turn: this.turn,

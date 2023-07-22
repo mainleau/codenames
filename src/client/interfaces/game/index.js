@@ -6,9 +6,11 @@ import RightPanel from './components/RightPanel.js';
 import BottomBoard from './components/BottomBoard.js';
 
 export default class GameInterface extends Interface {
-    constructor(app) {
+    constructor(app, socket, id) {
         super();
-        this.element = this.render(new Game(this));
+        this.app = app;
+        this.socket = socket;
+        this.element = this.render(new Game(this, socket, id));
         app.appendChild(this.element);
     }
 
@@ -22,7 +24,7 @@ export default class GameInterface extends Interface {
         const element = document.createElement('div');
         element.id = 'game'
 
-        const leftPanel = new LeftPanel(game).create();
+        const leftPanel = new LeftPanel(game, this).create();
 
         const middlePanel = document.createElement('div');
         middlePanel.id = 'middle-panel';

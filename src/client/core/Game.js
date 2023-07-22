@@ -3,20 +3,31 @@ import Collection from './Collection.js';
 import Team from './Team.js';
 
 export default class Game {
-    constructor(board) {
+    constructor(board, socket, id = null) {
         this.board = board;
+        this.socket = socket;
         this.words = null;
 
-        var url = `ws://${location.hostname}:8888`;
-
-        const id = location.pathname.substring(1);
-        if(isUUID(id)) url += `?id=${id}`;
-
-        this.socket = new WebSocket(url);
+        if(this.socket.readyState === 1) {
+            if(isUUID(id)) {
+                this.emit('join-game', { id });
+            } else {
+                this.emit('create-game');
+            }
+        } else if(this.socket.readyState === 0) {
+            this.socket.onopen = () => {
+                if(isUUID(id)) {
+                    this.emit('join-game', { id });
+                } else {
+                    this.emit('create-game');
+                }
+            }
+        }
 
         this.players = [];
 
         this.selectedCards = new Map();
+        this.reversedCards = new Map();
 
         this.teams = [new Team(), new Team()];
 
@@ -24,6 +35,8 @@ export default class Game {
             team: null,
             role: null
         };
+
+        this.started = null;
 
         this.socket.onmessage = message => this.handle(message);
     }
@@ -51,6 +64,7 @@ export default class Game {
             case 'game-joined':
                 localStorage.setItem('last-game-id', data.id);
                 this.playerId = data.playerId;
+                this.turn = data.turn;
                 history.replaceState(null, '', data.id);
                 this.words = data.words.reduce((col, word) => {
                     return col.set(word.name, { name: word.name });
@@ -62,7 +76,9 @@ export default class Game {
                 var player = this.players.find(player => player.id === data.target);
                 if(player.id === this.playerId) {
                     if(data.role === 0) {
-                        this.words.forEach(word => delete word.team);
+                        this.words.forEach((word, index) => {
+                            if(!this.reversedCards.has(index)) delete word.team;
+                        });
                     }
                     this.team = data.team;
                     this.role = data.role
@@ -94,13 +110,13 @@ export default class Game {
                 this.board.rerender(this);
                 break;
             case 'game-started':
+                this.turn = data.turn;
                 if(data.words) {
-                    this.turn = data.turn;
                     this.words = data.words.reduce((col, word) => {
                         return col.set(word.name, { name: word.name, team: word.team });
                     }, new Collection());
-                    this.board.rerender(this);
                 }
+                this.board.rerender(this);
                 break;
             case 'forwarded-clue':
                 this.teams[this.turn.team].clues.set(data.word, { word: data.word, count: data.count });
@@ -116,7 +132,13 @@ export default class Game {
                 const word = this.words.at(data.word);
                 word.team = data.team;
                 word.reversed = true;
+                this.reversedCards.set(data.word);
                 this.board.rerender(this);
+                break;
+            case 'game-ended':
+                this.turn.team = null;
+                this.turn.role = null;
+                this.board.rerender(true);
                 break;
         }
     }

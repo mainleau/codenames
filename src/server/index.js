@@ -10,22 +10,39 @@ const client = new Client();
 
 const games = new Collection();
 
-ws.on('connection', async (socket, request) => {
-	var game = null;
-
-	const params = new URLSearchParams(request.url.substring(2));
-	
-	if(params.get('id')) {
-		game = games.get(params.get('id'));
-		if(!game) return socket.close();
-	}
-
-	if (!games.size) {
-		const words = await client.fetchWords();
-		game = new Game(words);
-		games.set(game.id, game);
-	}
-
+ws.on('connection', async socket => {
 	const player = new Player(socket);
-	player.join(game || games.last());
+
+	socket.onmessage = async message => {
+        const [event, data] = JSON.parse(message.data);
+
+		if(event === 'game-list') {
+			player.emit('game-list', games.map(game => ({
+				id: game.id,
+				playerCount: [game.players.filter(p => p.team === 0).size, game.players.filter(p => p.team === 1).size]
+			})));
+		}
+
+		if(event === 'create-game') {
+			const words = await client.fetchWords();
+			const game = new Game(words);
+			games.set(game.id, game);
+			player.join(game, message);
+		}
+
+		if(event === 'join-game') {
+			var game = null;
+			if(data.id) {
+				game = games.get(data.id);
+				if(!game) return socket.close();
+			} else {
+				game = games.last();
+			}
+			player.join(game, message);
+		}
+
+		if(player.game) {
+			player.game.handle(player, message);
+		}
+	}
 });
