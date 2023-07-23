@@ -22,6 +22,7 @@ export default class LeftPanel extends Component {
 
         const backButton = document.createElement('span');
         backButton.onclick = () => {
+            this.game.emit('leave-game');
             this.gameInterface.element.remove();
             new HomeInterface(this.gameInterface.app, this.gameInterface.socket);
         };

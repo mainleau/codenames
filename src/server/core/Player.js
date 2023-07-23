@@ -15,6 +15,8 @@ export default class Player extends Socket {
     }
 
     join(game) {
+        this.team = null;
+        this.role = null;
         game.add(this);
         this.game = game;
     }

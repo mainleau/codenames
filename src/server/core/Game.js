@@ -112,6 +112,14 @@ export default class Game extends Server {
         }
     }
 
+	remove(player) {
+		player.game = null;
+		this.players.delete(player.id);
+		this.broadcast('player-leaved', {
+			id: player.id
+		});
+	}
+
 	add(player) {
 		player.emit('game-joined', {
 			id: this.id,
@@ -139,10 +147,7 @@ export default class Game extends Server {
 	}
 
 	stop() {
-		this.turn.team = null;
-		this.turn.role = null;
-
-		this.broadcast('game-ended')
+		this.broadcast('game-ended');
 	}
 
 	start() {

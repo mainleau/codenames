@@ -49,6 +49,10 @@ export default class Game {
         this.players.push(...player);
     }
 
+    remove(player) {
+        this.players = this.players.filter(p => p.id !== player.id);
+    }
+
     get lastClue() {
         return this.teams[this.turn.team]?.clues.last() || {};
     }
@@ -95,6 +99,10 @@ export default class Game {
                 break;
             case 'player-joined':
                 this.add({ id: data.id, username: data.username, team: data.team, role: data.role });
+                this.board.rerender(this);
+                break;
+            case 'player-leaved':
+                this.remove({ id: data.id });
                 this.board.rerender(this);
                 break;
             case 'player-list':
