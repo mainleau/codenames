@@ -6,7 +6,7 @@ window.onload = () => {
     const app = document.createElement('div');
     app.id = 'app';
 
-    var url = `ws://${location.hostname}:8888`;
+    var url = `${location.protocol === 'http:' ? 'ws' : 'wss'}://${location.hostname}:8888`;
     const socket = new WebSocket(url);
     
     const id = location.pathname.substring(1);

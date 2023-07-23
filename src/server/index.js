@@ -1,10 +1,27 @@
+import * as dotenv from 'dotenv';
+import { createServer } from 'https';
 import { WebSocketServer } from 'ws';
 import { Collection } from '@discordjs/collection';
 import Game from './core/Game.js';
 import Player from './core/Player.js';
 import Client from './core/Client.js';
+import * as fs from 'fs';
 
-const ws = new WebSocketServer({ port: 8888 });
+dotenv.config();
+
+var ws;
+
+if(process.env.NODE_ENV === 'production') {
+	const server = createServer({
+		cert: fs.readFileSync(process.env.CERT_PATH),
+		key: fs.readFileSync(process.env.KEY_PATH)
+	});
+	server.listen(8888);
+	ws = new WebSocketServer({ server });
+} else {
+	ws = new WebSocketServer({ port: 8888 });
+}
+
 
 const client = new Client();
 

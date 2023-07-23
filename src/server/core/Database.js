@@ -1,8 +1,6 @@
-import * as dotenv from 'dotenv';
 import pg from 'pg';
 import * as fs from 'fs';
 
-dotenv.config();
 const { Client } = pg;
 
 export default class Database {
