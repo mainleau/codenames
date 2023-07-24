@@ -1,0 +1,326 @@
+#game {
+    display: flex;
+    height: inherit;
+}
+
+#middle-panel {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    background-color: bisque;
+}
+
+#board {
+    margin: 50px 100px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 6px;
+    height: fit-content;
+    min-width: 0;
+}
+
+.card {
+    min-width: 0;
+    overflow: hidden;
+    background-color: rosybrown;
+    border: 10px solid #7A5C5C;
+    aspect-ratio: 3/2;
+    border-radius: 20px;
+    display: flex;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.card.reversed > * {
+    display: none;
+}
+
+.card.default {
+    background-color: rosybrown;
+    border: 10px solid #7A5C5C;
+}
+
+.card.default.reversed {
+    background-color: #7A5C5C;
+    border: 10px solid rosybrown;
+}
+
+.card.first-team {
+    background-color: #BEF3EB;
+    border: 10px solid #88ADA8;
+}
+
+.card.first-team.reversed {
+    background-color: #88ADA8;
+    border: 10px solid #BEF3EB;
+}
+
+.card.second-team {
+    background-color: salmon;
+    border: 10px solid #B85F55;
+}
+
+.card.second-team.reversed {
+    background-color: #B85F55;
+    border: 10px solid salmon;
+}
+
+.card.death {
+    background-color: lightslategray;
+    border: 10px solid #4E5964;
+}
+
+.card.death.reversed {
+    background-color: #4E5964;
+    border: 10px solid lightslategray;
+}
+
+.card.selected {
+    border: 10px solid #473535;
+}
+
+.card > span {
+    font-size: 1.6em;
+    font-weight: bold;
+    position: absolute;
+    top: 75%;
+    transform: translateY(-75%);
+    letter-spacing: -1px;
+    width: 100%;
+    background: white;
+    text-align: center;
+    padding-top: 5px;
+}
+
+#bottom-board {
+    background-color: beige;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#clue-bar {
+    display: flex;
+    position: relative;
+    gap: 40px;
+    align-items: center;
+}
+
+#clue-word-container {
+    gap: 20px;
+    display: flex;
+    background-color: bisque;
+    border-radius: 20px;
+    border: 10px solid rosybrown;
+    font-size: 3em;
+    padding: 10px 40px;
+    font-weight: bold;
+}
+
+#clue-word-container > :first-child {
+    user-select: all;
+}
+
+#clue-count-selector {
+    padding: 10px 30px;
+    height: 50px;
+    background-color: bisque;
+    border-radius: 20px;
+    position: absolute;
+    margin-bottom: 20px;
+    left: 50%;
+    transform: translate(-50%);
+    top: -90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.number-container {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rosybrown;
+    border-radius: 14px;
+    aspect-ratio: 1;
+    width: 50px;
+    flex: 1;
+}
+
+#clue-count-selector .number {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+#clue-count-container {
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    background-color: bisque;
+    border: 7px solid rosybrown;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+}
+
+#clue-count-container.disabled {
+    cursor: default;
+    filter: brightness(0.9);
+}
+
+#clue-count-text {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+#clue-word-input {
+    border-radius: 14px;
+    font-weight: bold;
+    width: 450px;
+    height: 50px;
+    font-size: 2em;
+    padding: 0 15px;
+    background-color: bisque;
+    border: 7px solid rosybrown;
+}
+
+.cta {
+    height: fit-content;
+    border-radius: 40px;
+    cursor: pointer;
+    padding: 20px 40px;
+    background-color: greenyellow;
+    border: 7px solid #7CB822;
+    font-size: 1.8em;
+    font-weight: bold;
+}
+
+#give-clue-cta:hover {
+    filter: brightness(0.9);
+}
+
+#give-clue-cta:active {
+    transform: translateY(3px);
+}
+
+#left-panel {
+    background-color: #BEF3EB;
+    width: 350px;
+}
+
+#right-panel {
+    background-color: salmon;
+    width: 350px;
+}
+
+.up-banner {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.options {
+    border-radius: 12px;
+    padding: 5px 25px;
+    background: bisque;
+    display: flex;
+    font-size: 2em;
+    gap: 20px;
+}
+
+.options > span {
+    cursor: pointer;
+}
+
+.new-username-modal {
+    padding: 0 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#new-username-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+#new-username-input {
+    height: fit-content;
+    width: 100%;
+    font-size: 2em;
+    padding: 0 15px;
+}
+
+#change-username-cta {
+    cursor: pointer;
+    font-size: 1.4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 16px;
+    font-weight: bold;
+    border-radius: 40px;
+    background-color: greenyellow;
+}
+
+#change-username-cta:hover {
+    filter: brightness(0.9);
+}
+
+#change-username-cta:active {
+    transform: translateY(3px);
+}
+
+.team {
+    height: 500px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#left-panel .team {
+    background-color: #88ADA8;
+}
+
+#right-panel .team {
+    background-color: #B85F55;
+}
+
+.team-title {
+    background: white;
+    border-radius: 10px;
+    padding: 7px;
+    margin: 20px 0;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.list-container {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.team-subtitle {
+    font-size: 1.6em;
+    font-weight: bold;
+}
+
+.list {
+    flex: 1;
+    text-align: center;
+}
+
+.username {
+    font-size: 1.4em;
+}
