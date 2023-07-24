@@ -1,60 +1,42 @@
 import { isUUID } from '../util/index.js';
 import Collection from '../util/Collection.js';
 import Team from './Team.js';
+import PlayerManager from '../managers/PlayerManager.js';
 
 export default class Game {
-    constructor(board, socket, id = null) {
-        this.board = board;
+    started = null;
+    words = null;
+    turn = {
+        team: null,
+        role: null
+    }
+    constructor(socket, data) {
         this.socket = socket;
-        this.words = null;
 
-        if(this.socket.readyState === 1) {
-            if(isUUID(id)) {
-                this.emit('join-game', { id });
-            } else {
-                this.emit('create-game');
-            }
-        } else if(this.socket.readyState === 0) {
-            this.socket.onopen = () => {
-                if(isUUID(id)) {
-                    this.emit('join-game', { id });
-                } else {
-                    this.emit('create-game');
-                }
-            }
-        }
-
-        this.players = [];
+        this.players = new PlayerManager();
 
         this.selectedCards = new Map();
         this.reversedCards = new Map();
 
-        this.teams = [new Team(), new Team()];
-
-        this.turn = {
-            team: null,
-            role: null
-        };
-
-        this.started = null;
+		this.teams = Array.from({ length: options.teamCount }, (_, index) => new Team(this, index));
 
         this.socket.onmessage = message => this.handle(message);
     }
 
-    emit(event, data) {
-		this.socket.send(JSON.stringify([event, data]));
-    }
-
     add(...player) {
-        this.players.push(...player);
+        if(typeof player === 'array') {
+            player.forEach(p => this.players.set(p.id, p));
+        } else {
+            this.players.set(player.id, player);
+        }
     }
 
-    remove(player) {
-        this.players = this.players.filter(p => p.id !== player.id);
-    }
-
-    get lastClue() {
-        return this.teams[this.turn.team]?.clues.last() || {};
+    remove(...player) {
+        if(typeof player === 'array') {
+            player.forEach(p => this.players.remove(p.id));
+        } else {
+            this.players.remove(player.id, player);
+        }
     }
 
     get player() {

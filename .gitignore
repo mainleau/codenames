@@ -5,4 +5,4 @@ node_modules/
 .vite/
 
 # secret
-server/.env
+.env
