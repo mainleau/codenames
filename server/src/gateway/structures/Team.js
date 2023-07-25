@@ -5,7 +5,7 @@ export default class Team {
         this.id = id;
         this.clues = new ClueManager();
     
-        Object.defineProperties(this, 'game', { value: game });
+        Object.defineProperty(this, 'game', { value: game });
     }
 
     get members() {

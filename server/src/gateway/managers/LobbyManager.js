@@ -12,6 +12,5 @@ export default class LobbyManager extends Collection {
     }
 
     manage(socket, event) {
-        console.log(event);
     }
 }

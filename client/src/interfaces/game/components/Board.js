@@ -2,7 +2,8 @@ import Component from '../../../core/Component.js';
 
 export default class Board extends Component {
     constructor(game, { size }) {
-        super(game);
+        super();
+        this.game = game;
         this.size = size;
     }
 
@@ -15,13 +16,13 @@ export default class Board extends Component {
             const card = document.createElement('div');
             card.style.cursor = 'pointer';
             card.className = 'card';
-            if('reversed' in word) {
+            if(word && 'reversed' in word) {
                 card.classList.add('reversed');
             }
-            if(this.game.reversedCards.has(index)) card.classList.add('reversed');
-            if(this.game.selectedCards.has(index)) card.classList.add('selected');
+            if(this.game.reversedCards.includes(index)) card.classList.add('reversed');
+            if(this.game.selectedCards.includes(index)) card.classList.add('selected');
 
-            if([0, 1, -1, null].includes(word.team)) {
+            if(word && [0, 1, -1, null].includes(word.team)) {
                 card.classList.add(
                     word.team === 0 ? 'first-team'
                     : word.team === 1 ? 'second-team'
@@ -47,7 +48,7 @@ export default class Board extends Component {
             }
 
             const name = document.createElement('span');
-            name.textContent = this.game.words ? word.name : '???';
+            name.textContent = this.game.words.size ? word.name : '???';
 
             card.appendChild(name);
             return card;

@@ -11,6 +11,10 @@ export default class Player {
         this.username = `Joueur ${this.id.slice(-3)}`;
     }
 
+    emit(...params) {
+        this.socket.emit(...params);
+    }
+
     join(game) {
         game.add(this);
     }

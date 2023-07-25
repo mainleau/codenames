@@ -64,10 +64,10 @@ export default class BottomBoard extends Component {
         clueWordContainer.id = 'clue-word-container';
 
         const clueWordText = document.createElement('span');
-        clueWordText.textContent = this.game.lastClue.word;
+        clueWordText.textContent = 'AA';//this.game.lastClue.word;
 
         const clueWordCount = document.createElement('span');
-        clueWordCount.textContent = this.game.lastClue.count;
+        clueWordCount.textContent = 1;//this.game.lastClue.count;
 
         clueWordContainer.append(clueWordText, clueWordCount);
 

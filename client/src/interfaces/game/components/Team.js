@@ -3,8 +3,8 @@ import Component from '../../../core/Component.js';
 export default class Team extends Component {
     constructor(game, team) {
         super();
-        this.team = team;
         this.game = game;
+        this.team = team;
     }
 
     create() {

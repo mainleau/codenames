@@ -5,9 +5,9 @@ import { isUUID } from './util/index.js';
 
 document.oncontextmenu = e => e.preventDefault();
 
-window.onload = () => new App().launch();
+window.onload = () => new Application().launch();
 
-class App {
+class Application {
     constructor() {
         this.manager = new Manager();
     }
@@ -15,16 +15,15 @@ class App {
     launch() {
         const element = document.createElement('div');
         element.id = 'app';
-        
-        const id = location.pathname.substring(1);
-    
-        if(isUUID(id)) {
-            new GameInterface(element, this.manager, id);
-        } else {
-            const home = new HomeInterface(element, this.manager);
-            app.appendChild(home.render());
-        }
-    
         document.body.appendChild(element);
+        
+        const path = location.pathname.substring(1);
+    
+        if(isUUID(path)) {
+            this.manager.games.join(path);
+        } else {
+            const home = new HomeInterface(this.manager);
+            element.appendChild(home.render());
+        }
     }
 }

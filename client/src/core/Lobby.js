@@ -1,4 +1,4 @@
-import Collection from '../util/Collection.js';
+import { Collection, io } from '../util';
 
 export default class Lobby {
     constructor() {

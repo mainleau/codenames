@@ -2,7 +2,8 @@ export default class Component {
     constructor() {}
 
     rerender() {
-        const parent = this.element.parentElement;
-        parent.replaceChild(this.create(), this.element);
+        const newElement = this.create();
+        this.element.replaceWith(newElement);
+        this.element = newElement;
     };
 } 

@@ -6,7 +6,7 @@ export default class Client extends Database {
         const request = 'SELECT * FROM words ORDER BY RANDOM() LIMIT 25';
         const response = await this.query(request);
 
-        return response.map(word => word.name);
+        return response;
     }
 
     async login(username, password) {

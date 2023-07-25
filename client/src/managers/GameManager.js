@@ -1,13 +1,29 @@
-import Collection from '../util/Collection.js';
+import Game from '../core/Game.js';
+import GameInterface from '../interfaces/game/index.js';
+import { Collection } from '../util';
 
 export default class GameManager extends Collection {
-    constructor() {}
+    constructor() {
+        super();
+    }
+
+    get socketURL() {
+        return `${location.protocol === 'http:' ? 'ws' : 'wss'}://${location.hostname}:8888/play`;
+    }
 
     create() {
-        this.socket.emit('create-game');
+        const socket = io(this.socketURL);
+        socket.emit('create-game');
+
+        const game = new Game(this, socket);
+        new GameInterface(this, game);
     }
 
     join(id) {
-        this.socket.emit('join-game', { id });
+        const socket = io(this.socketURL);
+        socket.emit('join-game', { id });
+
+        const game = new Game(this, socket);
+        new GameInterface(this, game);
     }
 }

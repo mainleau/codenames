@@ -4,9 +4,9 @@ import GameInterface from '../../interfaces/game/index.js';
 import GameList from './components/GameList.js';
 
 export default class HomeInterface extends Interface {
-    constructor(app) {
+    constructor(manager) {
         super();
-        this.app = app;
+        this.manager = manager;
 
         const lobby = new Lobby();
     }
@@ -49,7 +49,7 @@ export default class HomeInterface extends Interface {
         createGameCTA.id = 'create-game-cta';
         createGameCTA.onclick = () => {
             element.remove();
-            new GameInterface(this.app);
+            this.manager.games.create();
         }
 
         const createGameText = document.createElement('span');

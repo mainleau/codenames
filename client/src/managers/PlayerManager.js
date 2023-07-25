@@ -1,4 +1,4 @@
-import Collection from '../util/Collection.js';
+import { Collection } from '../util';
 
 export default class PlayerManager extends Collection {
 
