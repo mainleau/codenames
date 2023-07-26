@@ -6,7 +6,7 @@ import PlayerManager from '../managers/PlayerManager.js';
 export default class Game {
 	started = false;
 	ended = false;
-	constructor(words, options = {
+	constructor(io, words, options = {
 		teamCount: 2
 	}) {
 		this.id = uuid.v4();
@@ -19,6 +19,8 @@ export default class Game {
 			team: null,
 			role: 1
 		}
+
+		this.io = io.of('/play').to(this.id);
 	}
 
 	get spectators() {
@@ -34,6 +36,7 @@ export default class Game {
 	}
 
 	handle(player, socket, event) {
+		var updated = false;
 
 		if(event.name === 'update-player') {
 			if('team' in event.data) {
@@ -41,6 +44,8 @@ export default class Game {
 					return socket.emit('error', {
 						message: 'INVALID_TEAM'
 					});
+				if(player.team !== event.data.team) updated = true;
+
 				player.team = event.data.team;
 			}
 
@@ -49,6 +54,8 @@ export default class Game {
 					return socket.emit('error', {
 						message: 'INVALID_ROLE'
 					});
+				if(player.role !== event.data.role) updated = true;
+
 				player.role = event.data.role;
 			}
 
@@ -57,12 +64,12 @@ export default class Game {
 					return socket.emit('error', {
 						message: 'INVALID_NICKNAME'
 					});
+				if(player.nickname !== event.data.nickname) updated = true;
+
 				player.nickname = event.data.nickname;
-				// this.broadcast('username-changed', {
-				// 	target: player.id,
-				// 	username: data.username
-				// });
 			}
+
+			if(updated) this.io.emit('player-updated', player);
 
 			// if(data.role === 1) {
 			// 	player.emit('word-list', this.words.map(word => {
@@ -141,12 +148,7 @@ export default class Game {
 			player
 		});
 
-		// this.broadcast('player-joined', {
-		// 	id: player.id,
-		// 	username: player.username,
-		// 	team: player.team,
-		// 	role: player.role
-		// });
+		this.io.emit('player-joined', player);
 
 		this.players.set(player.id, player);
 

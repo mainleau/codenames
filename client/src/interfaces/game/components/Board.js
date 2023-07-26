@@ -5,22 +5,36 @@ export default class Board extends Component {
         super();
         this.game = game;
         this.size = size;
+
+        this.game.socket.on('game-joined', data => {
+            this.game.words.add(data.words);
+            this.rerender();
+        });
     }
 
     create() {
-        const element = document.createElement('div');
-        element.id = 'board';
+        this.element = document.createElement('div');
+        this.element.id = 'board';
 
         const cards = Array.from({ length: this.size ** 2 }, (_, index) => {
             const word = this.game.words ? this.game.words.at(index) : {};
+
             const card = document.createElement('div');
-            card.style.cursor = 'pointer';
             card.className = 'card';
+
+            card.style.cursor = 'pointer';
+
             if(word && 'reversed' in word) {
                 card.classList.add('reversed');
             }
-            if(this.game.reversedCards.includes(index)) card.classList.add('reversed');
-            if(this.game.selectedCards.includes(index)) card.classList.add('selected');
+
+            if(this.game.reversedCards.includes(index)) {
+                card.classList.add('reversed');
+            }
+
+            if(this.game.selectedCards.includes(index)) {
+                card.classList.add('selected');
+            }
 
             if(word && [0, 1, -1, null].includes(word.team)) {
                 card.classList.add(
@@ -49,12 +63,11 @@ export default class Board extends Component {
 
             const name = document.createElement('span');
             name.textContent = this.game.words.size ? word.name : '???';
-
             card.appendChild(name);
             return card;
         });
 
-        element.append(...cards);
-        return element;
+        this.element.append(...cards);
+        return this.element;
     }
 }

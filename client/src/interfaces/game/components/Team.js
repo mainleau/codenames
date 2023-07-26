@@ -5,11 +5,35 @@ export default class Team extends Component {
         super();
         this.game = game;
         this.team = team;
+
+        this.game.socket.on('player-joined', data => {
+            this.game.add(data);
+            console.log(this.game.players);
+        });
+
+        this.game.socket.on('player-updated', data => {
+            const player = this.game.players.get(data.id);
+            
+            // if(player.id === this.playerId) {
+            //     if(data.role === 0) {
+            //         this.words.forEach((word, index) => {
+            //             if(!this.reversedCards.has(index)) delete word.team;
+            //         });
+            //     }
+            //     this.team = data.team;
+            //     this.role = data.role
+            //     this.selectedCards.clear();
+            // }
+            player.role = data.role;
+            player.team = data.team;
+            // player.nickname = data.nickname;
+            this.rerender();
+        });
     }
 
     create() {
-        const element = document.createElement('div');
-        element.className = 'team';
+        this.element  = document.createElement('div');
+        this.element.className = 'team';
         
         const title = document.createElement('span');
         title.className = 'team-title';
@@ -23,7 +47,7 @@ export default class Team extends Component {
             subtitle.style.cursor = 'pointer';
             subtitle.className = 'team-subtitle';
             subtitle.textContent = role ? 'ESPIONS' : 'AGENTS';
-            subtitle.onclick = () => this.game.emit('change-team-role', {
+            subtitle.onclick = () => this.game.emit('update-player', {
                 team: this.team,
                 role
             });
@@ -50,7 +74,7 @@ export default class Team extends Component {
 
         listContainer.append(firstList, secondList);
 
-        element.append(title, listContainer);
-        return element;
+        this.element.append(title, listContainer);
+        return this.element;
     }
 }

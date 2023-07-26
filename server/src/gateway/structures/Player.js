@@ -1,6 +1,7 @@
 import * as uuid from 'uuid';
 
 export default class Player {
+    nickname = null;
     team = null;
     role = null;
     currentGameId = null;
@@ -17,14 +18,17 @@ export default class Player {
 
     join(game) {
         game.add(this);
+        this.socket.join(game.id);
+        this.currentGameId = game.id;
     }
 
     toJSON() {
         return {
             id: this.id,
             username: this.username,
+            nickname: this.nickname,
             team: this.team,
-            role: this.roll
+            role: this.role
         }
     }
 }

@@ -23,20 +23,16 @@ export default class Game {
         this.reversedCards = [];
     }
 
+    emit(...params) {
+        this.socket.emit(...params);
+    }
+
     add(...player) {
-        if(typeof player === 'array') {
-            player.forEach(p => this.players.set(p.id, p));
-        } else {
-            this.players.set(player.id, player);
-        }
+        player.forEach(p => this.players.set(p.id, p));
     }
 
     remove(...player) {
-        if(typeof player === 'array') {
-            player.forEach(p => this.players.remove(p.id));
-        } else {
-            this.players.remove(player.id, player);
-        }
+        player.forEach(p => this.players.remove(p.id));
     }
 
     get player() {
