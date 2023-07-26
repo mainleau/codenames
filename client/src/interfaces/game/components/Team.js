@@ -8,7 +8,10 @@ export default class Team extends Component {
 
         this.game.socket.on('player-joined', data => {
             this.game.add(data);
-            console.log(this.game.players);
+        });
+
+        this.game.socket.on('player-list', data => {
+            this.game.add(data);
         });
 
         this.game.socket.on('player-updated', data => {
@@ -26,6 +29,7 @@ export default class Team extends Component {
             // }
             player.role = data.role;
             player.team = data.team;
+            player.nickname = data.nickname;
             // player.nickname = data.nickname;
             this.rerender();
         });
@@ -61,7 +65,7 @@ export default class Team extends Component {
 
                 const username = document.createElement('span');
                 username.className = 'username';
-                username.textContent = player.username;
+                username.textContent = player.nickname || player.username;
 
                 line.append(username);
                 return line

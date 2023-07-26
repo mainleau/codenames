@@ -27,12 +27,14 @@ export default class Game {
         this.socket.emit(...params);
     }
 
-    add(...player) {
-        player.forEach(p => this.players.set(p.id, p));
+    add(players) {
+        if(!Array.isArray(players)) players = [players];
+        players.forEach(p => this.players.set(p.id, p));
     }
 
-    remove(...player) {
-        player.forEach(p => this.players.remove(p.id));
+    remove(players) {
+        if(!Array.isArray(players)) players = [players];
+        players.forEach(p => this.players.delete(p.id));
     }
 
     get player() {
@@ -41,15 +43,11 @@ export default class Game {
 
     handle(event) {
 
-        if(event.name === 'game-joined') {
-            localStorage.setItem('last-game-id', event.data.id);
-        }
-
         // switch (event) {
         //     case 'game-joined':
         //         this.playerId = data.playerId;
         //         this.turn = data.turn;
-        //         history.replaceState(null, '', data.id);
+        //         
         //         this.words = data.words.reduce((col, word) => {
         //             return col.set(word.name, { name: word.name });
         //         }, new Collection());

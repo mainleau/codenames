@@ -8,6 +8,7 @@ export default class WordManager extends Collection {
     }
 
     add(words) {
+        this.clear();
         words.forEach(word => this.set(word.id, word));
     } 
 }

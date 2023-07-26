@@ -7,7 +7,13 @@ export default class Board extends Component {
         this.size = size;
 
         this.game.socket.on('game-joined', data => {
-            this.game.words.add(data.words);
+            history.replaceState(null, '', data.id);
+            this.game.playerId = data.player.id;
+            this.rerender();
+        });
+
+        this.game.socket.on('word-list', data => {
+            this.game.words.add(data);
             this.rerender();
         });
     }

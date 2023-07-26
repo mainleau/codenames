@@ -29,7 +29,7 @@ export default class GameManager extends Collection {
 		}
 		
 		if(event.name === 'join-game') {
-			const game = data.id ? this.get(event.data.id) : this.last();
+			const game = event.data.id ? this.get(event.data.id) : this.last();
 			if(!game) return socket.emit('error', {
 				message: 'GAME_UNAVAILABLE'
 			});
@@ -37,6 +37,6 @@ export default class GameManager extends Collection {
 		}
 
 		console.log(event)
-		this.get(player.currentGameId).handle(player, socket, event);
+		if(player.currentGameId) this.get(player.currentGameId).handle(player, socket, event);
     }
 }

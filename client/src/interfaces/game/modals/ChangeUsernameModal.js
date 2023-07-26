@@ -24,8 +24,8 @@ export default class ChangeUsernameModal extends Modal {
         changeUsernameCTA.id = 'change-username-cta';
         changeUsernameCTA.onclick = () => {
             this.open();
-            this.game.emit('change-username', {
-                username: newUsernameInput.value
+            this.game.emit('update-player', {
+                nickname: newUsernameInput.value
             });
         }
 

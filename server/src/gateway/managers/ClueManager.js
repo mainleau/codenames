@@ -1,6 +1,6 @@
-import WordManager from './WordManager.js';
+import Collection from '@discordjs/collection';
 
-export default class ClueManager extends WordManager {
+export default class ClueManager extends Collection {
     constructor() {
         super();
     }
