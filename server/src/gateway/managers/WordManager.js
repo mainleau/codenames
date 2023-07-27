@@ -15,7 +15,8 @@ export default class WordManager extends Collection {
         return this.map(word => ({
             id: word.id,
             name: word.name,
-            team: withTeam ? word.team : null
+            team: word.revealed || withTeam ? word.team : null,
+            revealed: word.revealed
         }));
     }
 }

@@ -1,6 +1,7 @@
 import Team from './Team.js';
 import PlayerManager from '../managers/PlayerManager.js';
 import WordManager from '../managers/WordManager.js';
+import ClueManager from '../managers/ClueManager.js';
 
 export default class Game {
     started = null;
@@ -17,7 +18,8 @@ export default class Game {
 
         this.players = new PlayerManager();
 		this.teams = Array.from({ length: options.teamCount }, (_, index) => new Team(this, index));
-        
+        this.clues = new ClueManager();
+
         this.words = new WordManager();
         this.selectedCards = [];
         this.reversedCards = [];
@@ -38,7 +40,8 @@ export default class Game {
     }
 
     get player() {
-        return this.players.find(player => player.id === this.playerId) || {};
+        // TODO: remove || {}
+        return this.players.get(this.playerId) || {};
     }
 
     handle(event) {

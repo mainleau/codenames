@@ -2,20 +2,24 @@ import * as uuid from 'uuid';
 import Team from './Team.js';
 import WordManager from '../managers/WordManager.js';
 import PlayerManager from '../managers/PlayerManager.js';
+import ClueManager from '../managers/ClueManager.js';
 
 export default class Game {
 	started = false;
 	ended = false;
-	clueRemainer = null;
+	clueRemainder = null;
 	constructor(io, words, options = {
 		teamCount: 2,
-		maxClueWordLength: 12,
+		maxClueWordLength: 16,
+		maxNicknameLength: 16,
+		clueWordRegex: /^[a-zA-Z0-9\\_\\-]+$/,
 		clueCountChoices: [...Array(10).keys(), '∞']
 	}) {
 		this.options = options;
 
 		this.id = uuid.v4();
 		this.words = new WordManager(words);
+		this.clues = new ClueManager();
 
 		this.players = new PlayerManager();
 		this.teams = Array.from({ length: options.teamCount }, (_, index) => new Team(this, index));
@@ -63,11 +67,11 @@ export default class Game {
 
 				player.role = event.data.role;
 
-				this.updateWords(player);
+				if(this.started) this.updateWords(player);
 			}
 
 			if('nickname' in event.data) {
-				if(typeof event.data.nickname !== 'string' || event.data.nickname.length > 12)
+				if(typeof event.data.nickname !== 'string' || event.data.nickname.length > this.options.maxNicknameLength)
 					return socket.emit('error', {
 						message: 'INVALID_NICKNAME'
 					});
@@ -91,70 +95,80 @@ export default class Game {
 		if(event.name === 'select-card') {
 			this.spymasters.forEach(spymaster => {
 				spymaster.emit('card-selected', {
-					id: data.id,
+					word: data.word,
 					selected: data.selected
 				});
 			});
 		}
 
 		if(event.name === 'give-clue') {
-			if(player.team !== this.turn.team || player.role !== 1)
+			if(player.team !== this.turn.team || player.role !== 1 || player.role !== this.turn.role)
 				return socket.emit('error', {
-					message: 'INVALID_TURN_OR_ROLE'
+					message: 'NOT_YOUR_TURN'
 				});
-
-			if(typeof data.word !== 'string' || data.word.length > this.options.maxClueWordLength)
+			if(typeof event.data.word !== 'string' 
+				|| !event.data.word.match(this.options.clueWordRegex)
+				|| event.data.word.length > this.options.maxClueWordLength
+			)
 				return socket.emit('error', {
 					message: 'INVALID_CLUE_WORD'
 				});
-			if(typeof data.count !== 'number' || this.options.clueCountChoices.includes(data.count))
+			if(!this.options.clueCountChoices.includes(event.data.count))
 				return socket.emit('error', {
 					message: 'INVALID_CLUE_COUNT'
 				});
-			if(data.relatedWords && (
-				!Array.isArray(data.relatedWords) || !this.checkRelatedWords(player.team, data.relatedWords
+			if(event.data.relatedWords && (
+				!Array.isArray(event.data.relatedWords) || !this.checkRelatedWords(player.team, event.data.relatedWords
 			)))
 				return socket.emit('error', {
 					message: 'INVALID_RELATED_WORDS'
 				});
 			
-			this.teams[this.turn.team].clues.set(this.teams[this.turn.team].clues.size + 1, {
-				word: data.word,
-				count: data.count,
-				relatedWords: data.relatedWords ?? null
+			this.clues.set(this.clues.size + 1, {
+				word: event.data.word,
+				count: event.data.count,
+				relatedWords: event.data.relatedWords ?? null,
+				team: this.turn.team
 			});
 
-			this.clueRemainer = data.count;
+			this.clueRemainder = event.data.count;
 
-			this.io.emit('forwarded-clue', {
-				word: data.word,
-				count: data.count
+			this.io.emit('clue-forwarded', {
+				word: event.data.word,
+				count: event.data.count
 			});
 
 			this.turn.role ^= true;
+			this.players.forEach(player => this.updateClues(player));
 		}
 
 		// TODO: check if card has already been revealed before
 		if(event.name === 'reveal-card') {
-			const word = this.words.at(data.word);
+			if(player.team !== this.turn.team || player.role !== 0 || player.role !== this.turn.role)
+				return socket.emit('error', {
+					message: 'NOT_YOUR_TURN'
+				});
+			const word = this.words.get(event.data.word);
 
 			const success = word.team === player.team;
 
-			if(!isNaN(this.clueRemainer) && this.clueRemainer > 0) {
-				this.clueRemainer -= 1;
+			if(!isNaN(this.clueRemainder) && this.clueRemainder > 0) {
+				this.clueRemainder -= 1;
 			}
 
 			// TODO: warn the user he can use 0 to "ban" a clue
-			if((!isNaN(this.clueRemainer) && this.clueRemainer === 0) || !success) {
+			if((!isNaN(this.clueRemainder) && this.clueRemainder === 0) || !success) {
 				this.turn.team ^= true;
 				this.turn.role ^= true;
 			}
 
 			this.io.emit('card-revealed', {
-				word: data.word,
+				word: event.data.word,
 				team: word.team,
-				clueRemainer: this.clueRemainer
+				clueRemainder: this.clueRemainder
 			});
+
+			word.revealed = true;
 
 			if(word.team === -1) this.stop();
 		}
@@ -180,8 +194,15 @@ export default class Game {
 		// TODO: shuffle words option 
 		player.emit('game-joined', {
 			id: this.id,
+			started: this.started,
+			turn: this.turn,
 			player
 		});
+
+		if(this.started) {
+			this.updateWords(player);
+			this.updateClues(player);
+		}
 
 		this.io.emit('player-joined', player);
 
@@ -191,12 +212,13 @@ export default class Game {
 	}
 
 	stop() {
-		// this.broadcast('game-ended');
+		this.ended = true;
+		this.io.emit('game-ended');
 	}
 
 	start() {
 		this.started = true;
-		this.turn.team = Math.floor(Math.random() * (this.teams.length + 1));
+		this.turn.team = Math.floor(Math.random() * this.teams.length);
 
 		const shuffledWords = this.words.random(this.words.size);
 
@@ -218,10 +240,14 @@ export default class Game {
 		this.players.forEach(player => this.updateWords(player));
 	}
 
+	updateClues(player) {
+		player.emit('clue-list', this.clues);
+	}
+
 	updateWords(player) {
 		player.emit('word-list',
 			player.role === 1 ? this.words.toJSON({ withTeam: true })
-			: this.words.toJSON()
+				: this.words.toJSON()
 		);	
 	}
 }

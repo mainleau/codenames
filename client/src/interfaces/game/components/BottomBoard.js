@@ -5,11 +5,50 @@ export default class BottomBoard extends Component {
     constructor(game) {
         super();
         this.game = game;
+
+        this.game.socket.on('game-joined', data => {
+            this.game.started = data.started;
+            this.game.turn = data.turn;
+            this.rerender();
+        });
+
+        this.game.socket.on('game-started', data => {
+            this.game.started = true;
+            this.game.turn = data.turn;
+            this.rerender();
+        });
+
+        this.game.socket.on('player-updated', data => {
+            if(data.id === this.game.playerId) this.rerender();
+        });
+
+        this.game.socket.on('clue-forwarded', data => {
+            this.game.teams[this.game.turn.team].clues.set(this.game.teams[this.game.turn.team].size, {
+                word: data.word,
+                count: data.count,
+                relatedWords: data.relatedWords
+            });
+            this.game.turn.role ^= true;
+            this.rerender();
+        });
+
+        this.game.socket.on('clue-list', data => {
+            this.game.clues.add(data);
+            this.rerender();
+        });
+
+        this.game.socket.on('card-revealed', data => {
+            if(data.team !== this.game.turn.team || data.clueRemainder === 0) {
+                this.game.turn.team ^= true;
+                this.game.turn.role ^= true;
+            }
+            this.rerender();
+        });
     }
 
     create() {
-        const element = document.createElement('div');
-        element.id = 'bottom-board';
+        this.element = document.createElement('div');
+        this.element.id = 'bottom-board';
         
         const clueBar = document.createElement('div');
         clueBar.id = 'clue-bar';
@@ -45,7 +84,6 @@ export default class BottomBoard extends Component {
         giveClueCTA.id = 'give-clue-cta';
         giveClueCTA.className = 'cta';
         giveClueCTA.onclick = () => {
-            giveClueCTA.onclick = null;
             this.game.emit('give-clue', {
                 word: clueWordInput.value.toUpperCase(),
                 count: !isNaN(clueCountText.textContent)
@@ -64,10 +102,10 @@ export default class BottomBoard extends Component {
         clueWordContainer.id = 'clue-word-container';
 
         const clueWordText = document.createElement('span');
-        clueWordText.textContent = 'AA';//this.game.lastClue.word;
+        clueWordText.textContent = this.game.clues.size ? this.game.clues.last().word : '???'
 
         const clueWordCount = document.createElement('span');
-        clueWordCount.textContent = 1;//this.game.lastClue.count;
+        clueWordCount.textContent = this.game.clues.size ? this.game.clues.last().count : '?'
 
         clueWordContainer.append(clueWordText, clueWordCount);
 
@@ -82,19 +120,21 @@ export default class BottomBoard extends Component {
         startGameText.textContent = 'Lancer la partie';
 
         startGameCTA.append(startGameText);
-
+        
         if (this.game.turn.role === 0) {
-            element.appendChild(clueWordContainer);
-        } else if (this.game.turn.role === 1) {
+            this.element.appendChild(clueWordContainer);
+        }
+        
+        if (this.game.turn.role === 1) {
             if(this.game.turn.team === this.game.player.team && this.game.turn.role === this.game.player.role) {
-                element.appendChild(clueBar);
+                this.element.appendChild(clueBar);
             }
         }
 
-        if(this.game.turn.team === null) {
-            element.appendChild(startGameCTA);
+        if(this.game.started === false) {
+            this.element.appendChild(startGameCTA);
         }
 
-        return element;
+        return this.element;
     }
 }

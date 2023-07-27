@@ -16,6 +16,14 @@ export default class Board extends Component {
             this.game.words.add(data);
             this.rerender();
         });
+
+        this.game.socket.on('card-revealed', data => {
+            const word = this.game.words.get(data.word);
+            word.revealed = true;
+            word.team = data.team;
+            this.game.clueRemainder = data.clueRemainder;
+            this.rerender();
+        });
     }
 
     create() {
@@ -30,7 +38,7 @@ export default class Board extends Component {
 
             card.style.cursor = 'pointer';
 
-            if(word && 'reversed' in word) {
+            if(word && 'revealed' in word) {
                 card.classList.add('reversed');
             }
 
@@ -60,8 +68,8 @@ export default class Board extends Component {
                             selected: !card.classList.contains('selected')
                         });
                     } else if(this.game.turn.role === this.game.player.role && this.game.player.role === 0) {
-                        this.game.emit('use-card', {
-                            target: index
+                        this.game.emit('reveal-card', {
+                            word: word.id
                         });
                     }
                 }

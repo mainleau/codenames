@@ -1,15 +1,16 @@
-import ClueManager from '../managers/ClueManager.js';
-
 export default class Team {
     constructor(game, id) {
         this.id = id;
-        this.clues = new ClueManager();
     
         Object.defineProperty(this, 'game', { value: game });
     }
 
     get members() {
         return this.game.players.filter(player => player.team === this.id);
+    }
+
+    get clues() {
+        return this.game.clues.filter(clue => clue.team === this.id);
     }
 
     get words() {
