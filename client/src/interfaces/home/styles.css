@@ -1,40 +1,25 @@
 #home {
     height: auto;
     display: flex;
-    justify-content: center;
     flex-direction: column;
-    align-items: center;
     background-color: #5E4747;
     height: 100vh;
 }
 
-#home-header {
+#content {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    gap: 20px;
+    justify-content: space-between;
 }
 
-#home-title {
-    margin-top: 100px;
-    font-size: 3.4em;
+#profile {
+    width: 400px;
+    background-color: bisque;
 }
 
-#home-subtitle-container {
-    margin-top: 10px;
-    font-size: 5.4em;
-    background-color: white;
-    padding: 5px 20px;
-    border-radius: 20px;
-    position: relative;
-    font-weight: bolder;
-}
-
-#home-subtitle-container > :first-child {
-    color: black;
-}
-
-#home-subtitle-container > :last-child {
-    color: seagreen;
+#other {
+    width: 400px;
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 #games-container {
@@ -123,4 +108,47 @@
 
 .teams > :last-child {
     background-color: salmon;
+}
+
+#menu {
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 20px 40px;
+}
+
+#login-button {
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: palegoldenrod;
+    font-size: 2em;
+}
+
+#login-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#login-modal > :first-child {
+    margin-top: 100px;
+}
+
+#username-container, #password-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#username-input, #password-input {
+    font-size: 2em;
+    width: 300px;
+    padding: 0 15px;
+}
+
+#password-container {
+    margin-top: 30px;
+}
+
+#login-cta {
+    margin-top: 50px
 }

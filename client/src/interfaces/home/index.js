@@ -1,7 +1,8 @@
 import Interface from '../../core/Interface.js';
 import Lobby from '../../core/Lobby.js';
-import GameInterface from '../../interfaces/game/index.js';
+import LoginModal from './modals/LoginModal.js';
 import GameList from './components/GameList.js';
+import Profile from './components/Profile.js';
 
 export default class HomeInterface extends Interface {
     constructor(manager) {
@@ -18,27 +19,26 @@ export default class HomeInterface extends Interface {
         const element = document.createElement('div');
         element.id = 'home';
 
-        const header = document.createElement('div');
-        header.id = 'home-header';
+        const menu = document.createElement('div');
+        menu.id = 'menu';
 
-        const title = document.createElement('span');
-        title.id = 'home-title';
-        title.textContent = 'Nom de code :';
+        const loginModal = new LoginModal(this.manager);
 
-        const subtitleContainer = document.createElement('div');
-        subtitleContainer.id = 'home-subtitle-container';
+        const loginButton = document.createElement('div');
+        loginButton.id = 'login-button';
+        loginButton.onclick = e => loginModal.open(e);
 
-        const firstSubtitle = document.createElement('span');
-        firstSubtitle.className = 'home-subtitle';
-        firstSubtitle.textContent = 'NIGHT';
+        const loginButtonText = document.createElement('span');
+        loginButtonText.textContent = '🔒';
 
-        const secondSubtitle = document.createElement('span');
-        secondSubtitle.className = 'home-subtitle';
-        secondSubtitle.textContent = 'CLUB';
+        loginButton.appendChild(loginButtonText);
 
-        subtitleContainer.append(firstSubtitle, secondSubtitle);
+        menu.append(loginButton);
 
-        header.append(title, subtitleContainer);
+        const content = document.createElement('div');
+        content.id = 'content';
+
+        const profile = new Profile(this.manager).create();
 
         const gamesContainer = document.createElement('div');
         gamesContainer.id = 'games-container';
@@ -63,7 +63,11 @@ export default class HomeInterface extends Interface {
 
         gamesContainer.append(optionsBar, liveGames);
 
-        element.append(gamesContainer);
+        const other = document.createElement('div');
+        other.id = 'other';
+
+        content.append(profile, gamesContainer, other);
+        element.append(menu, content);
         return element;
     }
 }

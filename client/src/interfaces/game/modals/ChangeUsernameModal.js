@@ -7,11 +7,15 @@ export default class ChangeUsernameModal extends Modal {
             height: 100
         });
         this.game = game;
+    }
 
-        this.element.className = 'new-username-modal';
+    open() {
+        super.open(event);
+
+        this.element.id = 'new-username-modal';
 
         const title = document.createElement('span');
-        title.textContent = 'NOUVEAU PSEUDONYME :';
+        title.textContent = 'NOUVEAU SURNOM :';
 
         const newUsernameContainer = document.createElement('div');
         newUsernameContainer.id = 'new-username-container';
@@ -23,7 +27,7 @@ export default class ChangeUsernameModal extends Modal {
         const changeUsernameCTA = document.createElement('div');
         changeUsernameCTA.id = 'change-username-cta';
         changeUsernameCTA.onclick = () => {
-            this.open();
+            this.close();
             this.game.emit('update-player', {
                 nickname: newUsernameInput.value
             });

@@ -31,7 +31,7 @@ input {
     height: 100vh;
 }
 
-#modal {
+.modal {
     width: 400px;
     height: 500px;
     background-color: whitesmoke;

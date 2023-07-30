@@ -239,7 +239,7 @@
     cursor: pointer;
 }
 
-.new-username-modal {
+#new-username-modal {
     padding: 0 40px;
     display: flex;
     flex-direction: column;

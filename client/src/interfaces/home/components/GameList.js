@@ -19,7 +19,7 @@ export default class GameList extends Component {
 
     create() {
         this.element = document.createElement('div');
-
+        
         const games = this.games.slice(0, 3).map((liveGame => {
             const game = document.createElement('div');
             if(liveGame !== null) game.style.cursor = 'pointer'; else game.style.opacity = 0.5;
