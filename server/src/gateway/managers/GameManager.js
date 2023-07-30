@@ -12,6 +12,7 @@ export default class GameManager extends Collection {
 			socket.onAny((name, data) => this.manage(player, socket, { name, data }));
 
 			socket.on('disconnect', () => {
+				console.log('DISCO')
 				if(player.currentGameId) this.get(player.currentGameId).remove(player);
 			});
         });

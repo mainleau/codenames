@@ -3,8 +3,10 @@ import GameInterface from '../interfaces/game/index.js';
 import { Collection } from '../util';
 
 export default class GameManager extends Collection {
-    constructor() {
+    constructor(manager) {
         super();
+
+        Object.defineProperty(this, 'manager', { value: manager });
     }
 
     get socketURL() {

@@ -72,12 +72,12 @@ export default class BottomBoard extends Component {
         const clueCountSelector = new ClueCountSelector(this.game).create(clueCountText);
 
         const clueWordInput = document.createElement('input');
-        if(this.game.clue) clueWordInput.value = this.game.clue;
+        // if(this.game.clue) clueWordInput.value = this.game.clue;
         clueWordInput.spellcheck = false;
         clueWordInput.style.textTransform = true ? 'uppercase' : 'none';
         clueWordInput.id = 'clue-word-input';
         clueWordInput.oninput = () => {
-            this.game.clue = clueWordInput.value;
+            // this.game.clue = clueWordInput.value;
         }
 
         const giveClueCTA = document.createElement('div');

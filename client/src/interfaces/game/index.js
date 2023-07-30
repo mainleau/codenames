@@ -19,7 +19,7 @@ export default class GameInterface extends Interface {
         const element = document.createElement('div');
         element.id = 'game';
 
-        const leftPanel = new LeftPanel(this.game, this).create();
+        const leftPanel = new LeftPanel(this.game).create();
 
         const middlePanel = document.createElement('div');
         middlePanel.id = 'middle-panel';

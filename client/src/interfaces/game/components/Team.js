@@ -8,10 +8,17 @@ export default class Team extends Component {
 
         this.game.socket.on('player-joined', data => {
             this.game.add(data);
+            this.rerender();
         });
 
         this.game.socket.on('player-list', data => {
             this.game.add(data);
+            this.rerender();
+        });
+
+        this.game.socket.on('player-leave', data => {
+            this.game.add(data);
+            this.rerender();
         });
 
         this.game.socket.on('player-updated', data => {
