@@ -4,7 +4,8 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    background-color: slategrey;
+    background-color: #5E4747;
+    height: 100vh;
 }
 
 #home-header {
@@ -39,7 +40,6 @@
 #games-container {
     margin-top: 150px;
     width: 1000px;
-    height: 800px;
     display: flex;
     flex-direction: column;
 }
@@ -75,7 +75,7 @@
 
 #games-container > :last-child {
     background-color: bisque;
-    padding: 50px 100px 0;
+    padding: 50px 100px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: max-content;
@@ -87,4 +87,40 @@
     border-radius: 20px;
     aspect-ratio: 3/2;
     background-color: rosybrown;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    justify-content: space-between;
+}
+
+.name {
+    font-size: 1.6em;
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-weight: bolder;
+    display: flex;
+    justify-content: center;
+}
+
+.teams {
+    display: flex;
+    gap: 20px;
+}
+
+.teams > div {
+    padding: 12px 0;
+    flex: 1;
+    font-size: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.teams > :first-child {
+    background-color: #BEF3EB;
+}
+
+.teams > :last-child {
+    background-color: salmon;
 }

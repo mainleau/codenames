@@ -16,7 +16,7 @@ export default class Team extends Component {
             this.rerender();
         });
 
-        this.game.socket.on('player-leave', data => {
+        this.game.socket.on('player-leaved', data => {
             this.game.add(data);
             this.rerender();
         });

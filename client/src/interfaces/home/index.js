@@ -59,11 +59,11 @@ export default class HomeInterface extends Interface {
 
         optionsBar.append(createGameCTA);
 
-        const liveGames = new GameList(this.app).create();
+        const liveGames = new GameList(this.manager).create();
 
         gamesContainer.append(optionsBar, liveGames);
 
-        element.append(header, gamesContainer);
+        element.append(gamesContainer);
         return element;
     }
 }

@@ -11,7 +11,7 @@ export default class Database {
 
     async query(string, params = []) {
         const response = await this.client.query(string, params);
-
+        
         return response.rows;
     }
 

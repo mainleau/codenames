@@ -1,89 +1,91 @@
 import * as dotenv from 'dotenv';
 import * as https from 'https';
 import * as http from 'http';
+import express from 'express';
+import cors from 'cors';
+import * as uuid from 'uuid';
 import * as io from 'socket.io';
 import * as fs from 'fs';
+import jwt from 'jsonwebtoken';
+import Client from '../core/Client.js';
 import Manager from './structures/Manager.js';
 
 dotenv.config();
 
-const httpServer = process.env.NODE_ENV === 'production'
+const client = new Client();
+
+const gatewayHTTPServer = process.env.NODE_ENV === 'production'
 	? https.createServer({
 		cert: fs.readFileSync(process.env.CERT_PATH),
 		key: fs.readFileSync(process.env.KEY_PATH)
 	})
 	: http.createServer();
 
-const websocketServer = new io.Server(httpServer, {
+const websocketServer = new io.Server(gatewayHTTPServer, {
 	cors: {
 		origin: '*'
 	}
 });
 
-const manager = new Manager(websocketServer);
+const manager = new Manager(websocketServer, client);
 
-httpServer.listen(8888);
+gatewayHTTPServer.listen(8888);
 
 
-// ws.on('connection', async socket => {
-// 	const player = new Player(socket);
-// 	players.set(player.id, player);
+const app = express();
 
-// 	socket.onclose = () => {
-// 		players.delete(player.id);
-// 		if(player.game) {
-// 			player.game.remove(player);
-// 		}
-// 	}
+app.use(express.json());
+app.use(cors());
 
-// 	socket.onmessage = async message => {
-//         const [event, data] = JSON.parse(message.data);
+const apiHTTPServer = process.env.NODE_ENV === 'production'
+	? https.createServer({
+		cert: fs.readFileSync(process.env.CERT_PATH),
+		key: fs.readFileSync(process.env.KEY_PATH)
+	}, app)
+	: http.createServer(app);
 
-// 		if(event === 'leave-game') {
-// 			const game = player.game;
-// 			if(player.game)	player.game.remove(player);
+app.get('/words', async (req, res) => {
+    const count = req.query.count || 25;
+    const words = await client.fetchWords(count);
+    res.send(words);
+});
 
-// 			if(!game.players.size) setTimeout(() => {
-// 				if(!game.players.size) {
-// 					games.delete(game.id);
-// 					players.forEach(p => {
-// 						if(p.game) return;
-// 						player.emit('game-list', games.filter(g => !g.ended).map(g => ({
-// 							id: g.id,
-// 							playerCount: [g.players.filter(p => p.team === 0).size, g.players.filter(p => p.team === 1).size]
-// 						})));
-// 					});
-// 				}
-// 			}, 30000)
-// 		}
+app.get('/rooms', async (_, res) => {
+    const games = manager.games;
+    res.send(games);
+});
 
-// 		if(event === 'game-list') {
-// 			player.emit('game-list', games.filter(game => !game.ended).map(game => ({
-// 				id: game.id,
-// 				playerCount: [game.players.filter(p => p.team === 0).size, game.players.filter(p => p.team === 1).size]
-// 			})));
-// 		}
+app.post('/login', async (req, res) => {
+	const data = await client.query("SELECT id FROM players WHERE username=$1 AND password=ENCODE(SHA256($2), 'hex')", [req.body.username, req.body.password]);
 
-// 		if(event === 'create-game') {
-// 			const words = await client.fetchWords();
-// 			const game = new Game(words);
-// 			games.set(game.id, game);
-// 			player.join(game, message);
-// 		}
+	if(data.length) {
+		const token = jwt.sign({
+			id: data[0].id
+		}, process.env.JWT_SECRET, { expiresIn: 365 * 24 * 60 * 60 });
+		res.send({ id: data[0].id, token });
+	} else {
+		res.send({ success: false })
+	}
+});
 
-// 		if(event === 'join-game') {
-// 			var game = null;
-// 			if(data.id) {
-// 				game = games.get(data.id);
-// 				if(!game) return socket.close();
-// 			} else {
-// 				game = games.last();
-// 			}
-// 			player.join(game, message);
-// 		}
+app.post('/register', async (req, res) => {
+	const id = uuid.v4();
+	const token = jwt.sign({
+		id
+	}, process.env.JWT_SECRET, { expiresIn: 365 * 24 * 60 * 60 });
 
-// 		if(player.game) {
-// 			player.game.handle(player, message);
-// 		}
-// 	}
-// });
+	var result;
+	var success;
+
+	try {
+		result = await client.query(`INSERT INTO players(id, username, password) VALUES($1, $2, ENCODE(SHA256($3), 'hex')) RETURNING id`, [id, req.body.username.toLowerCase(), req.body.password]);
+		success = true;
+	} catch (e) {
+		console.log(e)
+		success = false;
+	}
+
+	res.send(success ? { id: result[0].id, token } : { success });
+});
+
+apiHTTPServer.listen(8889);

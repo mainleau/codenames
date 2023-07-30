@@ -12,8 +12,15 @@ export default class GameManager extends Collection {
 			socket.onAny((name, data) => this.manage(player, socket, { name, data }));
 
 			socket.on('disconnect', () => {
-				console.log('DISCO')
-				if(player.currentGameId) this.get(player.currentGameId).remove(player);
+				if(!player.currentGameId) return;
+
+				const game = this.get(player.currentGameId);
+				game.remove(player);
+				if(!game.players.size) {
+					setTimeout(() => {
+						if(!game.players.size) this.delete(game.id);
+					}, 30000);
+				}
 			});
         });
 
@@ -40,4 +47,11 @@ export default class GameManager extends Collection {
 		console.log(event)
 		if(player.currentGameId) this.get(player.currentGameId).handle(player, socket, event);
     }
+
+	toJSON() {
+		return this.map(game => ({
+			id: game.id,
+			playerCountByTeam: game.teams.map(team => team.members.size)
+		}));
+	}
 }

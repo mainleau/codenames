@@ -21,6 +21,7 @@ export default class LeftPanel extends Component {
 
         const backButton = document.createElement('span');
         backButton.onclick = () => {
+            this.game.socket.close();
             const home = new HomeInterface(this.game.manager.manager);
             document.body.firstChild.children[0].replaceWith(home.render());
         };
