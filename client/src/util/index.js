@@ -1,6 +1,6 @@
 import Collection from '../vendor/@discordjs/collection.min.js';
-import io from '../vendor/socket.io/socket.io.min.js';
-
+// import io from '../vendor/socket.io/socket.io.min.js';
+const io = window.io;
 export {
     Collection,
     io

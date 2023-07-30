@@ -1,4 +1,3 @@
 module.exports = {
-    root: 'src',
-    publicDir: '../assets',
+    root: 'src'
  } 
