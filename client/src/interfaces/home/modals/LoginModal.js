@@ -43,9 +43,8 @@ export default class LoginModal extends Modal {
         loginCTA.id = 'login-cta';
         loginCTA.onclick = async () => {
             const response = await this.manager.client.login(usernameInput.value, passwordInput.value);
-            if(response.id) {
+            if(response.token) {
                 this.close();
-                localStorage.id = response.id;
                 localStorage.token = response.token;
             } else {
                 passwordInput.value = '';

@@ -16,9 +16,13 @@ export default class GameManager extends Collection {
 
 				const game = this.get(player.currentGameId);
 				game.remove(player);
+				this.client.updateGame({ id: game.id, playerCountByTeam: game.teams.map(team => team.members.size) });
 				if(!game.players.size) {
 					setTimeout(() => {
-						if(!game.players.size) this.delete(game.id);
+						if(!game.players.size) {
+							this.delete(game.id);
+							this.client.removeGame(game.id);
+						}
 					}, 30000);
 				}
 			});
@@ -29,9 +33,12 @@ export default class GameManager extends Collection {
     }
 
     async manage(player, socket, event) {
+		console.log(event);
+
         if(event.name === 'create-game') {
 			const words = await this.client.fetchWords();
 			const game = new Game(this.io, words);
+			this.client.addGame({ id: game.id, playerCountByTeam: game.teams.map(team => team.members.size)});
 			this.set(game.id, game);
 			player.join(game);
 		}
@@ -44,8 +51,14 @@ export default class GameManager extends Collection {
 			player.join(game);
 		}
 
-		console.log(event)
 		if(player.currentGameId) this.get(player.currentGameId).handle(player, socket, event);
+
+		if(event.name === 'update-player') {
+			if(player.currentGameId) {
+				const game = this.get(player.currentGameId);
+				this.client.updateGame({ id: game.id, playerCountByTeam: game.teams.map(team => team.members.size) });
+			};
+		}
     }
 
 	toJSON() {

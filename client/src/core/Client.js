@@ -7,14 +7,14 @@ export default class Client {
     }
 
     fetchRooms() {
-        const route = '/rooms';
+        const route = '/games';
 
         return fetch(this.baseURL + route)
             .then(res => res.json());
     }
 
     async login(username, password) {
-        const route = '/login';
+        const route = '/auth/login';
 
         const response = await fetch(this.baseURL + route, {
             method: 'POST',
@@ -22,6 +22,16 @@ export default class Client {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ username, password })
+        });
+
+        return await response.json();
+    }
+
+    async fetchPlayer(id) {
+        const route = `/players/${id}`;
+
+        const response = await fetch(this.baseURL + route, {
+            method: 'GET'
         });
 
         return await response.json();

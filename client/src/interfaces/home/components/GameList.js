@@ -13,7 +13,7 @@ export default class GameList extends Component {
 
     async fetchRooms() {
         const games = await this.manager.client.fetchRooms();
-        this.games = games.concat(new Array(6).fill(null)).slice(0, 3);
+        this.games = games.concat(new Array(3).fill(null)).slice(0, 3);
         this.rerender();
     }
 

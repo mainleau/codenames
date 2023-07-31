@@ -13,12 +13,45 @@
 }
 
 #profile {
-    width: 400px;
+    width: 320px;
+    padding: 20px;
     background-color: bisque;
 }
 
+#avatar-container {
+    width: 100%;
+    height: 300px;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+#inventory {
+    margin-top: 20px;
+    width: 100%;
+    height: 200px;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+#inventory-title {
+    display: flex;
+    padding: 12px 0;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+}
+
+#inventory-items {
+    display: flex;
+    justify-content: center;
+    font-size: 1.8em;
+}
+
+#inventory-items > div {
+    display: flex;
+    gap: 10px;
+}
+
 #other {
-    width: 400px;
+    width: 320px;
     background-color: rgba(0, 0, 0, 0.1);
 }
 

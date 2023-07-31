@@ -1,5 +1,3 @@
-import ClueManager from '../managers/ClueManager.js';
-
 export default class Team {
     constructor(game, id) {
         this.id = id;
