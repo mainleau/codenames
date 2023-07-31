@@ -149,7 +149,7 @@
     margin: 20px 40px;
 }
 
-#login-button {
+#home #login-button {
     cursor: pointer;
     padding: 10px;
     border-radius: 20px;

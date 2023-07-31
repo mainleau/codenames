@@ -1,5 +1,6 @@
-@import 'interfaces/game/styles.css';
+@import 'interfaces/authentication/styles.css';
 @import 'interfaces/home/styles.css';
+@import 'interfaces/game/styles.css';
 
 @font-face {
     font-family: 'VarelaRound';
@@ -52,4 +53,10 @@ input {
     background-color: black;
     opacity: 0.4;
     z-index: 10;
+}
+
+@media (max-width: 800px) {
+    * {
+        display: none;
+    }
 }

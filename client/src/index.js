@@ -1,3 +1,4 @@
+import AuthenticationInterface from './interfaces/authentication/index.js';
 import GameInterface from './interfaces/game/index.js';
 import HomeInterface from './interfaces/home/index.js';
 import Manager from './managers/Manager.js';
@@ -21,9 +22,12 @@ class Application {
     
         if(isUUID(path)) {
             this.manager.games.join(path);
-        } else {
+        } else if(localStorage.id) {
             const home = new HomeInterface(this.manager);
             element.appendChild(home.render());
+        } else {
+            const authentication = new AuthenticationInterface();
+            element.appendChild(authentication.render());
         }
     }
 }
