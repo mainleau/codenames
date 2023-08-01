@@ -1,9 +1,11 @@
 import Interface from '../../core/Interface.js';
-import Login from './components/Login.js';
+import LoginInterface from './LoginInterface.js';
 
 export default class AuthenticationInterface extends Interface {
-    constructor() {
+    constructor(manager) {
         super();
+
+        this.manager = manager;
     }
 
     render() {
@@ -17,7 +19,8 @@ export default class AuthenticationInterface extends Interface {
         loginButton.id = 'login-button';
         loginButton.onclick = () => {
             this.element.firstChild.style.display = 'none';
-            this.element.append(new Login().create());
+            const interf = new LoginInterface(this.manager);
+            this.manager.app.element.firstChild.append(interf.render());
         }
 
         const loginButtonText = document.createElement('span');

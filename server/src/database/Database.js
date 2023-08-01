@@ -3,15 +3,15 @@ import fs from 'fs/promises';
 
 export default class Database {
     constructor() {
-        this.client = new pg.Pool();
+        this.pool = new pg.Pool();
 
         if(['--init', '-i'].includes(process.argv[2])) this.init();
     }
 
     query(sql, params = []) {
-        return this.client.query(sql, params)
+        return this.pool.query(sql, params)
             .then(response => response.rows)
-            .catch(() => console.log('Failed to execute query.'));
+            .catch((e) => console.log(e, 'Failed to execute query.'));
     }
 
     init() {

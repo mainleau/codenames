@@ -5,11 +5,10 @@ export default class GameController {
 
     async fetch(req, res, next) {
         const count = req.params.count;
-        if(count && typeof count !== 'number') return next(new Error('INVALID_COUNT'));
 
         var games;
         try {
-            games = await this.client.fetchGames(count);
+            games = await this.client.games.fetch({ count });
             games = games.map(game => ({ id: game.id, playerCountByTeam: game.player_count_by_team}));
         } catch (error) {
             return next(error);
