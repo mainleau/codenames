@@ -40,7 +40,9 @@ export default class LoginInterface extends Interface {
         loginButton.id = 'login-button-final';
         loginButton.onclick = async () => {
             if(usernameInput.value && passwordInput.value) {
-                const { token } = await this.manager.client.login(usernameInput.value, passwordInput.value);
+                const { token } = await this.manager.auth.login({
+                    username: usernameInput.value, password: passwordInput.value
+                });
                 if(token) {
                     localStorage.token = token;
                     const home = new HomeInterface(this.manager);

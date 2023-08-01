@@ -9,7 +9,7 @@ export default class Profile extends Component {
         }
 
         this.manager = manager;
-        this.manager.client.fetchPlayer(localStorage.id).then(player => {
+        this.manager.client.users.fetchById(localStorage.id).then(player => {
             this.cache.gold = player.gold;
             this.rerender();
         });

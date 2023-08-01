@@ -1,5 +1,4 @@
 import Interface from '../../core/Interface.js';
-import Lobby from '../../core/Lobby.js';
 import LoginModal from './modals/LoginModal.js';
 import GameList from './components/GameList.js';
 import Profile from './components/Profile.js';
@@ -8,8 +7,6 @@ export default class HomeInterface extends Interface {
     constructor(manager) {
         super();
         this.manager = manager;
-
-        const lobby = new Lobby();
     }
 
     render() {

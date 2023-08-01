@@ -1,7 +1,8 @@
 import AuthenticationInterface from './interfaces/authentication/index.js';
 import HomeInterface from './interfaces/home/index.js';
 import Manager from './managers/Manager.js';
-import { isUUID } from './util/index.js';
+import { isUUID } from './utils/index.js';
+import './styles.css';
 
 document.oncontextmenu = e => e.preventDefault();
 

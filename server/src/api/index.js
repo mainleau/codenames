@@ -27,4 +27,4 @@ const HTTPServer = process.env.NODE_ENV === 'production'
 	}, app)
 	: http.createServer(app);
 
-HTTPServer.listen(process.env.REST_PORT, () => console.log('REST HTTP server started.'));
+HTTPServer.listen(process.env.REST_PORT, () => console.log('API HTTP server started.'));

@@ -8,7 +8,7 @@ const router = express.Router();
 const client = new Client();
 
 const authentication = new AuthenticationController(client);
-router.post('/auth/register', authentication.register.bind(authentication));
-router.post('/auth/login', authentication.login.bind(authentication));
+router.post('/register', authentication.register.bind(authentication));
+router.post('/login', authentication.login.bind(authentication));
 
 export default router;

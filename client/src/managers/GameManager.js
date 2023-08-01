@@ -1,6 +1,6 @@
 import Game from '../core/Game.js';
 import GameInterface from '../interfaces/game/index.js';
-import { Collection } from '../util';
+import { Collection } from '../utils';
 
 export default class GameManager extends Collection {
     constructor(manager) {
