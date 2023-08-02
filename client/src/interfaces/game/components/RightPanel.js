@@ -1,5 +1,5 @@
-import Component from '../../../core/Component.js';
-import ChangeUsernameModal from '../modals/ChangeUsernameModal.js';
+import Component from '../../../structures/Component.js';
+import ChangeNicknameModal from '../modals/ChangeNicknameModal.js';
 import Team from './Team.js';
 
 export default class RightPanel extends Component {
@@ -19,7 +19,7 @@ export default class RightPanel extends Component {
         const options = document.createElement('div');
         options.className = 'options';
 
-        const changeUsernameModal = new ChangeUsernameModal(this.game);
+        const changeUsernameModal = new ChangeNicknameModal(this.game);
 
         const changeUsernameCTA = document.createElement('span');
         changeUsernameCTA.onclick = event => changeUsernameModal.open(event);

@@ -2,7 +2,6 @@ export default class Authenticator {
     constructor(routes, options) {
         Object.defineProperty(this, 'routes', { value: routes });
         Object.defineProperty(this, 'options', { value: options });
-        console.log(this.routes, this.options)
     }
 
     async login({ email, password }) {

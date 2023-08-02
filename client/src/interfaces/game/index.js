@@ -1,4 +1,4 @@
-import Interface from '../../core/Interface.js';
+import Interface from '../../structures/Interface.js';
 import Board from './components/Board.js';
 import LeftPanel from './components/LeftPanel.js';
 import RightPanel from './components/RightPanel.js';

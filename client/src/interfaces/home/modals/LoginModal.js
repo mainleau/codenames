@@ -1,4 +1,4 @@
-import Modal from '../../../core/Modal.js';
+import Modal from '../../../structures/Modal.js';
 
 export default class LoginModal extends Modal {
     constructor(manager) {

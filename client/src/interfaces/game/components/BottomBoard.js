@@ -1,4 +1,4 @@
-import Component from '../../../core/Component.js';
+import Component from '../../../structures/Component.js';
 import ClueCountSelector from './ClueCountSelector.js';
 
 export default class BottomBoard extends Component {

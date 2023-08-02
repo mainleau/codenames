@@ -1,4 +1,4 @@
-import Interface from '../../core/Interface.js';
+import Interface from '../../structures/Interface.js';
 import LoginModal from './modals/LoginModal.js';
 import GameList from './components/GameList.js';
 import Profile from './components/Profile.js';

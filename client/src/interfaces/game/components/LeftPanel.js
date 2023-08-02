@@ -1,4 +1,4 @@
-import Component from '../../../core/Component.js';
+import Component from '../../../structures/Component.js';
 import HomeInterface from '../../home/index.js';
 import Team from './Team.js';
 

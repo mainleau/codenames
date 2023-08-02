@@ -9,7 +9,8 @@ const router = express.Router();
 const client = new Client();
 
 const users = new UserController(client);
-router.get('/users/:id', users.fetch.bind(users));
+router.get('/users/:id', users.fetchById.bind(users));
+router.get('/users/me', users.fetchById.bind(users));
 
 const games = new GameController(client);
 router.get('/games', games.fetch.bind(games));

@@ -1,4 +1,4 @@
-import { Collection } from '../utils';
+import { Collection } from '../../../utils';
 
 export default class WordManager extends Collection {
     constructor(words = []) {

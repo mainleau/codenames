@@ -36,9 +36,9 @@ export default class GameManager extends Collection {
 		console.log(event);
 
         if(event.name === 'create-game') {
-			const words = await this.client.fetchWords();
+			const words = await this.client.words.fetch({ count: 25, random: true});
 			const game = new Game(this.io, words);
-			this.client.games.create({ id: game.id, playerCountByTeam: game.teams.map(team => team.members.size)});
+			this.client.games.create(game.id, { playerCountByTeam: game.teams.map(team => team.members.size)});
 			this.set(game.id, game);
 			player.join(game);
 		}

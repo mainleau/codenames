@@ -1,4 +1,4 @@
-import Interface from '../../core/Interface.js';
+import Interface from '../../structures/Interface.js';
 import LoginInterface from './LoginInterface.js';
 
 export default class AuthenticationInterface extends Interface {

@@ -9,7 +9,7 @@ export default class GameStorage {
         if(!isUUID(id)) throw new Error('INVALID_ID'); 
         if(
             !Array.isArray(playerCountByTeam)
-            || !playerCountByTeam.some(count => Number.isInteger(count) && count > 0)
+            || !playerCountByTeam.some(count => Number.isInteger(count) && count >= 0)
         ) {
             throw new Error('INVALID_PLAYER_COUNT_BY_TEAM'); 
         }
@@ -20,10 +20,10 @@ export default class GameStorage {
     }
 
     update(id, { playerCountByTeam }) {
-        if(!isUUID(id)) throw new Error('INVALID_ID'); 
+        if(!isUUID(id)) throw new Error('INVALID_ID');
         if(
             !Array.isArray(playerCountByTeam)
-            || !playerCountByTeam.some(count => Number.isInteger(count) && count > 0)
+            || !playerCountByTeam.some(count => Number.isInteger(count) && count >= 0)
         ) {
             throw new Error('INVALID_PLAYER_COUNT_BY_TEAM'); 
         }
@@ -42,7 +42,7 @@ export default class GameStorage {
     }
 
     async fetch({ count } = {}) {
-        if(count && !(Number.isInteger(count) && count > 0)) {
+        if(count && !(Number.isInteger(count) && count >= 0)) {
             throw new Error('INVALID_COUNT');
         }
 

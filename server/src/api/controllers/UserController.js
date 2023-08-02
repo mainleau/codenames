@@ -3,8 +3,8 @@ export default class UserController {
         this.client = client;
     }
 
-    async fetch(req, res, next) {
-        const id = req.params.id;
+    async fetchById(req, res, next) {
+        const id = req.id || req.params.id;
 
         var user;
         try {

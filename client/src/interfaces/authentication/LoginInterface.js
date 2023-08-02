@@ -1,4 +1,4 @@
-import Interface from '../../core/Interface.js';
+import Interface from '../../structures/Interface.js';
 
 export default class LoginInterface extends Interface {
     constructor(manager) {
@@ -18,7 +18,7 @@ export default class LoginInterface extends Interface {
         username.id = 'username';
         
         const usernameText = document.createElement('span');
-        usernameText.textContent = 'PSEUDONYME'
+        usernameText.textContent = 'ADRESSE ELECTRONIQUE'
 
         const usernameInput = document.createElement('input');
         usernameInput.spellcheck = false;
@@ -45,8 +45,7 @@ export default class LoginInterface extends Interface {
                 });
                 if(token) {
                     localStorage.token = token;
-                    const home = new HomeInterface(this.manager);
-                    document.body.firstChild.children[0].replaceWith(home.render());
+                    this.manager.app.goHome();
                 } else {
                     passwordInput.value = '';
                 }

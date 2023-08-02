@@ -1,7 +1,7 @@
 import routes from '../utils/routes.js';
-import Client from '../rest/Client.js';
+import Client from '../api/Client.js';
 import Authenticator from '../auth/Authenticator.js';
-import GameManager from '../managers/GameManager.js';
+import GameManager from './GameManager.js';
 
 export default class Manager {
     constructor(app) {

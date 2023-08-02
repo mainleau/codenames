@@ -1,4 +1,4 @@
-import Component from '../../../core/Component.js';
+import Component from '../../../structures/Component.js';
 
 export default class Profile extends Component {
     constructor(manager) {
@@ -9,8 +9,8 @@ export default class Profile extends Component {
         }
 
         this.manager = manager;
-        this.manager.client.users.fetchById(localStorage.id).then(player => {
-            this.cache.gold = player.gold;
+        this.manager.client.users.fetchMe().then(user => {
+            this.cache.gold = user.gold;
             this.rerender();
         });
     }

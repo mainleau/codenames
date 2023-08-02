@@ -24,11 +24,10 @@ CREATE TABLE words (
     name TEXT UNIQUE NOT NULL
 );
 
-INSERT INTO users (id, email, username, password) VALUES (
+INSERT INTO users (id, email, username) VALUES (
     '00000000-0000-0000-0000-000000000000',
     'contact@nomdecode.fun',
-    'lo',
-    ENCODE(SHA256('prive0'), 'hex')
+    'lo'
 );
 
 INSERT INTO WORDS (name) VALUES

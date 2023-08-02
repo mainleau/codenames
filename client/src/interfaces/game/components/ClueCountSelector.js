@@ -1,4 +1,4 @@
-import Component from '../../../core/Component.js';
+import Component from '../../../structures/Component.js';
 
 export default class ClueCountSelector extends Component {
     constructor(game) {

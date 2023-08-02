@@ -1,6 +1,6 @@
-import Modal from '../../../core/Modal.js';
+import Modal from '../../../structures/Modal.js';
 
-export default class ChangeUsernameModal extends Modal {
+export default class ChangeNicknameModal extends Modal {
     constructor(game) {
         super({
             width: 550,

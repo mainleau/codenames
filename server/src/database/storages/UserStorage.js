@@ -35,7 +35,7 @@ export default class UserStorage {
 
         const response = await this.client.query(sql, [email, username, password]);
 
-        return response;
+        return response[0];
     }
 
     async fetchByEmail(email) {
@@ -49,17 +49,18 @@ export default class UserStorage {
         const sql = `SELECT id FROM users WHERE email = $1`;
 
         const response = await this.client.query(sql, [email]);
+        if(!response.length) throw new Error('NO_USER_FOUND');
 
-        return response;
+        return response[0];
     }
 
     async fetchById(id) {
         if(!isUUID(id)) throw new Error('INVALID_ID');
 
-        const sql = 'SELECT id, username, gold FROM players WHERE id = $1';
+        const sql = 'SELECT id, username, xp, gold, gems FROM users WHERE id = $1';
 
         const response = await this.client.query(sql, [id]);
-        if(!response.length) throw new Error('PLAYER_NOT_FOUND');
+        if(!response.length) throw new Error('USER_NOT_FOUND');
 
         return response[0];
     }
@@ -67,7 +68,7 @@ export default class UserStorage {
     async fetch(options = {
         count: 10
     }) {
-        var sql = 'SELECT id, username, gold FROM players';
+        var sql = 'SELECT id, username, gold FROM users';
         const params = [];
 
         if(options.count) {
@@ -76,7 +77,7 @@ export default class UserStorage {
         }
 
         const response = await this.client.query(sql, params);
-        if(!response.length) throw new Error('NO_PLAYER_FOUND');
+        if(!response.length) throw new Error('NO_USER_FOUND');
         
         return response;
     }
