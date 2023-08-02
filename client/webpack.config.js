@@ -10,6 +10,7 @@ module.exports = {
     mode: 'development',
     plugins: [
         new HtmlWebpackPlugin({
+            title: '',
             meta: {
                 charset: 'utf-8',
             }

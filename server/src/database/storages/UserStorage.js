@@ -1,6 +1,6 @@
 import { validate as isUUID } from 'uuid';
 
-export default class UserManager {
+export default class UserStorage {
     constructor(client) {
         this.client = client;
 
@@ -10,42 +10,45 @@ export default class UserManager {
         }
     }
 
-    async create({ email, username, password }) {
+    async create({ email, username, referrer }) {
         if(
-            !email || typeof email !== 'string' || email.length < 5 || email.length > 320
+            typeof email !== 'string' || email.length < 6 || email.length > 320
             || !this.options.emailRegex.test(email)
         ) {
             return next(new Error('INVALID_EMAIL'));
         }
         if(
-            !username || typeof username !== 'string' || username.length > 16
+            typeof username !== 'string' || username.length > 16
             || !username.test(this.usernameRegex)
         ) {
             return next(new Error('INVALID_USERNAME'));
         }
-        if(!password || typeof password !== 'string' || password.length > 256) {
+        if(typeof password !== 'string' || password.length < 6 || password.length > 256) {
             return next(new Error('INVALID_PASSWORD'));
         }
+        if(referrer && !isUUID(referrer)) {
+            return next(new Error('INVALID_REFERRER'));
+        }
 
-        const sql = `INSERT INTO users (email, username, password)
-        VALUES ($1, $2, ENCODE(SHA256($3), 'hex')) RETURNING id`;
+        const sql = `INSERT INTO users (email, username, referrer)
+        VALUES ($1, $2, $3) RETURNING id`;
 
         const response = await this.client.query(sql, [email, username, password]);
 
         return response;
     }
 
-    async validate({ username, password }) {
-        if(!username || typeof username !== 'string') {
-            return next(new Error('INVALID_USERNAME'));
-        }
-        if(!password || typeof password !== 'string') {
-            return next(new Error('INVALID_PASSWORD'));
+    async fetchByEmail(email) {
+        if(
+            typeof email !== 'string' || email.length < 6 || email.length > 320
+            || !this.options.emailRegex.test(email)
+        ) {
+            return next(new Error('INVALID_EMAIL'));
         }
 
-        const sql = `SELECT id FROM users WHERE username = $1 AND password = ENCODE(SHA256($2), 'hex')`;
+        const sql = `SELECT id FROM users WHERE email = $1`;
 
-        const response = await this.client.query(sql, [username, password]);
+        const response = await this.client.query(sql, [email]);
 
         return response;
     }

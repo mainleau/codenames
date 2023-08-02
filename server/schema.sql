@@ -7,7 +7,6 @@ CREATE TABLE users (
     id UUID UNIQUE DEFAULT gen_random_uuid() NOT NULL,
     email TEXT UNIQUE NOT NULL,
     username TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL,
     xp INTEGER DEFAULT 0 NOT NULL,
     gold INTEGER DEFAULT 0 NOT NULL,
     gems INTEGER DEFAULT 0 NOT NULL,
