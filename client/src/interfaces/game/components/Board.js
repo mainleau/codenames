@@ -24,6 +24,11 @@ export default class Board extends Component {
             this.game.clueRemainder = data.clueRemainder;
             this.rerender();
         });
+
+        this.game.socket.on('card-selected', data => {
+            this.game.words.get(data.word).selected = data.selected;
+            this.rerender();
+        });
     }
 
     create() {
@@ -46,7 +51,7 @@ export default class Board extends Component {
                 card.classList.add('reversed');
             }
 
-            if(this.game.selectedCards.includes(index)) {
+            if(word && word.selected) {
                 card.classList.add('selected');
             }
 
@@ -62,9 +67,9 @@ export default class Board extends Component {
             card.onclick = () => {
                 if(this.game.turn.team === this.game.player.team) {
                     if(this.game.turn.role === this.game.player.role && this.game.player.role === 1) {
-                        if(!card.classList.contains(this.game.team ? 'second-team' : 'first-team')) return;
+                        if(!card.classList.contains(this.game.player.team ? 'second-team' : 'first-team')) return;
                         this.game.emit('select-card', {
-                            target: index,
+                            word: this.game.words.at(index).id,
                             selected: !card.classList.contains('selected')
                         });
                     } else if(this.game.turn.role === this.game.player.role && this.game.player.role === 0) {

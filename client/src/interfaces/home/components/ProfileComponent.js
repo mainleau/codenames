@@ -1,16 +1,15 @@
 import Component from '../../../structures/Component.js';
+import defaultAvatarImage from '../../../../assets/images/default-avatar.svg';
 
-export default class Profile extends Component {
+export default class ProfileComponent extends Component {
     constructor(manager) {
         super();
 
-        this.cache = {
-            gold: 0
-        }
+        this.cache = {}
 
         this.manager = manager;
         this.manager.client.users.fetchMe().then(user => {
-            this.cache.gold = user.gold;
+            this.cache = user;
             this.rerender();
         });
     }
@@ -23,9 +22,17 @@ export default class Profile extends Component {
         avatarContainer.id = 'avatar-container';
         
         const username = document.createElement('span');
-        const avatar = document.createElement('div');
+        username.textContent = this.cache.username;
 
-        avatarContainer.appendChild(username, avatar);
+        const avatar = document.createElement('div');
+        avatar.id = 'avatar';
+    
+        const avatarImage = document.createElement('img');
+        avatarImage.src = defaultAvatarImage;
+
+        avatar.appendChild(avatarImage);
+
+        avatarContainer.append(username, avatar);
 
         const inventory = document.createElement('div');
         inventory.id = 'inventory';
@@ -47,7 +54,7 @@ export default class Profile extends Component {
         goldText.innerText = '🪙';
 
         const goldAmount = document.createElement('span');
-        goldAmount.innerText = this.cache.gold;
+        goldAmount.innerText = this.cache.gold ?? 'Chargement...';
 
         goldContainer.append(goldText, goldAmount);
 

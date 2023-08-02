@@ -1,7 +1,7 @@
 import Interface from '../../structures/Interface.js';
 import LoginModal from './modals/LoginModal.js';
 import GameList from './components/GameList.js';
-import Profile from './components/Profile.js';
+import ProfileComponent from './components/ProfileComponent.js';
 
 export default class HomeInterface extends Interface {
     constructor(manager) {
@@ -26,7 +26,7 @@ export default class HomeInterface extends Interface {
         loginButton.onclick = e => loginModal.open(e);
 
         const loginButtonText = document.createElement('span');
-        loginButtonText.textContent = '🔒';
+        loginButtonText.textContent = '⚙️';
 
         loginButton.appendChild(loginButtonText);
 
@@ -35,7 +35,7 @@ export default class HomeInterface extends Interface {
         const content = document.createElement('div');
         content.id = 'content';
 
-        const profile = new Profile(this.manager).create();
+        const profile = new ProfileComponent(this.manager).create();
 
         const gamesContainer = document.createElement('div');
         gamesContainer.id = 'games-container';

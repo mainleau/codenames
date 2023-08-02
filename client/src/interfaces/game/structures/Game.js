@@ -44,6 +44,13 @@ export default class Game {
         return this.players.get(this.playerId) || {};
     }
 
+    end() {
+        this.started = false;
+        this.ended = true;
+        this.turn.team = null;
+        this.turn.role = null;
+    }
+
     handle(event) {
 
         // switch (event) {

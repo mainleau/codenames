@@ -185,3 +185,27 @@
 #login-cta {
     margin-top: 50px
 }
+
+#home #avatar-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#home #avatar-container span {
+    font-size: 3em;
+    padding: 4px 0;
+}
+
+#home #avatar {
+    flex: 1;
+    height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#home #avatar img {
+    height: 100%;
+}

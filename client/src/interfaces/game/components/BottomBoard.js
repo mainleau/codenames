@@ -44,6 +44,10 @@ export default class BottomBoard extends Component {
             }
             this.rerender();
         });
+
+        this.game.socket.on('card-selected', () => {
+            this.rerender();
+        });
     }
 
     create() {
@@ -61,11 +65,11 @@ export default class BottomBoard extends Component {
                 clueCountSelector.style.visibility === 'hidden' ? 'visible'
                 : 'hidden';
         }
-        if(this.game.selectedCards.size) clueCountContainer.classList.add('disabled');
+        if(this.game.words.selected.size) clueCountContainer.classList.add('disabled');
 
         const clueCountText = document.createElement('span');
         clueCountText.id = 'clue-count-text'
-        clueCountText.textContent = this.game.selectedCards.size ? this.game.selectedCards.size : '-';
+        clueCountText.textContent = this.game.words.selected.size ? this.game.words.selected.size : '-';
 
         clueCountContainer.appendChild(clueCountText);
 

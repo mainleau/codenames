@@ -16,4 +16,8 @@ export default class Team {
     get words() {
         return this.game.words.filter(word => word.team === this.id);
     }
+
+    get remainingWords() {
+        return this.words.filter(word => !word.revealed);
+    }
 }

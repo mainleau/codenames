@@ -95,8 +95,8 @@ export default class Game {
 		if(event.name === 'select-card') {
 			this.spymasters.forEach(spymaster => {
 				spymaster.emit('card-selected', {
-					word: data.word,
-					selected: data.selected
+					word: event.data.word,
+					selected: event.data.selected
 				});
 			});
 		}
@@ -170,7 +170,11 @@ export default class Game {
 
 			word.revealed = true;
 
-			if(word.team === -1) this.stop();
+			if((word.team === -1 && this.teams.length === 2) || !this.teams[player.team].remainingWords.size) {
+				this.end({
+					winner: word.team === -1 ? +!player.team : player.team
+				});
+			}
 		}
 	}
 
@@ -211,9 +215,20 @@ export default class Game {
 		player.emit('player-list', this.players);
 	}
 
-	stop() {
+	end({ winner }) {
 		this.ended = true;
-		this.io.emit('game-ended');
+		this.turn.team = null;
+		this.turn.role = null;
+		this.io.emit('game-ended', {
+			winner
+		});
+
+		this.players.forEach(player => {
+			if(player.team === null) return;
+			player.emit('game-rewards', {
+				xp: 100 * (player.team === winner ? 1 : 0.25),
+			})
+		});
 	}
 
 	start() {
