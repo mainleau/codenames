@@ -3,6 +3,7 @@ import Client from '../api/Client.js';
 import Authenticator from '../auth/Authenticator.js';
 import GameManager from '../interfaces/game/managers/GameManager.js';
 
+// TODO: add special items for 10 first players, 100 first players, 1000, 10000 etc.
 export default class Manager {
     constructor(app) {
         this.app = app;

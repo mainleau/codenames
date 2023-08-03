@@ -1,5 +1,3 @@
-import dotenv from 'dotenv';
-dotenv.config();
 import express from 'express';
 import Client from '../../database/Client.js';
 import UserController from '../controllers/UserController.js';

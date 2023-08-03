@@ -1,12 +1,11 @@
 import dotenv from 'dotenv';
+dotenv.config();
 import https from 'https';
 import http from 'http';
 import * as io from 'socket.io';
 import fs from 'fs';
 import Client from '../database/Client.js';
 import Manager from './structures/Manager.js';
-
-dotenv.config();
 
 const HTTPServer = process.env.NODE_ENV === 'production'
 	? https.createServer({
