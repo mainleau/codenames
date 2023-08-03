@@ -1,5 +1,5 @@
 import Component from '../../../structures/Component.js';
-import defaultAvatarImage from '../../../../assets/images/default-avatar.svg';
+// import defaultAvatarImage from '../../../../assets/images/default-avatar.svg';
 
 export default class ProfileComponent extends Component {
     constructor(manager) {
@@ -28,7 +28,7 @@ export default class ProfileComponent extends Component {
         avatar.id = 'avatar';
     
         const avatarImage = document.createElement('img');
-        avatarImage.src = defaultAvatarImage;
+        // avatarImage.src = defaultAvatarImage;
 
         avatar.appendChild(avatarImage);
 
