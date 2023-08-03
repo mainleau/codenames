@@ -24,4 +24,4 @@ const client = new Client();
 
 new Manager(websocketServer, client);
 
-HTTPServer.listen(8888);
+HTTPServer.listen(process.env.GATEWAY_PORT, () => console.log('Gateway HTTP server started.'));

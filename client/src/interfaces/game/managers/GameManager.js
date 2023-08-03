@@ -10,7 +10,7 @@ export default class GameManager extends Collection {
     }
 
     get socketURL() {
-        return `${location.protocol === 'http:' ? 'ws' : 'wss'}://${location.hostname}:8888/play`;
+        return `${location.protocol === 'http:' ? 'ws' : 'wss'}://${location.hostname}:8887/play`;
     }
 
     create() {
