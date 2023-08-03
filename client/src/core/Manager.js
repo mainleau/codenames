@@ -11,13 +11,13 @@ export default class Manager {
         const authOptions = {
             baseURL: location.hostname !== 'localhost'
             ? `https://auth.${location.hostname}`
-            : 'http://localhost:8890'
+            : 'http://localhost:8889'
         }
 
         const apiOptions = {
             baseURL: location.hostname !== 'localhost'
             ? `https://api.${location.hostname}`
-            : 'http://localhost:8889'
+            : 'http://localhost:8888'
         }
 
         this.auth = new Authenticator(routes, authOptions);

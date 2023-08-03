@@ -1,5 +1,4 @@
 import Interface from '../../structures/Interface.js';
-import LoginModal from './modals/LoginModal.js';
 import GameList from './components/GameList.js';
 import ProfileComponent from './components/ProfileComponent.js';
 
@@ -19,11 +18,8 @@ export default class HomeInterface extends Interface {
         const menu = document.createElement('div');
         menu.id = 'menu';
 
-        const loginModal = new LoginModal(this.manager);
-
         const loginButton = document.createElement('div');
         loginButton.id = 'login-button';
-        loginButton.onclick = e => loginModal.open(e);
 
         const loginButtonText = document.createElement('span');
         loginButtonText.textContent = '⚙️';
@@ -45,6 +41,7 @@ export default class HomeInterface extends Interface {
         const createGameCTA = document.createElement('div');
         createGameCTA.id = 'create-game-cta';
         createGameCTA.onclick = () => {
+            gameList.interval = clearInterval(gameList.interval);
             element.remove();
             this.manager.games.create();
         }
@@ -56,7 +53,9 @@ export default class HomeInterface extends Interface {
 
         optionsBar.append(createGameCTA);
 
-        const liveGames = new GameList(this.manager).create();
+        const gameList = new GameList(this.manager);
+
+        const liveGames = gameList.create();
 
         gamesContainer.append(optionsBar, liveGames);
 

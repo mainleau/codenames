@@ -22,7 +22,12 @@ export default class ProfileComponent extends Component {
         avatarContainer.id = 'avatar-container';
         
         const username = document.createElement('span');
-        username.textContent = this.cache.username;
+        username.id = 'username';
+        username.textContent = this.cache.username ?? '...';
+
+        const level = document.createElement('span');
+        level.id = 'level';
+        level.textContent = this.cache.xp !== undefined ? `${this.cache.xp} xp` : '...';
 
         const avatar = document.createElement('div');
         avatar.id = 'avatar';
@@ -32,7 +37,7 @@ export default class ProfileComponent extends Component {
 
         avatar.appendChild(avatarImage);
 
-        avatarContainer.append(username, avatar);
+        avatarContainer.append(username, level, avatar);
 
         const inventory = document.createElement('div');
         inventory.id = 'inventory';
@@ -54,7 +59,7 @@ export default class ProfileComponent extends Component {
         goldText.innerText = '🪙';
 
         const goldAmount = document.createElement('span');
-        goldAmount.innerText = this.cache.gold ?? 'Chargement...';
+        goldAmount.innerText = this.cache.gold ?? '...';
 
         goldContainer.append(goldText, goldAmount);
 

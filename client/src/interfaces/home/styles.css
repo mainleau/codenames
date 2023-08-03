@@ -193,9 +193,13 @@
     flex-direction: column;
 }
 
-#home #avatar-container span {
+#avatar-container #username {
     font-size: 3em;
-    padding: 4px 0;
+    padding: 4px 0 0;
+}
+
+#avatar-container #level {
+    font-size: 1.3em;
 }
 
 #home #avatar {

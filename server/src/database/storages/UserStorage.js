@@ -10,6 +10,19 @@ export default class UserStorage {
         }
     }
 
+    async increment(id, data) {
+        if(!isUUID(id)) throw new Error('INVALID_ID');
+
+        const sql = `UPDATE users SET ${Object.keys(data).map((key, index) => {
+            return `${key} = ${key} + $${index + 1}`;
+        }).join(', ')} WHERE id = $${Object.keys(data).length + 1}`;
+     
+        const response = await this.client.query(sql, [...Object.values(data), id]);
+        if(!response.length) throw new Error('USER_NOT_FOUND');
+
+        return response[0];
+    }
+
     async create({ email, username, referrer }) {
         if(
             typeof email !== 'string' || email.length < 6 || email.length > 320

@@ -5,18 +5,17 @@ export default class GameList extends Component {
         super();
         this.manager = manager;
         this.games = [null, null, null];
-        // this.fetchGames();
-        // setInterval(() => {
-        //     this.fetchGames();
-        //     console.log(this)
-        // }, 10000);
+        this.fetchGames();
+        this.interval = setInterval(() => {
+            this.fetchGames();
+        }, 10000);
     }
 
-    // async fetchGames() {
-    //     const games = await this.manager.client.games.fetch();
-    //     this.games = games.concat(new Array(3).fill(null)).slice(0, 3);
-    //     this.rerender();
-    // }
+    async fetchGames() {
+        const games = await this.manager.client.games.fetch();
+        this.games = games.concat(new Array(3).fill(null)).slice(0, 3);
+        this.rerender();
+    }
 
     create() {
         this.element = document.createElement('div');
@@ -28,6 +27,7 @@ export default class GameList extends Component {
             if(liveGame !== null) game.onclick = () => {
                 document.body.firstChild.children[0].remove();
                 this.manager.games.join(liveGame.id);
+                this.interval = clearInterval(this.interval);
             }
 
             const name = document.createElement('span');

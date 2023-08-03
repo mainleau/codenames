@@ -14,7 +14,11 @@ export default class GameManager extends Collection {
     }
 
     create() {
-        const socket = io(this.socketURL);
+        const socket = io(this.socketURL, {
+            query: {
+                token: localStorage.token
+            }
+        });
         socket.emit('create-game');
 
         const game = new Game(this, socket);

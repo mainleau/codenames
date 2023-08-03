@@ -1,13 +1,25 @@
 import { Collection } from '@discordjs/collection';
 import Game from '../structures/Game.js';
 import Player from '../structures/Player.js';
+import jwt from 'jsonwebtoken';
 
 export default class GameManager extends Collection {
     constructor(io, client) {
         super();
 		
         io.of('/play').on('connection', socket => {
-			const player = new Player(socket);
+			const token = socket.handshake.query.token;
+			if(token) {
+				var id = null;
+				jwt.verify(token, process.env.JWT_SECRET, (error, content) => {          
+					if(!error) {
+						id = content.id;
+					} 
+				});
+			}
+			const player = new Player(socket, {
+				id
+			});
 
 			socket.onAny((name, data) => this.manage(player, socket, { name, data }));
 
@@ -37,7 +49,7 @@ export default class GameManager extends Collection {
 
         if(event.name === 'create-game') {
 			const words = await this.client.words.fetch({ count: 25, random: true});
-			const game = new Game(this.io, words);
+			const game = new Game(this.client, this.io, words);
 			this.client.games.create(game.id, { playerCountByTeam: game.teams.map(team => team.members.size)});
 			this.set(game.id, game);
 			player.join(game);

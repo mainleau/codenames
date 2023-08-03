@@ -8,13 +8,14 @@ export default class Game {
 	started = false;
 	ended = false;
 	clueRemainder = null;
-	constructor(io, words, options = {
+	constructor(client, io, words, options = {
 		teamCount: 2,
 		maxClueWordLength: 16,
 		maxNicknameLength: 16,
 		clueWordRegex: /^[a-zA-Z0-9\\_\\-]+$/,
 		clueCountChoices: [...Array(10).keys(), '∞']
 	}) {
+		this.client = client;
 		this.options = options;
 
 		this.id = uuid.v4();
@@ -225,9 +226,13 @@ export default class Game {
 
 		this.players.forEach(player => {
 			if(player.team === null) return;
+			this.client.users.increment(player.id, {
+				xp: player.team === winner ? 4 : 1
+			}).catch(() => {});
 			player.emit('game-rewards', {
-				xp: 100 * (player.team === winner ? 1 : 0.25),
-			})
+				winner,
+				xp: player.team === winner ? 4 : 1,
+			});
 		});
 	}
 

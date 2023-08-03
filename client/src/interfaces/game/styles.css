@@ -324,3 +324,59 @@
 .username {
     font-size: 1.4em;
 }
+
+#game #blur-mask{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    filter: brightness(0.6);
+}
+
+#game #end-component {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: bisque;
+    border-radius: 40px;
+    width: 600px;
+    height: 600px;
+    gap: 20px;
+}
+
+#end-component #container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+#end-component #title {
+    margin-top: 40px;
+    font-size: 3.5em;
+    font-weight: bold;
+}
+
+#end-component #scores {
+    flex: 1;
+    margin-top: 60px;
+    font-size: 1.7em;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#end-component #button {
+    margin-bottom: 60px;
+}

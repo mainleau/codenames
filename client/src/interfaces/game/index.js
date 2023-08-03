@@ -3,6 +3,7 @@ import Board from './components/Board.js';
 import LeftPanel from './components/LeftPanel.js';
 import RightPanel from './components/RightPanel.js';
 import BottomBoard from './components/BottomBoard.js';
+import EndComponent from './components/EndComponent.js';
 
 export default class GameInterface extends Interface {
     constructor(manager, game) {
@@ -13,6 +14,14 @@ export default class GameInterface extends Interface {
         this.app = document.body.firstChild;
         this.element = this.render();
         this.app.appendChild(this.element);
+
+        this.game.socket.on('game-rewards', data => {
+            const endComponent = new EndComponent(this.game, this.manager.manager.app, {
+                winner: data.winner,
+                xp: data.xp
+            }).create();
+            this.element.appendChild(endComponent);
+        });
     }
 
     render() {

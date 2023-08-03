@@ -55,7 +55,6 @@ export default class GameStorage {
         }
 
         const response = await this.client.query(sql, params);
-        if(!response.length) throw new Error('NO_GAME_FOUND');
 
         return response;
     }

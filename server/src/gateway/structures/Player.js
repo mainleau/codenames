@@ -5,10 +5,10 @@ export default class Player {
     team = null;
     role = null;
     currentGameId = null;
-    constructor(socket) {
+    constructor(socket, data) {
         this.socket = socket;
 
-        this.id = uuid.v4();
+        this.id = data.id || uuid.v4();
         this.username = `Joueur ${this.id.slice(-3)}`;
     }
 
