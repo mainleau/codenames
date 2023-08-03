@@ -18,7 +18,7 @@ export default class LoginInterface extends Interface {
         username.id = 'username';
         
         const usernameText = document.createElement('span');
-        usernameText.textContent = 'ADRESSE ELECTRONIQUE'
+        usernameText.textContent = 'ADRESSE E-MAIL'
 
         const usernameInput = document.createElement('input');
         usernameInput.spellcheck = false;
