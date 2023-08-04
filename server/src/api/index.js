@@ -18,6 +18,7 @@ const stripe = st('sk_test_51NWcXqFxwc8JXqKOCccCl9GeVXemUHCatE7UWwEraQYvV9NuBQiA
 
 app.get('/order/create', async (req, res) => {
     const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
+	const username = session.custom_fields[0].value;
     const customer = await stripe.customers.retrieve(session.customer);
 	console.log(session, customer)
 
