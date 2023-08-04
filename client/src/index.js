@@ -3,6 +3,7 @@ import HomeInterface from './interfaces/home/index.js';
 import Manager from './core/Manager.js';
 import { isUUID } from './utils/index.js';
 import './styles.css';
+import RegisterInterface from './interfaces/authentication/RegisterInterface.js';
 
 window.onload = () => new Application().launch();
 
@@ -34,7 +35,11 @@ class Application {
     goAuth(ref = false) {
         const authentication = new AuthenticationInterface(this.manager, ref).render();
         this.element.replaceChildren(authentication);
-        authentication.registerButton.click();
+        if(ref) {
+            const interf = new RegisterInterface(this.manager);
+            authentication.firstChild.style.display = 'none';
+            authentication.append(interf.render());
+        }
     }
 
     goHome() {

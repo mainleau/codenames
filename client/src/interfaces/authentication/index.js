@@ -30,7 +30,7 @@ export default class AuthenticationInterface extends Interface {
 
         loginButton.appendChild(loginButtonText);
 
-        const registerButton = this.registerButton = document.createElement('div');
+        const registerButton = document.createElement('div');
         registerButton.id = 'register-button';
         registerButton.onclick = () => {
             this.element.firstChild.style.display = 'none';
