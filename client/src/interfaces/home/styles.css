@@ -213,3 +213,9 @@
 #home #avatar img {
     height: 100%;
 }
+
+#logout-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

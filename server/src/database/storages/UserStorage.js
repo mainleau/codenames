@@ -6,7 +6,7 @@ export default class UserStorage {
 
         this.options = {
             emailRegex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            usernameRegex: /^a-zA-Z0-9_$/
+            usernameRegex: /^[a-zA-Z0-9_]+$/
         }
     }
 
@@ -28,25 +28,22 @@ export default class UserStorage {
             typeof email !== 'string' || email.length < 6 || email.length > 320
             || !this.options.emailRegex.test(email)
         ) {
-            return next(new Error('INVALID_EMAIL'));
+            throw new Error('INVALID_EMAIL');
         }
         if(
-            typeof username !== 'string' || username.length > 16
-            || !username.test(this.usernameRegex)
+            typeof username !== 'string' || username.length < 1 || username.length > 16
+            || !this.options.usernameRegex.test(username)
         ) {
-            return next(new Error('INVALID_USERNAME'));
-        }
-        if(typeof password !== 'string' || password.length < 6 || password.length > 256) {
-            return next(new Error('INVALID_PASSWORD'));
+            throw new Error('INVALID_USERNAME');
         }
         if(referrer && !isUUID(referrer)) {
-            return next(new Error('INVALID_REFERRER'));
+            throw new Error('INVALID_REFERRER');
         }
 
         const sql = `INSERT INTO users (email, username, referrer)
         VALUES ($1, $2, $3) RETURNING id`;
 
-        const response = await this.client.query(sql, [email, username, password]);
+        const response = await this.client.query(sql, [email, username, null]);
 
         return response[0];
     }
@@ -56,7 +53,7 @@ export default class UserStorage {
             typeof email !== 'string' || email.length < 6 || email.length > 320
             || !this.options.emailRegex.test(email)
         ) {
-            return next(new Error('INVALID_EMAIL'));
+            throw new Error('INVALID_EMAIL');
         }
 
         const sql = `SELECT id FROM users WHERE email = $1`;

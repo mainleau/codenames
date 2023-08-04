@@ -1,5 +1,6 @@
 import Interface from '../../structures/Interface.js';
 import LoginInterface from './LoginInterface.js';
+import RegisterInterface from './RegisterInterface.js';
 
 export default class AuthenticationInterface extends Interface {
     constructor(manager) {
@@ -30,6 +31,11 @@ export default class AuthenticationInterface extends Interface {
 
         const registerButton = document.createElement('div');
         registerButton.id = 'register-button';
+        registerButton.onclick = () => {
+            this.element.firstChild.style.display = 'none';
+            const interf = new RegisterInterface(this.manager);
+            this.manager.app.element.firstChild.append(interf.render());
+        }
 
         const registerButtonText = document.createElement('span');
         registerButtonText.textContent = "Créer un compte";

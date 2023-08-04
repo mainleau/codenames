@@ -1,6 +1,7 @@
 import Interface from '../../structures/Interface.js';
 import GameList from './components/GameList.js';
 import ProfileComponent from './components/ProfileComponent.js';
+import SettingsModal from './modals/SettingsModal.js';
 
 export default class HomeInterface extends Interface {
     constructor(manager) {
@@ -20,6 +21,9 @@ export default class HomeInterface extends Interface {
 
         const loginButton = document.createElement('div');
         loginButton.id = 'login-button';
+        loginButton.onclick = () => {
+            new SettingsModal(this.manager).open();
+        }
 
         const loginButtonText = document.createElement('span');
         loginButtonText.textContent = '⚙️';

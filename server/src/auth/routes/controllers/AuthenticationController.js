@@ -40,16 +40,16 @@ export default class AuthenticationController {
         const username = req.body.username;
         const referrer = req.body.referrer;
 
-        var user;
+        var id;
         try {
-            user = await createUserWithEmailAndPassword(this.auth, email, password);
+            var { id } = await this.client.users.create({ email, username, referrer });
         } catch (error) {
             return next(error);
         }
 
-        var id;
+        var user;
         try {
-            var { id } = await this.client.users.create({ email, username, referrer });
+            user = await createUserWithEmailAndPassword(this.auth, email, password);
         } catch (error) {
             return next(error);
         }

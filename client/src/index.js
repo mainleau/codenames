@@ -28,8 +28,8 @@ class Application {
     }
 
     goAuth() {
-        const authentication = new AuthenticationInterface(this.manager);
-        this.element.appendChild(authentication.render());
+        const authentication = new AuthenticationInterface(this.manager).render();
+        this.element.replaceChildren(authentication);
     }
 
     goHome() {
