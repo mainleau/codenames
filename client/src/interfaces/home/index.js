@@ -10,7 +10,7 @@ export default class HomeInterface extends Interface {
     }
 
     render() {
-        document.title = 'Nom de code';
+        document.title = 'Nom de code (BÊTA)';
         history.replaceState(null, '', '/');
 
         const element = document.createElement('div');

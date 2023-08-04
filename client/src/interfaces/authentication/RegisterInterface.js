@@ -55,7 +55,8 @@ export default class RegisterInterface extends Interface {
                     email: emailInput.value,
                     password: passwordInput.value
                 }, {
-                    username: usernameInput.value
+                    username: usernameInput.value,
+                    referrer: new URLSearchParams(location.search).get('ref')
                 });
                 if(token) {
                     localStorage.token = token;
