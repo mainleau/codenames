@@ -83,3 +83,12 @@
     padding: 10px 18px;
     border-radius: 22px;
 }
+
+#authentication #back-button {
+    cursor: pointer;
+    background-color: bisque;
+    padding: 20px;
+    font-size: 3em;
+    border-radius: 30px;
+    margin-right: 60px;
+}

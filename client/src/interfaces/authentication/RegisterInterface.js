@@ -73,8 +73,15 @@ export default class RegisterInterface extends Interface {
         loginButton.appendChild(loginButtonText);
 
         loginContainer.append(username, email, password, loginButton);
+
+        const backButton = document.createElement('span');
+        backButton.id = 'back-button';
+        backButton.onclick = () => {
+            this.manager.app.goAuth();
+        };
+        backButton.textContent = '⬅️';
  
-        this.element.appendChild(loginContainer);
+        this.element.append(backButton, loginContainer);
         return this.element;
     }
 }
