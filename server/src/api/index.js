@@ -13,32 +13,19 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-import st from 'stripe';
-const stripe = st('sk_test_51NWcXqFxwc8JXqKOCccCl9GeVXemUHCatE7UWwEraQYvV9NuBQiA8eVem5hEVg2ooGnmPNUz8fM2nTIpi3HldWRE00QnOFHhcK');
+// app.use((req, res, next) => {
+// 	if(typeof req.headers.authorization !== 'string') {
+// 		return next(new Error('TOKEN_NOT_PROVIDED'));
+// 	}
+//     const token = req.headers.authorization.replace('Bearer ', '');
 
-app.get('/order/create', async (req, res) => {
-    const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-	const username = session.custom_fields[0].value;
-	console.log(session.custom_fields[0], username);
-    const customer = await stripe.customers.retrieve(session.customer);
-	console.log(session, customer)
-
-    res.send(`<html><body><h1>Thanks for your order, ${customer.name}!</h1></body></html>`);
-});
-
-app.use((req, res, next) => {
-	if(typeof req.headers.authorization !== 'string') {
-		return next(new Error('TOKEN_NOT_PROVIDED'));
-	}
-    const token = req.headers.authorization.replace('Bearer ', '');
-
-	jwt.verify(token, process.env.JWT_SECRET, (error, content) => {          
-		if(error) return next(new Error('INVALID_TOKEN'));    
+// 	jwt.verify(token, process.env.JWT_SECRET, (error, content) => {          
+// 		if(error) return next(new Error('INVALID_TOKEN'));    
 		
-		req.id = content.id;
-		next();
-	});
-});
+// 		req.id = content.id;
+// 		next();
+// 	});
+// });
 
 app.use(routes);
 
