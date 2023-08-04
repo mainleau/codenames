@@ -34,6 +34,7 @@ class Application {
     goAuth(ref = false) {
         const authentication = new AuthenticationInterface(this.manager, ref).render();
         this.element.replaceChildren(authentication);
+        authentication.registerButton.click();
     }
 
     goHome() {

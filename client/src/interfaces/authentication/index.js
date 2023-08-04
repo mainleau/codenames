@@ -30,14 +30,13 @@ export default class AuthenticationInterface extends Interface {
 
         loginButton.appendChild(loginButtonText);
 
-        const registerButton = document.createElement('div');
+        const registerButton = this.registerButton = document.createElement('div');
         registerButton.id = 'register-button';
         registerButton.onclick = () => {
             this.element.firstChild.style.display = 'none';
             const interf = new RegisterInterface(this.manager);
             this.manager.app.element.firstChild.append(interf.render());
         }
-        if(this.ref) registerButton.click();
 
         const registerButtonText = document.createElement('span');
         registerButtonText.textContent = "Créer un compte";
