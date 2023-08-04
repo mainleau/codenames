@@ -228,21 +228,19 @@ export default class Game {
 
 		this.players.forEach(async player => {
 			if(player.team === null) return;
-			var flags = 1;
+			var flags = 0;
 			try {
 				const user = await this.client.users.fetchById(player.id);
 				flags = +(user.flags & 0x01) + 1;
 			} catch {}
 
-			try {
-				this.client.users.increment(player.id, {
-					xp: (player.team === winner ? 4 : 1) * flags
-				})
-				player.emit('game-rewards', {
-					winner,
-					xp: (player.team === winner ? 4 : 1) * flags,
-				});
-			} catch {}
+			this.client.users.increment(player.id, {
+				xp: (player.team === winner ? 4 : 1) * flags
+			}).catch(() => {});
+			player.emit('game-rewards', {
+				winner,
+				xp: (player.team === winner ? 4 : 1) * flags,
+			});
 		});
 	}
 

@@ -29,7 +29,7 @@ export default class EndComponent extends Component {
 
         const result = document.createElement('span');
         result.textContent = `${this.data.winner === this.game.player.team ? 'Partie gagnée' : 'Partie perdue'} :
-        + ${this.data.winner === this.game.player.team ? 100 : 25}xp`;
+        + ${this.data.xp}xp`;
 
         // var span;
         // if(this.data.scores.goodCards) {
@@ -42,11 +42,10 @@ export default class EndComponent extends Component {
         const button = document.createElement('div');
         button.className = 'cta';
         button.id = 'button';
-
-        const buttonText = document.createElement('span');
-        buttonText.onclick = () => {
+        button.onclick = () => {
             this.app.goHome();
         }
+        const buttonText = document.createElement('span');
         buttonText.textContent = "Aller à l'accueil";
 
         button.append(buttonText);
