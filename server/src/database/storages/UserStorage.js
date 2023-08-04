@@ -23,7 +23,7 @@ export default class UserStorage {
         return response[0];
     }
 
-    async create({ email, username, referrer }) {
+    async create({ email, username, referrer = null }) {
         if(
             typeof email !== 'string' || email.length < 6 || email.length > 320
             || !this.options.emailRegex.test(email)
@@ -43,7 +43,7 @@ export default class UserStorage {
         const sql = `INSERT INTO users (email, username, referrer)
         VALUES ($1, $2, $3) RETURNING id`;
 
-        const response = await this.client.query(sql, [email, username, null]);
+        const response = await this.client.query(sql, [email, username, referrer]);
 
         return response[0];
     }
