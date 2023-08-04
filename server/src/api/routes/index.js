@@ -14,9 +14,14 @@ router.get('/order/create', async (req, res) => {
 	const username = session.custom_fields[0].text.value;
     const customer = await stripe.customers.retrieve(session.customer);
 
-	client.query('UPDATE users SET flags = flags + $2 WHERE username = $1', [username, 0x01]);
+    const user = await client.query('SELECT flags FROM users WHERE username = $1', [username]);
+    if(user[0].flags & 0x01) {
+        client.query('UPDATE users SET flags = flags + $2 WHERE username = $1', [username, 0x01]);
+        res.send(`<html><body><h1>Merci pour votre commande, ${customer.name}!</h1></body></html>`);
+    } else {
+        res.send(`<html><body><h1>Déjà commandez, demandez un remboursement en cas de problème.</h1></body></html>`);
+    }
 
-    res.send(`<html><body><h1>Thanks for your order, ${customer.name}!</h1></body></html>`);
 });
 
 const users = new UserController(client);
