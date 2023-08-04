@@ -67,7 +67,27 @@ export default class HomeInterface extends Interface {
         other.id = 'other';
 
         content.append(profile, gamesContainer, other);
-        element.append(menu, content);
+
+        const buyContainer = document.createElement('div');
+        buyContainer.id = 'buy-container';
+    
+        const buy = document.createElement('div');
+        buy.id = 'buy';
+        
+        const buyButton = document.createElement('div');
+        buyButton.onclick = () => {
+            location.href = 'https://buy.stripe.com/8wM00Kf009cybRK9AB';
+        }
+        const buyText = document.createElement('span');
+        buyText.textContent = 'Devenir Earlybird';
+        const buySubtitle = document.createElement('span');
+        buySubtitle.textContent = '(xp double, accès bêta, fonctionnalités à venir, etc.)'
+        buyButton.append(buyText, buySubtitle);
+        buy.append(buyButton);
+
+        buyContainer.append(buy);
+
+        element.append(menu, content, buyContainer);
         return element;
     }
 }

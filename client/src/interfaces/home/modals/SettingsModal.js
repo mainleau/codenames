@@ -4,7 +4,7 @@ export default class SettingsModal extends Modal {
     constructor(manager) {
         super({
             width: 550,
-            height: 100
+            height: 300
         });
         this.manager = manager;
     }
@@ -27,6 +27,44 @@ export default class SettingsModal extends Modal {
 
         changeUsernameCTA.appendChild(changeUsernameText);
 
-        this.element.append(changeUsernameCTA);
+        const tos = document.createElement('span');
+        tos.textContent = 'Mentions légales';
+        tos.onclick = () => {
+            tos.style.textAlign = 'center';
+            tos.textContent = `
+            Hébergeur :
+            Contabo GmbH
+            Aschauer Straße 32a
+            81549 Munich
+            Germany
+
+            Tel: +49 89 3564717 70
+            E-mail: info@contabo.com
+
+            Développeur :
+            contact@nomdecode.fun
+            `
+        }
+
+        const gdpr = document.createElement('span');
+        gdpr.textContent = 'RGPD';
+        gdpr.onclick = () => {
+            gdpr.style.textAlign = 'center';
+            gdpr.textContent = `
+            Nous enregistrons votre adresse e-mail pour vous identifier uniquement.
+            Vous pouvez nous contacter pour consulter ou supprimer ces données.`
+        }
+
+        const cgv = document.createElement('span');
+        cgv.textContent = 'CGV';
+        cgv.onclick = () => {
+            cgv.style.textAlign = 'center';
+            cgv.textContent = `
+            Tout paiement est annulable et remboursable dans les 14 jours suivant la transaction sans justification.
+            Le produit vous est livré sous maximum une semaine.
+            `;
+        }
+
+        this.element.append(changeUsernameCTA, tos, gdpr, cgv);
     }
 }

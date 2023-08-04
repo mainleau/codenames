@@ -51,6 +51,7 @@
 }
 
 #other {
+    visibility: hidden;
     width: 320px;
     background-color: rgba(0, 0, 0, 0.1);
 }
@@ -218,4 +219,29 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#buy-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#buy {
+    margin-top: 100px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    background-color: palegoldenrod;
+}
+
+#buy > div {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+#buy > div > :last-child {
+    font-size: 0.7em;
 }

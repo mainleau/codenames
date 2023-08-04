@@ -224,6 +224,8 @@ export default class Game {
 			winner
 		});
 
+		this.client.games.remove(this.id);
+
 		this.players.forEach(player => {
 			if(player.team === null) return;
 			this.client.users.increment(player.id, {

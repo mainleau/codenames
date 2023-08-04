@@ -7,7 +7,7 @@ export default class GameManager extends Collection {
     constructor(io, client) {
         super();
 		
-        io.of('/play').on('connection', socket => {
+        io.of('/play').on('connection', async socket => {
 			const token = socket.handshake.query.token;
 			if(token) {
 				var id = null;
@@ -17,8 +17,10 @@ export default class GameManager extends Collection {
 					} 
 				});
 			}
+			const data = await client.users.fetchById(id);
 			const player = new Player(socket, {
-				id
+				username: data.username,
+				id: data.id
 			});
 
 			socket.onAny((name, data) => this.manage(player, socket, { name, data }));

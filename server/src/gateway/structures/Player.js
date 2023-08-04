@@ -9,7 +9,7 @@ export default class Player {
         this.socket = socket;
 
         this.id = data.id || uuid.v4();
-        this.username = `Joueur ${this.id.slice(-3)}`;
+        this.username = data.username || `Joueur ${this.id.slice(-3)}`;
     }
 
     emit(...params) {
