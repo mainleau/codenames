@@ -17,18 +17,22 @@ class Application {
         document.body.replaceChildren(element);
         
         const path = location.pathname.substring(1);
+
+        const ref = new URLSearchParams(location.search).get('ref');
         
         if(isUUID(path)) {
             this.manager.games.join(path);
         } else if(localStorage.token) {
             this.goHome();
+        } else if (isUUID(ref)) {
+            this.goAuth(true);
         } else {
             this.goAuth();
         }
     }
 
-    goAuth() {
-        const authentication = new AuthenticationInterface(this.manager).render();
+    goAuth(ref = false) {
+        const authentication = new AuthenticationInterface(this.manager, ref).render();
         this.element.replaceChildren(authentication);
     }
 
