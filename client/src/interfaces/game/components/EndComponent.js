@@ -22,7 +22,7 @@ export default class EndComponent extends Component {
 
         const title = document.createElement('span');
         title.id = 'title';
-        title.textContent = this.data.winner ? 'VICTOIRE' : 'DEFAITE';
+        title.textContent = this.data.winner === this.game.player.team ? 'VICTOIRE' : 'DEFAITE';
 
         const score = document.createElement('div');
         score.id = 'scores';
