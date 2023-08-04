@@ -13,8 +13,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-import stripe from 'stripe';
-stripe('sk_test_51NWcXqFxwc8JXqKOCccCl9GeVXemUHCatE7UWwEraQYvV9NuBQiA8eVem5hEVg2ooGnmPNUz8fM2nTIpi3HldWRE00QnOFHhcK');
+import st from 'stripe';
+const stripe = st('sk_test_51NWcXqFxwc8JXqKOCccCl9GeVXemUHCatE7UWwEraQYvV9NuBQiA8eVem5hEVg2ooGnmPNUz8fM2nTIpi3HldWRE00QnOFHhcK');
 
 app.get('/order/create', async (req, res) => {
     const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
