@@ -26,7 +26,11 @@ export default class GameManager extends Collection {
     }
 
     join(id) {
-        const socket = io(this.socketURL);
+        const socket = io(this.socketURL, {
+            query: {
+                token: localStorage.token
+            }
+        });
         socket.emit('join-game', { id });
 
         const game = new Game(this, socket);
