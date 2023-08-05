@@ -1,5 +1,3 @@
-import { getLevel } from '../../utils/index.js';
-
 export default class FriendshipController {
     constructor(client) {
         this.client = client;
