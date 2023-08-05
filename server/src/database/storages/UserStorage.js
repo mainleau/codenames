@@ -67,7 +67,7 @@ export default class UserStorage {
     async fetchById(id) {
         if(!isUUID(id)) throw new Error('INVALID_ID');
 
-        const sql = 'SELECT id, username, flags, xp, gold, gems FROM users WHERE id = $1';
+        const sql = 'SELECT id, username, flags, xp, level, gold, gems FROM users WHERE id = $1';
 
         const response = await this.client.query(sql, [id]);
         if(!response.length) throw new Error('USER_NOT_FOUND');
@@ -75,10 +75,8 @@ export default class UserStorage {
         return response[0];
     }
 
-    async fetch(options = {
-        count: 10
-    }) {
-        var sql = 'SELECT id, username, flags, xp, gold, gems FROM users';
+    async fetch(options = { count }) {
+        var sql = 'SELECT id, username, flags, xp, level, gold, gems FROM users';
         const params = [];
 
         if(options.count) {
@@ -87,7 +85,6 @@ export default class UserStorage {
         }
 
         const response = await this.client.query(sql, params);
-        if(!response.length) throw new Error('NO_USER_FOUND');
         
         return response;
     }

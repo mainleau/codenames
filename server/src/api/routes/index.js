@@ -3,10 +3,13 @@ import Client from '../../database/Client.js';
 import UserController from '../controllers/UserController.js';
 import GameController from '../controllers/GameController.js';
 
-const router = express.Router();
+const router = express.Router({
+    caseSensitive: true
+});
 const client = new Client();
 
 import st from 'stripe';
+import FriendshipController from '../controllers/FriendshipController.js';
 const stripe = st('sk_test_51NWcXqFxwc8JXqKOCccCl9GeVXemUHCatE7UWwEraQYvV9NuBQiA8eVem5hEVg2ooGnmPNUz8fM2nTIpi3HldWRE00QnOFHhcK');
 
 router.get('/order/create', async (req, res) => {
@@ -26,10 +29,45 @@ router.get('/order/create', async (req, res) => {
 });
 
 const users = new UserController(client);
-router.get('/users/:id', users.fetchById.bind(users));
-router.get('/users/me', users.fetchById.bind(users));
+router.get('/users/:id', (req, res, next) => {
+    if(typeof req.headers.authorization !== 'string') {
+		return next(new Error('TOKEN_NOT_PROVIDED'));
+	}
+    users.fetchById(req, res, next);
+});
+router.get('/users/me', (req, res, next) => {
+    if(typeof req.headers.authorization !== 'string') {
+		return next(new Error('TOKEN_NOT_PROVIDED'));
+	}
+    users.fetchById(req, res, next);
+});
+
+const friends = new FriendshipController(client);
+router.get('/friends', (req, res, next) => {
+    if(typeof req.headers.authorization !== 'string') {
+		return next(new Error('TOKEN_NOT_PROVIDED'));
+	}
+    friends.fetchByUserId(req, res, next);
+});
+router.get('/friends/requests', (req, res, next) => {
+    if(typeof req.headers.authorization !== 'string') {
+		return next(new Error('TOKEN_NOT_PROVIDED'));
+	}
+    friends.fetchRequestsByUserId(req, res, next);
+});
+router.get('/friends/requests/:id', (req, res, next) => {
+    if(typeof req.headers.authorization !== 'string') {
+		return next(new Error('TOKEN_NOT_PROVIDED'));
+	}
+    friends.request(req, res, next);
+});
 
 const games = new GameController(client);
-router.get('/games', games.fetch.bind(games));
+router.get('/games', (req, res, next) => {
+    if(typeof req.headers.authorization !== 'string') {
+		return next(new Error('TOKEN_NOT_PROVIDED'));
+	}
+    games.fetch(req, res, next);
+});
 
 export default router;

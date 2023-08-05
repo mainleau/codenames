@@ -232,11 +232,14 @@ export default class Game {
 			try {
 				const user = await this.client.users.fetchById(player.id);
 				flags = +(user.flags & 0x01) + 1;
-			} catch {}
+				const gainedXp = (player.team === winner ? 4 : 1) * flags;
+				const level = this.client.users.getLevel(user.xp + gainedXp);
 
-			this.client.users.increment(player.id, {
-				xp: (player.team === winner ? 4 : 1) * flags
-			}).catch(() => {});
+				this.client.users.increment(player.id, {
+					xp: gainedXp,
+					level: level - user.level
+				}).catch(() => {});
+			} catch {}
 			player.emit('game-rewards', {
 				winner,
 				xp: (player.team === winner ? 4 : 1) * flags,

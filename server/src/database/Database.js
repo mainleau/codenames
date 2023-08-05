@@ -18,8 +18,8 @@ export default class Database {
         fs.readFile('./schema.sql', { encoding: 'utf-8' })
             .then(sql => this.pool.query(sql))
             .then(() => console.log('Database initialized.'))
-            .catch(() => {
-                console.log('Failed to initialize database.');
+            .catch((e) => {
+                console.log(e, 'Failed to initialize database.');
             });
     }
 }

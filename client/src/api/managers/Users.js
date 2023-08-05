@@ -1,7 +1,7 @@
 import { Collection } from '../../utils';
 import User from '../structures/User';
 
-export default class UserManager extends Collection {
+export default class Users extends Collection {
     constructor(routes, options) {
         super();
 

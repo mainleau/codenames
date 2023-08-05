@@ -27,7 +27,9 @@ export default class ProfileComponent extends Component {
 
         const level = document.createElement('span');
         level.id = 'level';
-        level.textContent = this.cache.xp !== undefined ? `${this.cache.xp} xp` : '...';
+        level.textContent =
+            this.cache.level !== undefined ? `Niveau ${this.cache.level} (${this.cache.xp} xp)`
+            : 'Niveau ...';
 
         const avatar = document.createElement('div');
         avatar.id = 'avatar';

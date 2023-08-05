@@ -1,4 +1,5 @@
 import Interface from '../../structures/Interface.js';
+import FriendListComponent from './components/FriendListComponent.js';
 import GameList from './components/GameList.js';
 import ProfileComponent from './components/ProfileComponent.js';
 import SettingsModal from './modals/SettingsModal.js';
@@ -63,8 +64,7 @@ export default class HomeInterface extends Interface {
 
         gamesContainer.append(optionsBar, liveGames);
 
-        const other = document.createElement('div');
-        other.id = 'other';
+        const other = new FriendListComponent(this.manager).create();
 
         content.append(profile, gamesContainer, other);
 

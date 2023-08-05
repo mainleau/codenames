@@ -13,11 +13,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use((req, res, next) => {
-	if(typeof req.headers.authorization !== 'string') {
-		// return next(new Error('TOKEN_NOT_PROVIDED'));
-	}
-    const token = req.headers.authorization.replace('Bearer ', '');
+app.use((req, _, next) => {
+    const token =
+		req.headers.authorization ? req.headers.authorization.replace('Bearer ', '')
+		: null;
 
 	jwt.verify(token, process.env.JWT_SECRET, (error, content) => {          
 		if(error) return next(new Error('INVALID_TOKEN'));    
