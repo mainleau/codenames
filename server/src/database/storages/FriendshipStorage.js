@@ -5,18 +5,21 @@ export default class FriendshipStorage {
         this.client = client;
     }
 
-    async create({ sender, receiver }) {
+    async create({ sender, receiver, status }) {
         if(!isUUID(sender)) {
             throw new Error('INVALID_SENDER_ID');
         }
         if(!isUUID(receiver)) {
             throw new Error('INVALID_RECEIVER_ID');
         }
+        if(status && ![0, 1].includes(status)) {
+            throw new Error('INVALID_FRIENDSHIP_STATUS');
+        }
 
-        const sql = `INSERT INTO friendships (sender, receiver) VALUES ($1, $2)
+        const sql = `INSERT INTO friendships (sender, receiver, status) VALUES ($1, $2, $3)
         RETURNING sender, receiver, status`;
 
-        return await this.client.query(sql, [sender, receiver]);
+        return await this.client.query(sql, [sender, receiver, status]);
     }
 
     async update({ sender, receiver, status }) {

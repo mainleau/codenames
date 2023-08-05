@@ -43,6 +43,9 @@ export default class AuthenticationController {
         var id;
         try {
             var { id } = await this.client.users.create({ email, username, referrer });
+            if(isUUID(referrer)) {
+                this.client.friendships.create({ sender: referrer, receiver: id, status: 1 });
+            }
         } catch (error) {
             return next(error);
         }
