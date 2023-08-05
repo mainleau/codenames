@@ -40,17 +40,17 @@ CREATE TABLE words (
 INSERT INTO users (id, email, username) VALUES (
     '00000000-0000-4000-8000-000000000000',
     'contact@nomdecode.fun',
-    'lo'
-);
-
-INSERT INTO users (id, email, username) VALUES (
-    'ffffffff-ffff-4fff-8fff-ffffffffffff',
-    'l@l.ll',
     'l'
 );
 
+INSERT INTO users (id, email, username) VALUES (
+    '84c4bc56-7060-445c-a0f4-34559922c917',
+    'l@l.ll',
+    'lo'
+);
+
 INSERT INTO friendships (sender, receiver, status) VALUES (
-    'ffffffff-ffff-4fff-8fff-ffffffffffff',
+    '84c4bc56-7060-445c-a0f4-34559922c917',
     '00000000-0000-4000-8000-000000000000',
     1
 );

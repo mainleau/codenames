@@ -15,14 +15,6 @@ export default class FriendshipController {
             return next(error);
         }
 
-        friends = friends.map(friend => {
-            return {
-                id: friend.id,
-                username: friend.username,
-                level: getLevel(friend.xp)
-            };
-        });
-
         return res.send(friends);
     }
 
