@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import jwt from 'jsonwebtoken';
+import jwt, { validate as isUUID } from 'jsonwebtoken';
 
 export default class AuthenticationController {
     constructor(auth, client) {
