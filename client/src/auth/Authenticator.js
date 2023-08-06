@@ -1,31 +1,43 @@
 export default class Authenticator {
-    constructor(routes, options) {
-        Object.defineProperty(this, 'routes', { value: routes });
-        Object.defineProperty(this, 'options', { value: options });
+    constructor(rest) {
+        this.rest = rest;
+        this.options = {
+            baseURL: this.rest.options.auth
+        }
     }
 
-    async login({ email, password }) {
-        console.log(this.options.baseURL + this.routes.LOGIN);
-        const response = await fetch(this.options.baseURL + this.routes.LOGIN, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
-        });
+    async login({
+        email,
+        password
+    }) {
+        const data = await this.rest.post(this.routes.LOGIN, {
+            ...this.options,
+            body: {
+                email,
+                password
+            }
+        })
 
-        return await response.json();
+        return data;
     }
 
-    async register({ email, password }, { username, referrer }) {
-        const response = await fetch(this.options.baseURL + this.routes.REGISTER, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password, username, referrer })
+    async register({
+        email,
+        password
+    }, {
+        username,
+        referrer
+    }) {
+        const data = this.rest.post(this.routes.REGISTER, {
+            ...this.options,
+            body: {
+                email,
+                password,
+                username,
+                referrer
+            }
         });
 
-        return await response.json();
+        return data;
     }
 }

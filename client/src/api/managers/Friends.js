@@ -1,51 +1,31 @@
 import { Collection } from '../../utils';
 
 export default class Friends extends Collection {
-    constructor(routes, options) {
+    constructor(rest, options) {
         super();
 
-        Object.defineProperty(this, 'routes', { value: routes });
+        Object.defineProperty(this, 'rest', { value: rest });
         Object.defineProperty(this, 'options', { value: options });
     }
 
-    get token() {
-        return localStorage.token;
-    }
-
-    async sendRequest(id) {
-        const response = await fetch(
-            this.options.baseURL + this.routes.SEND_FRIEND_REQUEST(id), {
-                headers: {
-                    Authorization: `Bearer ${this.token}`
-                }
-            }
-        );
-
-        return await response.json();
-    }
-
     async fetch() {
-        const response = await fetch(
-            this.options.baseURL + this.routes.FETCH_FRIENDS, {
-                headers: {
-                    Authorization: `Bearer ${this.token}`
-                }
-            }
-        );
+        const data = this.rest.get(this.rest.routes.FETCH_FRIENDS, this.options);
 
-        return await response.json();
+        return data;
     }
 
     async fetchRequests() {
-        const response = await fetch(
-            this.options.baseURL + this.routes.FETCH_FRIEND_REQUESTS, {
-                headers: {
-                    Authorization: `Bearer ${this.token}`
-                }
-            }
-        );
+        const data = this.rest.get(this.rest.routes.FETCH_FRIEND_REQUESTS, this.options);
 
-        return await response.json();
+        return data;
     }
 
+    async sendRequest(id) {
+        const data = await this.rest.post(this.rest.routes.SEND_FRIEND_REQUEST, {
+            ...this.options,
+            params: [id]
+        });
+
+        return data;
+    }
 }

@@ -1,44 +1,40 @@
+import APIRequest from './APIRequest.js';
+
 export default class REST {
-    constructor() {
-        this.options = {
-            api: 'https://api.nomdecode.fun',
-            auth: 'https://auth.nomdecode.fun',
-            cdn: 'https://cdn.nomdecode.fun'
-        };
+    constructor(token, routes, options) {
+        this.routes = routes;
+        this.options = options;
+        this.token = token;
     }
 
-  get(route, options = {}) {
-    return this.#make('GET', route, options);
-  }
-
-  post(route, options = {}) {
-    return this.#make('POST', route, options);
-  }
-
-  #make(method, route, options) {
-    var url = options.baseURL + route;
-
-    if(options.query) {
-        url += `?${new URLSearchParams(options.query).toString()}`;
+    get(route, options = {}) {
+        return this.#request('GET', route, options);
     }
 
-    const headers = {};
-    let body;
-
-    if(options.auth) {
-        headers['Authorization'] = `Bearer ${this.token}`;
+    post(route, options = {}) {
+        return this.#request('POST', route, options);
     }
 
-    if (this.options.data !== null && this.options.data !== undefined) {
-      body = JSON.stringify(this.options.data);
-      headers['Content-Type'] = 'application/json';
+    async #request(method, route, options) {
+        const request = new APIRequest(this, method, route, options);
+    
+        console.log(request)
+        const response = await request.make();
+
+        switch (response.status) {
+            case 401:
+                throw new Error('INVALID_TOKEN');
+            case 429:
+                throw new Error('TOO_MANY_REQUESTS');
+            default:
+                if (response.status !== 200) throw new Error('ERROR_OCCURED');
+        }
+    
+        if (response.headers.get('Content-Type')?.startsWith('application/json')) {
+            return response.json();
+        } else {
+            throw new Error('INVALID_RESPONSE');
+        }
     }
 
-    return {
-      url,
-      method,
-      headers,
-      body
-    }
-  }
 }

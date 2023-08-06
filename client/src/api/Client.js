@@ -3,9 +3,13 @@ import Friends from './managers/Friends.js';
 import Users from './managers/Users.js';
 
 export default class Client {
-    constructor(routes, options) {
-        this.games = new Games(routes, options);
-        this.users = new Users(routes, options);
-        this.friends = new Friends(routes, options);
+    constructor(rest) {
+        const options = {
+            baseURL: rest.options.api
+        }
+
+        this.games = new Games(rest, options);
+        this.users = new Users(rest, options);
+        this.friends = new Friends(rest, options);
     }
 }
