@@ -46,7 +46,6 @@ export default class HomeInterface extends Interface {
         const createGameCTA = document.createElement('div');
         createGameCTA.id = 'create-game-cta';
         createGameCTA.onclick = () => {
-            gameList.interval = clearInterval(gameList.interval);
             element.remove();
             this.manager.games.create();
         }

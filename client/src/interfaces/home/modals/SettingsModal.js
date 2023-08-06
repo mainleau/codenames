@@ -18,6 +18,7 @@ export default class SettingsModal extends Modal {
         changeUsernameCTA.onclick = () => {
             this.close();
             delete localStorage.token;
+            delete this.manager.rest.token;
             this.manager.app.goAuth();
         }
         changeUsernameCTA.id = 'change-username-cta';

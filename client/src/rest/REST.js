@@ -18,7 +18,6 @@ export default class REST {
     async #request(method, route, options) {
         const request = new APIRequest(this, method, route, options);
     
-        console.log(request)
         const response = await request.make();
 
         switch (response.status) {

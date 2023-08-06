@@ -1,4 +1,5 @@
 import Component from '../../../structures/Component.js';
+import UsernameComponent from './UsernameComponent.js';
 // import defaultAvatarImage from '../../../../assets/images/default-avatar.svg';
 
 export default class ProfileComponent extends Component {
@@ -21,15 +22,7 @@ export default class ProfileComponent extends Component {
         const avatarContainer = document.createElement('div');
         avatarContainer.id = 'avatar-container';
         
-        const username = document.createElement('span');
-        username.id = 'username';
-        username.textContent = this.cache.username ?? '...';
-
-        const level = document.createElement('span');
-        level.id = 'level';
-        level.textContent =
-            this.cache.level !== undefined ? `Niveau ${this.cache.level} (${this.cache.xp} xp)`
-            : 'Niveau ...';
+        const username = this.cache.username ? new UsernameComponent(this.cache).create() : '...';
 
         const avatar = document.createElement('div');
         avatar.id = 'avatar';
@@ -39,7 +32,7 @@ export default class ProfileComponent extends Component {
 
         avatar.appendChild(avatarImage);
 
-        avatarContainer.append(username, level, avatar);
+        avatarContainer.append(username, avatar);
 
         const inventory = document.createElement('div');
         inventory.id = 'inventory';

@@ -1,4 +1,5 @@
 import Component from '../../../structures/Component.js';
+import UsernameComponent from './UsernameComponent.js';
 
 export default class FriendListComponent extends Component {
     constructor(manager) {
@@ -32,19 +33,9 @@ export default class FriendListComponent extends Component {
             const friendContainer = document.createElement('div');
             friendContainer.className = 'friend-container';
 
-            const friendLevelContainer = document.createElement('div');
-            friendLevelContainer.id = 'friend-level-container';
+            const username = new UsernameComponent(friend).create();
 
-            const friendLevel = document.createElement('span');
-            friendLevel.textContent = `${friend.level}`;
-
-            friendLevelContainer.append(friendLevel);
-
-            const friendUsername = document.createElement('span');
-            friendUsername.id = 'friend-username';
-            friendUsername.textContent = friend.username;
-
-            friendContainer.append(friendLevelContainer, friendUsername);
+            friendContainer.append(username);
             return friendContainer;
         });
 

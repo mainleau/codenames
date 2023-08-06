@@ -10,7 +10,7 @@ export default class Authenticator {
         email,
         password
     }) {
-        const data = await this.rest.post(this.routes.LOGIN, {
+        const data = await this.rest.post(this.rest.routes.LOGIN, {
             ...this.options,
             body: {
                 email,
@@ -28,7 +28,7 @@ export default class Authenticator {
         username,
         referrer
     }) {
-        const data = this.rest.post(this.routes.REGISTER, {
+        const data = this.rest.post(this.rest.routes.REGISTER, {
             ...this.options,
             body: {
                 email,

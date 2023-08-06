@@ -7,6 +7,9 @@ export default class GameList extends Component {
         this.games = [null, null, null];
         this.fetchGames();
         this.interval = setInterval(() => {
+            if(!document.body.contains(this.element)) {
+                return this.interval = clearInterval(this.interval);
+            }
             this.fetchGames();
         }, 10000);
     }
@@ -27,7 +30,6 @@ export default class GameList extends Component {
             if(liveGame !== null) game.onclick = () => {
                 document.body.firstChild.children[0].remove();
                 this.manager.games.join(liveGame.id);
-                this.interval = clearInterval(this.interval);
             }
 
             const name = document.createElement('span');

@@ -45,6 +45,7 @@ export default class LoginInterface extends Interface {
                 });
                 if(token) {
                     localStorage.token = token;
+                    this.manager.rest.token = token;
                     this.manager.app.goHome();
                 } else {
                     passwordInput.value = '';

@@ -290,7 +290,7 @@
     flex-direction: column;
 }
 
-#friend-list-component .friend-container {
+.friend-container {
     display: flex;
     gap: 8px;
     background-color: rosybrown;
@@ -298,7 +298,13 @@
     padding: 8px;
 }
 
-#friend-list-component .friend-container #friend-level-container {
+.username-component {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.level-container {
     font-size: 1.5em;
     padding: 4px;
     display: flex;
@@ -307,13 +313,15 @@
     border-radius: 50%;
     width: 32px;
     height: 32px;
-}
-
-#friend-list-component .friend-container #friend-level-container {
     background-color: palegoldenrod;
     border: #5E4747 4px solid;
 }
 
-#friend-list-component .friend-container #friend-username {
+.username-text {
     font-size: 1.8em;
+}
+
+#avatar-container .username-component {
+    margin-top: 12px;
+    transform: scale(1.1);
 }
