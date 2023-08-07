@@ -13,6 +13,10 @@ export default class Player {
         this.username = user.username || `Joueur ${this.id.slice(-3)}`;
     }
 
+    get isLogged() {
+        return !!this.user.id;
+    }
+
     emit(...params) {
         this.socket.emit(...params);
     }

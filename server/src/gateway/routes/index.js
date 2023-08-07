@@ -4,7 +4,8 @@ export default (manager) => {
     const router = express.Router();
 
     router.get('/list/public', (_, res) => {
-        res.send(manager.games);
+        const games = manager.games.filter(game => !game.started && !game.ended);
+        res.send(games);
     });
 
     router.get('/list/friends', async (req, res) => {

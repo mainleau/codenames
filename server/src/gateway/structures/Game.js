@@ -3,6 +3,7 @@ import Team from './Team.js';
 import WordManager from '../managers/WordManager.js';
 import PlayerManager from '../managers/PlayerManager.js';
 import ClueManager from '../managers/ClueManager.js';
+import { getLevel } from '../../utils/index.js';
 
 export default class Game {
 	started = false;
@@ -235,21 +236,23 @@ export default class Game {
 
 		this.players.forEach(async player => {
 			if(player.team === null) return;
-			var flags = 0;
-			try {
-				const user = await this.client.users.fetchById(player.id);
-				flags = +(user.flags & 0x01) + 1;
-				const gainedXp = (player.team === winner ? 4 : 1) * flags;
-				const level = this.client.users.getLevel(user.xp + gainedXp);
 
+			let gainedXp = (player.team === winner ? 4 : 1);
+
+			let hasDoubleXP = player.isLogged ? !!(player.user.flags & 0x01) : false;
+			if(hasDoubleXP) gainedXp *= 2;
+
+			if(player.isLogged) {
+				const level = getLevel(player.user.xp + gainedXp);
 				this.client.users.increment(player.id, {
 					xp: gainedXp,
-					level: level - user.level
+					level: level - player.user.level
 				}).catch(() => {});
-			} catch {}
+			}
+
 			player.emit('game-rewards', {
 				winner,
-				xp: (player.team === winner ? 4 : 1) * flags,
+				xp: gainedXp,
 			});
 		});
 	}
@@ -291,7 +294,8 @@ export default class Game {
 
 	toJSON() {
 		return {
-			id: this.id
+			id: this.id,
+			playerCountByTeam: this.teams.map(team => team.members.size),
 		}
 	}
 }

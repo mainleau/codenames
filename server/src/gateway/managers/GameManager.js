@@ -58,7 +58,7 @@ export default class GameManager extends Collection {
 		Object.defineProperty(this, 'client', { value: client });
     }
 
-	static get [Symbol.species]() { return Map; }
+	static get [Symbol.species]() { return Collection; }
 
     async manage(player, socket, event) {
 		if(!player.currentGameId) return;

@@ -1,5 +1,5 @@
 export function getLevel(xp) {
-    var level = 0;
+    var level = 1;
     if (xp >= 100) level += 1;
     if (xp >= 250) level += 1;
     if (xp >= 625) level += 1;
