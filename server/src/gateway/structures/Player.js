@@ -5,11 +5,12 @@ export default class Player {
     team = null;
     role = null;
     currentGameId = null;
-    constructor(socket, data) {
+    constructor(socket, user = {}) {
         this.socket = socket;
 
-        this.id = data.id || uuid.v4();
-        this.username = data.username || `Joueur ${this.id.slice(-3)}`;
+        this.user = user;
+        this.id = user.id || uuid.v4();
+        this.username = user.username || `Joueur ${this.id.slice(-3)}`;
     }
 
     emit(...params) {

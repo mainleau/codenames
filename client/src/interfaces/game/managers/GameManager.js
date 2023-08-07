@@ -15,11 +15,13 @@ export default class GameManager extends Collection {
 
     create() {
         const socket = io(this.socketURL, {
+            auth: {
+                token: this.manager.rest.token ?? null,
+            },
             query: {
-                token: localStorage.token
+                action: 'create-game'
             }
         });
-        socket.emit('create-game');
 
         const game = new Game(this, socket);
         new GameInterface(this, game);
@@ -27,11 +29,14 @@ export default class GameManager extends Collection {
 
     join(id) {
         const socket = io(this.socketURL, {
+            auth: {
+                token: this.manager.rest.token ?? null
+            },
             query: {
-                token: localStorage.token
+                id,
+                action: 'join-game'
             }
         });
-        socket.emit('join-game', { id });
 
         const game = new Game(this, socket);
         new GameInterface(this, game);
