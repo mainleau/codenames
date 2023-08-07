@@ -14,16 +14,16 @@ export default class Manager {
         const options = {
             timeout: 15_000,
             cdn: location.hostname !== 'localhost'
-            ? `https://cdn.${location.hostname}`
-            : 'http://localhost:8886',
+                ? `https://cdn.${location.hostname}`
+                : 'http://localhost:8886',
             gateway: location.hostname !== 'localhost'
-            ? `https://games.${location.hostname}`
-            : 'http://localhost:8887',
+                ? `https://api-games.${location.hostname}`
+                : 'http://localhost:8887',
             api: location.hostname !== 'localhost'
-                ? `https://api.${location.hostname}`
+                ? `https://api-core.${location.hostname}`
                 : 'http://localhost:8888',
             auth: location.hostname !== 'localhost'
-                ? `https://auth.${location.hostname}`
+                ? `https://api-auth.${location.hostname}`
                 : 'http://localhost:8889'
         }
 
