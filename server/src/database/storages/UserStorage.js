@@ -10,8 +10,22 @@ export default class UserStorage {
         }
     }
 
+    async update(id, data) {
+        if(!isUUID(id)) throw new Error('INVALID_USER_ID');
+        if(!typeof data === 'object') throw new Error('INVALID_DATA');
+
+        const sql = `UPDATE users SET ${Object.keys(data).map((key, index) => {
+            return `${key} = $${index + 1}`;
+        }).join(', ')} WHERE id = $${Object.keys(data).length + 1} RETURNING *`;
+     
+        const response = await this.client.query(sql, [...Object.values(data), id]);
+        if(!response.length) throw new Error('USER_NOT_FOUND');
+
+        return response[0];
+    }
+
     async increment(id, data) {
-        if(!isUUID(id)) throw new Error('INVALID_ID');
+        if(!isUUID(id)) throw new Error('INVALID_USER_ID');
 
         const sql = `UPDATE users SET ${Object.keys(data).map((key, index) => {
             return `${key} = ${key} + $${index + 1}`;
@@ -65,7 +79,7 @@ export default class UserStorage {
     }
 
     async fetchById(id) {
-        if(!isUUID(id)) throw new Error('INVALID_ID');
+        if(!isUUID(id)) throw new Error('INVALID_USER_ID');
 
         const sql = 'SELECT id, username, flags, xp, level, gold, gems FROM users WHERE id = $1';
 

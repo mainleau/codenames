@@ -11,7 +11,7 @@ export default class GameList extends Component {
                 return this.interval = clearInterval(this.interval);
             }
             this.fetchGames();
-        }, 10000);
+        }, 10 * 60 * 1000);
     }
 
     async fetchGames() {

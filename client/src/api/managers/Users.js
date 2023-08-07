@@ -23,4 +23,8 @@ export default class Users extends Collection {
 
         return new User(data);
     }
+
+    putMeOnline() {
+        this.rest.post(this.rest.routes.PUT_ME_ONLINE, this.options);
+    }
 }

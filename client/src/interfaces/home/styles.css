@@ -291,6 +291,7 @@
 }
 
 .friend-container {
+    justify-content: space-between;
     display: flex;
     gap: 8px;
     background-color: rosybrown;
@@ -301,7 +302,7 @@
 .username-component {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
 }
 
 .level-container {
@@ -324,4 +325,11 @@
 #avatar-container .username-component {
     margin-top: 12px;
     transform: scale(1.1);
+}
+
+.user-status {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: 10px;
 }

@@ -4,6 +4,7 @@ export default {
     
     FETCH_USER_BY_ID: (id) => `/users/${id}`,
     FETCH_ME: '/users/me',
+    PUT_ME_ONLINE: '/online',
 
     FETCH_FRIENDS: '/friends',
     FETCH_FRIEND_REQUESTS: '/friends/requests',

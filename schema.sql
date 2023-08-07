@@ -13,7 +13,9 @@ CREATE TABLE users (
     level INTEGER DEFAULT 1 NOT NULL,
     gold INTEGER DEFAULT 0 NOT NULL,
     gems INTEGER DEFAULT 0 NOT NULL,
-    referrer UUID
+    referrer UUID,
+    online_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW() NOT NULL
 );
 
 CREATE TABLE friendships (
@@ -21,7 +23,7 @@ CREATE TABLE friendships (
     sender UUID REFERENCES users(id) NOT NULL,
     receiver UUID REFERENCES users(id) NOT NULL,
     status INTEGER DEFAULT 0 NOT NULL,
-    createdAt TIMESTAMP DEFAULT NOW() NOT NULL
+    created_at TIMESTAMP DEFAULT NOW() NOT NULL
 );
 
 CREATE UNIQUE index ON friendships (least(sender, receiver), greatest(receiver, sender));

@@ -37,9 +37,15 @@ router.get('/users/:id', (req, res, next) => {
 });
 router.get('/users/me', (req, res, next) => {
     if(typeof req.headers.authorization !== 'string') {
-		return next(new Error('TOKEN_NOT_PROVIDED'));
-	}
+        return next(new Error('TOKEN_NOT_PROVIDED'));
+    }
     users.fetchById(req, res, next);
+});
+router.post('/online', (req, res, next) => {
+    if(typeof req.headers.authorization !== 'string') {
+        return next(new Error('TOKEN_NOT_PROVIDED'));
+    }
+    users.putOnline(req, res, next);
 });
 
 const friends = new FriendshipController(client);

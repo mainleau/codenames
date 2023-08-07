@@ -46,6 +46,7 @@ export default class Game {
 	}
 
 	handle(player, socket, event) {
+		console.log(player.username, event);
 		var updated = false;
 
 		if(event.name === 'update-player') {
@@ -57,6 +58,9 @@ export default class Game {
 				if(player.team !== event.data.team) updated = true;
 
 				player.team = event.data.team;
+				this.client.games.update(this.id, {
+					playerCountByTeam: this.teams.map(team => team.members.size)
+				});
 			}
 
 			if('role' in event.data) {
@@ -195,6 +199,9 @@ export default class Game {
 	}
 
 	add(player) {
+		if(this.players.get(player.id)) {
+			this.players.get(player.id).socket.disconnect();
+		}
 		// TODO: show words before game started option
 		// TODO: shuffle words option 
 		player.emit('game-joined', {

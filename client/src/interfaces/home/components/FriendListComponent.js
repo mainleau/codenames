@@ -35,7 +35,14 @@ export default class FriendListComponent extends Component {
 
             const username = new UsernameComponent(friend).create();
 
-            friendContainer.append(username);
+            const status = document.createElement('div');
+            status.className = 'user-status';
+
+            status.style.backgroundColor =
+                new Date(friend.online_at).getTime() + 10 * 60 * 1000 > Date.now() ? 'lightgreen'
+                : 'salmon';
+
+            friendContainer.append(username, status);
             return friendContainer;
         });
 

@@ -30,5 +30,16 @@ export default class Manager {
         this.client = new Client(this.rest);
 
         this.games = new GameManager(this);
+
+        this.login();
+    }
+
+    login() {
+        if(!this.rest.token) return;
+        this.client.users.putMeOnline();
+        const interval = setInterval(() => {
+            if(!this.rest.token) return clearInterval(interval);
+            this.client.users.putMeOnline();
+        }, 5 * 60 * 1000);
     }
 }

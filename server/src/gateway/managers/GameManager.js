@@ -59,16 +59,9 @@ export default class GameManager extends Collection {
     }
 
     async manage(player, socket, event) {
-		console.log(event);
+		if(!player.currentGameId) return;
 
-		if(player.currentGameId) this.get(player.currentGameId).handle(player, socket, event);
-
-		if(event.name === 'update-player') {
-			if(player.currentGameId) {
-				const game = this.get(player.currentGameId);
-				this.client.games.update(game.id, { playerCountByTeam: game.teams.map(team => team.members.size) });
-			};
-		}
+		this.get(player.currentGameId).handle(player, socket, event);
     }
 
 	toJSON() {
