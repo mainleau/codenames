@@ -10,5 +10,6 @@ export default {
     FETCH_FRIEND_REQUESTS: '/friends/requests',
     SEND_FRIEND_REQUEST: (id) => `/friends/requests/${id}`,
 
-    FETCH_GAMES: '/games'
+    FETCH_PUBLIC_GAMES: '/list/public',
+    FETCH_FRIEND_GAMES: '/list/friends'
 }

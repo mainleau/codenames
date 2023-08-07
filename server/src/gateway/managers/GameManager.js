@@ -6,8 +6,8 @@ import jwt from 'jsonwebtoken';
 export default class GameManager extends Collection {
     constructor(io, client) {
         super();
-		
-        io.of('/play').on('connection', async socket => {
+
+		io.of('/play').on('connection', async socket => {
 			const token = socket.handshake.auth.token;
 			const id = socket.handshake.query.id;
 			const action = socket.handshake.query.action;
@@ -57,6 +57,8 @@ export default class GameManager extends Collection {
 		Object.defineProperty(this, 'io', { value: io });
 		Object.defineProperty(this, 'client', { value: client });
     }
+
+	static get [Symbol.species]() { return Map; }
 
     async manage(player, socket, event) {
 		if(!player.currentGameId) return;

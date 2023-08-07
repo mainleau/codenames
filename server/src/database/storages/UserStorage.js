@@ -45,7 +45,7 @@ export default class UserStorage {
             throw new Error('INVALID_EMAIL');
         }
         if(
-            typeof username !== 'string' || username.length < 1 || username.length > 16
+            typeof username !== 'string' || username.length < 3 || username.length > 16
             || !this.options.usernameRegex.test(username)
         ) {
             throw new Error('INVALID_USERNAME');

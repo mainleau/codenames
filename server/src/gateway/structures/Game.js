@@ -288,4 +288,10 @@ export default class Game {
 				: this.words.toJSON()
 		);	
 	}
+
+	toJSON() {
+		return {
+			id: this.id
+		}
+	}
 }

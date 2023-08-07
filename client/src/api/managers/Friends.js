@@ -8,6 +8,15 @@ export default class Friends extends Collection {
         Object.defineProperty(this, 'options', { value: options });
     }
 
+    async fetchWithGames() {
+        const data = await this.rest.get(this.rest.routes.FETCH_FRIEND_GAMES, {
+            ...this.options,
+            baseURL: this.rest.options.gateway
+        });
+
+        return data;
+    }
+
     async fetch() {
         const data = this.rest.get(this.rest.routes.FETCH_FRIENDS, this.options);
 

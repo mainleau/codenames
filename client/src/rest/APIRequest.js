@@ -20,7 +20,7 @@ export default class APIRequest {
         const headers = {};
         let body;
 
-        if(this.options.baseURL === this.rest.options.api) {
+        if(!this.options.noauth) {
             headers['Authorization'] = `Bearer ${this.rest.token}`;
         }
 

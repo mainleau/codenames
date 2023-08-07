@@ -5,9 +5,11 @@ export default class FriendListComponent extends Component {
     constructor(manager) {
         super();
 
+        this.manager = manager;
+
         this.cache = [];
 
-        manager.client.friends.fetch().then(friends => {
+        manager.client.friends.fetchWithGames().then(friends => {
             this.cache = friends;
             this.rerender();
         });
@@ -38,8 +40,16 @@ export default class FriendListComponent extends Component {
             const status = document.createElement('div');
             status.className = 'user-status';
 
+            if(friend.currentGameId) status.onclick = () => {
+                document.body.firstChild.children[0].remove();
+                this.manager.games.join(friend.currentGameId);
+            }
+
+            if(friend.currentGameId) status.style.cursor = 'pointer';
+
             status.style.backgroundColor =
-                new Date(friend.online_at).getTime() + 10 * 60 * 1000 > Date.now() ? 'lightgreen'
+                friend.currentGameId !== null ? 'lightblue'
+                : new Date(friend.online_at).getTime() + 10 * 60 * 1000 > Date.now() ? 'lightgreen'
                 : 'salmon';
 
             friendContainer.append(username, status);
