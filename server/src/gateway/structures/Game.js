@@ -176,11 +176,11 @@ export default class Game {
 
 			word.revealed = true;
 
-			if(success) this.client.incrementStats(player.id, {
+			if(success && player.isLogged) this.client.users.incrementStats(player.id, {
 				words_found: 1,
 			});
 
-			if(!success) this.client.incrementStats(player.id, {
+			if(!success && player.isLogged) this.client.users.incrementStats(player.id, {
 				words_missed: 1,
 			});
 
