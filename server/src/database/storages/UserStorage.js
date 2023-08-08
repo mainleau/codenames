@@ -56,7 +56,7 @@ export default class UserStorage {
 
         const sql = `UPDATE stats SET ${Object.keys(data).map((key, index) => {
             return `${key} = ${key} + $${index + 1}`;
-        }).join(', ')} WHERE user_id = $${Object.keys(data).length + 1}`;
+        }).join(', ')} WHERE user_id = $${Object.keys(data).length + 1} RETURNING *`;
      
         const response = await this.client.query(sql, [...Object.values(data), id]);
         if(!response.length) {
