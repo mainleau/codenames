@@ -28,8 +28,8 @@ export default class User {
             prev += curr;
             return prev
         }, 0);
-        if(this.xp > 4000) {
-            value += Math.floor((this.xp - value) / 2000) * 2000;
+        if(this.xp >= XPTiers.reduce((prev, curr) => prev + curr, 0)) {
+            value += (1 + Math.floor((this.xp - value) / 2000)) * 2000;
         }
         return value - this.xp;
     }
