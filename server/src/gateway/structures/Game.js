@@ -176,13 +176,23 @@ export default class Game {
 
 			word.revealed = true;
 
-			if(success && player.isLogged) this.client.users.incrementStats(player.id, {
-				words_found: 1,
-			});
+			if(success && player.isLogged) {
+				this.client.users.incrementStats(player.id, {
+					words_found: 1,
+				});
+				this.client.users.increment(player.id, {
+					xp: 15,
+				});
+			}
 
-			if(!success && player.isLogged) this.client.users.incrementStats(player.id, {
-				words_missed: 1,
-			});
+			if(!success && player.isLogged) {
+				this.client.users.incrementStats(player.id, {
+					words_missed: 1,
+				});
+				this.client.users.increment(player.id, {
+					xp: 5,
+				});
+			}
 
 			if((word.team === -1 && this.teams.length === 2) || !this.teams[player.team].remainingWords.size) {
 				this.end({
@@ -245,7 +255,7 @@ export default class Game {
 		this.players.forEach(async player => {
 			if(player.team === null) return;
 
-			let gainedXp = (player.team === winner ? 4 : 1);
+			let gainedXp = (player.team === winner ? 25 : 100);
 
 			let hasDoubleXP = player.isLogged ? !!(player.user.flags & 0x01) : false;
 			if(hasDoubleXP) gainedXp *= 2;
@@ -259,6 +269,10 @@ export default class Game {
 				this.client.users.incrementStats(player.id, {
 					games_played: 1
 				}).catch(() => {});
+				this.client.users.incrementStats(player.id, {
+					games_won: player.team === winner,
+					games_lost: player.team !== winner
+				});
 			}
 
 			player.emit('game-rewards', {
