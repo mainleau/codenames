@@ -270,8 +270,8 @@ export default class Game {
 					games_played: 1
 				}).catch(() => {});
 				this.client.users.incrementStats(player.id, {
-					games_won: player.team === winner,
-					games_lost: player.team !== winner
+					games_won: player.team === winner ? 1 : 0,
+					games_lost: player.team === winner ? 0 : 1
 				});
 			}
 
