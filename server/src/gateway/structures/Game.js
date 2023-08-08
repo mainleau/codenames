@@ -255,7 +255,7 @@ export default class Game {
 		this.players.forEach(async player => {
 			if(player.team === null) return;
 
-			let gainedXp = (player.team === winner ? 25 : 100);
+			let gainedXp = (player.team === winner ? 100 : 25);
 
 			let hasDoubleXP = player.isLogged ? !!(player.user.flags & 0x01) : false;
 			if(hasDoubleXP) gainedXp *= 2;
