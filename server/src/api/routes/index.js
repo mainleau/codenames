@@ -47,6 +47,18 @@ router.post('/online', (req, res, next) => {
     }
     users.putOnline(req, res, next);
 });
+router.get('/users/me/stats', (req, res, next) => {
+    if(typeof req.headers.authorization !== 'string') {
+        return next(new Error('TOKEN_NOT_PROVIDED'));
+    }
+    users.fetchStatsByUserId(req, res, next);
+});
+router.get('/users/:id/stats', (req, res, next) => {
+    if(typeof req.headers.authorization !== 'string') {
+        return next(new Error('TOKEN_NOT_PROVIDED'));
+    }
+    users.fetchStatsByUserId(req, res, next);
+});
 
 const friends = new FriendshipController(client);
 router.get('/friends', (req, res, next) => {

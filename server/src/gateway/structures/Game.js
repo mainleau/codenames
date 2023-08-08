@@ -176,6 +176,14 @@ export default class Game {
 
 			word.revealed = true;
 
+			if(success) this.client.incrementStats(player.id, {
+				words_found: 1,
+			});
+
+			if(!success) this.client.incrementStats(player.id, {
+				words_missed: 1,
+			});
+
 			if((word.team === -1 && this.teams.length === 2) || !this.teams[player.team].remainingWords.size) {
 				this.end({
 					winner: word.team === -1 ? +!player.team : player.team
@@ -247,6 +255,9 @@ export default class Game {
 				this.client.users.increment(player.id, {
 					xp: gainedXp,
 					level: level - player.user.level
+				}).catch(() => {});
+				this.client.users.incrementStats(player.id, {
+					games_played: 1
 				}).catch(() => {});
 			}
 

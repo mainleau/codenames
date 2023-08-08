@@ -8,8 +8,8 @@ export default class Client {
             baseURL: rest.options.api
         }
 
-        this.games = new Games(rest, options);
-        this.users = new Users(rest, options);
-        this.friends = new Friends(rest, options);
+        this.games = new Games(rest, this, options);
+        this.users = new Users(rest, this, options);
+        this.friends = new Friends(rest, this, options);
     }
 }

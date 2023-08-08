@@ -30,4 +30,17 @@ export default class UserController {
 
         return res.send({ online_at });
     }
+
+    async fetchStatsByUserId(req, res, next) {
+        const id = req.id || req.params.id;
+
+        var stats;
+        try {
+            var stats = await this.client.users.fetchStatsByUserId(id);
+        } catch (error) {
+            return next(error);
+        }
+
+        return res.send(stats);
+    }
 }

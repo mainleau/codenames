@@ -13,10 +13,9 @@ export function isUUID(string) {
 
 export function getLevel(xp) {
     var level = 0;
-    if (xp >= 100) level += 1;
-    if (xp >= 250) level += 1;
-    if (xp >= 625) level += 1;
-    if (xp >= 1500) level += 1;
+    const XPTiers = [200, 350, 500, 650, 750, 850, 950, 1050, 1150, 1250,
+    1350, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850, 1900];
+    var level = XPTiers.reduce((prev, curr) => prev += xp > curr ? 1 : 0, 0);
     if (xp > 2000) {
         level += Math.floor((xp - 2000) / 2000);
     }

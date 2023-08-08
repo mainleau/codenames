@@ -24,6 +24,20 @@ export default class UserStorage {
         return response[0];
     }
 
+    async updateStats(id, data) {
+        if(!isUUID(id)) throw new Error('INVALID_USER_ID');
+        if(!typeof data === 'object') throw new Error('INVALID_DATA');
+
+        const sql = `UPDATE stats SET ${Object.keys(data).map((key, index) => {
+            return `${key} = $${index + 1}`;
+        }).join(', ')} WHERE user_id = $${Object.keys(data).length + 1} RETURNING *`;
+     
+        const response = await this.client.query(sql, [...Object.values(data), id]);
+        if(!response.length) throw new Error('USER_NOT_FOUND');
+
+        return response[0];
+    }
+
     async increment(id, data) {
         if(!isUUID(id)) throw new Error('INVALID_USER_ID');
 
@@ -35,6 +49,27 @@ export default class UserStorage {
         if(!response.length) throw new Error('USER_NOT_FOUND');
 
         return response[0];
+    }
+
+    async incrementStats(id, data) {
+        if(!isUUID(id)) throw new Error('INVALID_USER_ID');
+
+        const sql = `UPDATE stats SET ${Object.keys(data).map((key, index) => {
+            return `${key} = ${key} + $${index + 1}`;
+        }).join(', ')} WHERE user_id = $${Object.keys(data).length + 1}`;
+     
+        const response = await this.client.query(sql, [...Object.values(data), id]);
+        if(!response.length) throw new Error('USER_NOT_FOUND');
+
+        return response[0];
+    }
+
+    async createStats(id) {
+        if(!isUUID(id)) throw new Error('INVALID_USER_ID');
+
+        const sql = 'INSERT INTO stats (user_id) VALUES ($1)';
+
+        await this.client.query(sql, [id]);
     }
 
     async create({ email, username, referrer = null }) {
@@ -101,5 +136,19 @@ export default class UserStorage {
         const response = await this.client.query(sql, params);
         
         return response;
+    }
+
+    async fetchStatsByUserId(id) {
+        if(!isUUID(id)) throw new Error('INVALID_USER_ID');
+
+        var sql = 'SELECT * FROM stats WHERE user_id = $1';
+
+        const response = await this.client.query(sql, [id]);
+        if(!response.length) {
+            await this.createStats(id);
+            return await this.fetchStatsByUserId(id);
+        }
+
+        return response[0];
     }
 }

@@ -291,12 +291,21 @@
 }
 
 .friend-container {
+    cursor: pointer;
     justify-content: space-between;
     display: flex;
     gap: 8px;
     background-color: rosybrown;
     align-items: center;
     padding: 8px;
+}
+
+.friend-container:hover {
+    filter: brightness(0.9);
+}
+
+.friend-container:active {
+    filter: brightness(0.8);
 }
 
 .username-component {
@@ -332,4 +341,73 @@
     height: 24px;
     border-radius: 50%;
     margin-right: 10px;
+}
+
+#profile-modal {
+    display: flex;
+    flex-direction: column;
+    border: #5E4747 16px solid;
+}
+
+#profile-modal #top-header {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    align-items: center;
+    gap: 20px;
+}
+
+#xp-bar-component {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+#bar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: white;
+    width: 360px;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#bar #filled-bar {
+    background-color: #5E4747;
+    height: 100%;
+    border-radius: 10px;
+}
+
+#profile-modal #stats {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#profile-modal #stats > div {
+    display: flex;
+    padding: 0 30px;
+    font-size: 1.2em;
+    flex-direction: column;
+}
+
+#profile-modal #stats > div > div {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#badges {
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    font-size: 1em;
+    display: flex;
+    background-color: rgba(94, 71, 71, 0.3);
+    border-radius: 30px;
+    padding: 2px 12px;
+    width: fit-content;
 }

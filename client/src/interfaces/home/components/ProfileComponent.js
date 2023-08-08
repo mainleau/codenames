@@ -1,4 +1,5 @@
 import Component from '../../../structures/Component.js';
+import ProfileModal from '../modals/ProfileModal.js';
 import UsernameComponent from './UsernameComponent.js';
 // import defaultAvatarImage from '../../../../assets/images/default-avatar.svg';
 
@@ -23,6 +24,9 @@ export default class ProfileComponent extends Component {
         avatarContainer.id = 'avatar-container';
         
         const username = this.cache.username ? new UsernameComponent(this.cache).create() : '...';
+        if(this.cache.username) username.onclick = event => {
+            new ProfileModal().open(event, this.cache, true);
+        }
 
         const avatar = document.createElement('div');
         avatar.id = 'avatar';

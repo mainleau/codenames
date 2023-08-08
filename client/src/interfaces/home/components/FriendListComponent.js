@@ -1,4 +1,6 @@
+import User from '../../../api/structures/User.js';
 import Component from '../../../structures/Component.js';
+import ProfileModal from '../modals/ProfileModal.js';
 import UsernameComponent from './UsernameComponent.js';
 
 export default class FriendListComponent extends Component {
@@ -34,6 +36,10 @@ export default class FriendListComponent extends Component {
         const friends = (this.cache || []).map(friend => {
             const friendContainer = document.createElement('div');
             friendContainer.className = 'friend-container';
+            friendContainer.onclick = event => {
+                const user = new User(this.manager.client, friend);
+                new ProfileModal().open(event, user);
+            }
 
             const username = new UsernameComponent(friend).create();
 

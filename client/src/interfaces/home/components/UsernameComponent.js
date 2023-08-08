@@ -13,6 +13,10 @@ export default class UsernameComponent extends Component {
 
         const levelContainer = document.createElement('div');
         levelContainer.className = 'level-container';
+        levelContainer.style.backgroundColor =
+            this.user.level >= 10 ? '#a2deff'
+            : this.user.level >= 5 ? '#b9ffb9'
+            : 'palegoldenrod';
 
         const levelText = document.createElement('span');
         levelText.textContent = `${this.user.level}`;
@@ -23,7 +27,22 @@ export default class UsernameComponent extends Component {
         usernameText.className = 'username-text';
         usernameText.textContent = this.user.username;
 
-        this.element.append(levelContainer, usernameText);
+        const badges = document.createElement('div');
+        badges.id = 'badges';
+
+        if(this.user.flags & 0x10) {
+            const guardianBadge = document.createElement('span');
+            guardianBadge.textContent = '🛡️';
+            badges.append(guardianBadge);
+        }
+
+        if(this.user.flags & 0x01) {
+            const earlyBirdBadge = document.createElement('span');
+            earlyBirdBadge.textContent = '🐦';
+            badges.append(earlyBirdBadge);
+        }
+
+        this.element.append(levelContainer, usernameText, /*badges.children.length ? badges : ''*/);
         return this.element;
     }
 }

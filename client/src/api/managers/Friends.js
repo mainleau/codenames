@@ -1,10 +1,11 @@
 import { Collection } from '../../utils';
 
 export default class Friends extends Collection {
-    constructor(rest, options) {
+    constructor(rest, client, options) {
         super();
 
         Object.defineProperty(this, 'rest', { value: rest });
+        Object.defineProperty(this, 'client', { value: client });
         Object.defineProperty(this, 'options', { value: options });
     }
 

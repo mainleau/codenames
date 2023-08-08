@@ -51,7 +51,7 @@ export default class FriendshipStorage {
     async fetchByUserId(id) {
         if(!isUUID(id)) throw new Error('INVALID_ID');
 
-        const sql = `SELECT id, username, level, online_at FROM users WHERE id IN (
+        const sql = `SELECT id, username, flags, level, online_at FROM users WHERE id IN (
             SELECT
                 CASE
                     receiver WHEN $1 THEN sender
