@@ -43,7 +43,7 @@ export default class UserStorage {
 
         const sql = `UPDATE users SET ${Object.keys(data).map((key, index) => {
             return `${key} = ${key} + $${index + 1}`;
-        }).join(', ')} WHERE id = $${Object.keys(data).length + 1}`;
+        }).join(', ')} WHERE id = $${Object.keys(data).length + 1} RETURNING *`;
      
         const response = await this.client.query(sql, [...Object.values(data), id]);
         if(!response.length) throw new Error('USER_NOT_FOUND');
@@ -61,7 +61,7 @@ export default class UserStorage {
         const response = await this.client.query(sql, [...Object.values(data), id]);
         if(!response.length) {
             await this.createStats(id);
-            return this.incrementStats(id, data);
+            return await this.incrementStats(id, data);
         }
 
         return response[0];
