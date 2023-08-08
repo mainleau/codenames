@@ -24,15 +24,14 @@ export default class User {
         const XPTiers = [200, 350, 500, 650, 750, 850, 950, 1050, 1150, 1250,
             1350, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850, 1900, 2000];
         var value = XPTiers.slice(0).reduce((prev, curr, _, arr) => {
-            if(xp < prev + curr) arr.splice(1);
+            if(this.xp < prev + curr) arr.splice(1);
             prev += curr;
-            return curr
+            return prev
         }, 0);
-        var level = XPTiers.indexOf(value);
         if (xp > 2000) {
-            level += Math.floor((xp - 2000) / 2000);
+            value += Math.floor((this.xp - value) / 2000) * 2000;
         }
-        return level === 22 ? 2000 - this.xp : XPTiers[level] - this.xp;
+        return value - this.xp;
     }
 
     async fetchStats() {
