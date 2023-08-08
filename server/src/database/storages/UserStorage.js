@@ -59,7 +59,10 @@ export default class UserStorage {
         }).join(', ')} WHERE user_id = $${Object.keys(data).length + 1}`;
      
         const response = await this.client.query(sql, [...Object.values(data), id]);
-        if(!response.length) throw new Error('USER_NOT_FOUND');
+        if(!response.length) {
+            await this.createStats(id);
+            return this.incrementStats(id, data);
+        }
 
         return response[0];
     }
