@@ -23,7 +23,7 @@ export default class XPBarComponent extends Component {
         filledBar.style.width = 100 - (100 * this.user.XPUntilNextLevel) / (XPTiers[this.user.level - 1] || 2000) + '%';
 
         const details = document.createElement('span');
-        details.textContent = `${(XPTiers[this.user.level] || 2000) - this.user.XPUntilNextLevel} / ${XPTiers[this.user.level] || 2000} XP`;
+        details.textContent = `${(XPTiers[this.user.level - 1] || 2000) - this.user.XPUntilNextLevel} / ${XPTiers[this.user.level - 1] || 2000} XP`;
 
         bar.append(filledBar);
         this.element.append(bar, details)
