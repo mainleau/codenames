@@ -28,7 +28,7 @@ export default class User {
             prev += curr;
             return prev
         }, 0);
-        if (xp > 2000) {
+        if(this.xp > 4000) {
             value += Math.floor((this.xp - value) / 2000) * 2000;
         }
         return value - this.xp;
