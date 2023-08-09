@@ -114,6 +114,10 @@
     justify-content: space-between;
 }
 
+.live-game .time {
+    text-align: center;
+}
+
 .name {
     font-size: 1.6em;
     padding: 10px 20px;

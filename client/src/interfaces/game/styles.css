@@ -194,18 +194,18 @@
     height: fit-content;
     border-radius: 40px;
     cursor: pointer;
-    padding: 20px 40px;
+    padding: 10px 40px;
     background-color: greenyellow;
-    border: 7px solid #7CB822;
+    border: 5px solid #7CB822;
     font-size: 1.8em;
     font-weight: bold;
 }
 
-#give-clue-cta:hover {
+.cta:hover {
     filter: brightness(0.9);
 }
 
-#give-clue-cta:active {
+.cta:active {
     transform: translateY(3px);
 }
 
@@ -331,13 +331,13 @@
     left: 0;
     width: 100%;
     height: 100%;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(3px);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     gap: 20px;
-    filter: brightness(0.6);
+    filter: brightness(0.9);
 }
 
 #game #end-component {
@@ -379,4 +379,58 @@
 
 #end-component #button {
     margin-bottom: 60px;
+}
+
+#settings-component {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: bisque;
+    border: #473535 16px solid;
+    border-radius: 40px;
+    width: 600px;
+    height: 440px;
+    gap: 50px;
+}
+
+#settings-component .title {
+    margin-top: 20px;
+    font-size: 2.3em;
+    font-weight: bold;
+}
+
+#settings-component #privacy {
+    font-size: 1.5em;
+    font-weight: bold;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+#settings-component #privacy-title {
+    font-size: 1em;
+}
+
+#settings-component #game-name {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+#settings-component #game-name > :first-child {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+#settings-component #game-name > :last-child {
+    border-radius: 20px;
+    padding: 0 15px;
+    font-size: 2em;
+    width: 200px;
 }

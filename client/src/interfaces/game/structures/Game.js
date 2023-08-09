@@ -13,6 +13,8 @@ export default class Game {
     constructor(manager, socket, options = { teamCount: 2}) {
         this.manager = manager;
 
+        this.name = null;
+
         this.socket = socket;
         socket.onAny((name, data) => this.handle({ name, data }));
 

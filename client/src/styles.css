@@ -55,6 +55,27 @@ input {
     z-index: 10;
 }
 
+.toggle-switch {
+    display: flex;
+    background-color: white;
+    border-radius: 20px;
+    width: 60px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.toggle-switch > div {
+    background-color: #473535;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.toggle-switch > .active {
+    transform: translateX(100%);
+}
+
 @media (max-width: 800px) {
     * {
         display: none;

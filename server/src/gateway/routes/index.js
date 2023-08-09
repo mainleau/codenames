@@ -4,7 +4,7 @@ export default (manager) => {
     const router = express.Router();
 
     router.get('/list/public', (_, res) => {
-        const games = manager.games.filter(game => !game.started && !game.ended);
+        const games = manager.games.filter(game => !game.started && !game.ended && !game.privacy);
         res.send(games);
     });
 

@@ -16,14 +16,14 @@ export default class GameList extends Component {
 
     async fetchGames() {
         const games = await this.manager.client.games.fetch();
-        this.games = games.concat(new Array(3).fill(null)).slice(0, 3);
+        this.games = games.reverse().concat(new Array(3).fill(null)).slice(0, 3);
         this.rerender();
     }
 
     create() {
         this.element = document.createElement('div');
         
-        const games = this.games.slice(0, 3).map((liveGame => {
+        const games = this.games.map((liveGame => {
             const game = document.createElement('div');
             if(liveGame !== null) game.style.cursor = 'pointer'; else game.style.opacity = 0.5;
             game.className = 'live-game';
@@ -34,7 +34,7 @@ export default class GameList extends Component {
 
             const name = document.createElement('span');
             name.className = 'name';
-            name.textContent = liveGame !== null ? `Partie ${liveGame.id.slice(-3)}` : '';
+            name.textContent = liveGame !== null ? liveGame.name || 'Partie sans nom' : '';
 
             const teams = document.createElement('div');
             teams.className = 'teams';
@@ -53,9 +53,18 @@ export default class GameList extends Component {
 
             secondTeamContainer.appendChild(secondTeamText);
 
-            teams.append(firstTeamContainer, secondTeamContainer)
+            teams.append(firstTeamContainer, secondTeamContainer);
 
-            if(liveGame !== null) game.append(name, teams);
+            const timeCount = Math.floor((Date.now() - liveGame?.startTime) / 1000);
+
+            const time = document.createElement('span');
+            time.className = 'time';
+            time.textContent =
+            timeCount > 60 ? `il y a plus de ${Math.floor(timeCount / 60)} minutes`
+            : `il y a ${timeCount}s`;
+
+
+            if(liveGame !== null) game.append(name, time, teams);
 
             return game;
         }));

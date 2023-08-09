@@ -9,6 +9,8 @@ export default class Game {
 	started = false;
 	ended = false;
 	clueRemainder = null;
+	name = null;
+	privacy = false;
 	constructor(client, io, words, options = {
 		teamCount: 2,
 		maxClueWordLength: 16,
@@ -18,6 +20,8 @@ export default class Game {
 	}) {
 		this.client = client;
 		this.options = options;
+
+		this.startTime = Date.now();
 
 		this.id = uuid.v4();
 		this.words = new WordManager(words);
@@ -48,9 +52,14 @@ export default class Game {
 
 	handle(player, socket, event) {
 		console.log(player.username, event);
-		var updated = false;
 
+		if(event.name === 'update-settings') {
+			this.name = event.data.name,
+			this.privacy = event.data.privacy
+		}
+		
 		if(event.name === 'update-player') {
+			var updated = false;
 			if('team' in event.data) {
 				if(!event.data.team in this.teams)
 					return socket.emit('error', {
@@ -225,6 +234,8 @@ export default class Game {
 		// TODO: shuffle words option 
 		player.emit('game-joined', {
 			id: this.id,
+			name: this.name,
+			privacy: this.privacy,
 			started: this.started,
 			turn: this.turn,
 			player
@@ -243,10 +254,14 @@ export default class Game {
 	}
 
 	end({ winner }) {
+		this.endTime = Date.now();
 		this.ended = true;
 		this.turn.team = null;
 		this.turn.role = null;
+
+		duration = this.endTime - this.startTime;
 		this.io.emit('game-ended', {
+			duration,
 			winner
 		});
 
@@ -320,6 +335,9 @@ export default class Game {
 	toJSON() {
 		return {
 			id: this.id,
+			name: this.name,
+			startTime: this.startTime,
+			privacy: this.privacy,
 			playerCountByTeam: this.teams.map(team => team.members.size),
 		}
 	}

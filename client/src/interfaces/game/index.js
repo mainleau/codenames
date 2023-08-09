@@ -4,6 +4,7 @@ import LeftPanel from './components/LeftPanel.js';
 import RightPanel from './components/RightPanel.js';
 import BottomBoard from './components/BottomBoard.js';
 import EndComponent from './components/EndComponent.js';
+import SettingsComponent from './components/SettingsComponent.js';
 
 export default class GameInterface extends Interface {
     constructor(manager, game) {
@@ -21,6 +22,13 @@ export default class GameInterface extends Interface {
                 xp: data.xp
             }).create();
             this.element.appendChild(endComponent);
+        });
+
+        this.game.socket.on('game-joined', data => {
+            if(data.name) return;
+            this.game.name = `Partie ${data.id.slice(0, 3)}`;
+            const settings = new SettingsComponent(this.game, data).create();
+            this.app.appendChild(settings);
         });
     }
 

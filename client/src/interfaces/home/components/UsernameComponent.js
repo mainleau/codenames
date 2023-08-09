@@ -18,6 +18,8 @@ export default class UsernameComponent extends Component {
             : this.user.level >= 5 ? '#b9ffb9'
             : 'palegoldenrod';
 
+        // #FFCCCB#CCFFCD#CDCCFF
+
         const levelText = document.createElement('span');
         levelText.textContent = `${this.user.level}`;
 
