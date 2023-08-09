@@ -22,16 +22,17 @@ export default class User {
 
     get XPUntilNextLevel() {
         const XPTiers = [200, 350, 500, 650, 750, 850, 950, 1050, 1150, 1250,
-            1350, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850, 1900, 2000];
-        var value = XPTiers.slice(0).reduce((prev, curr, _, arr) => {
-            if(this.xp < prev + curr) arr.splice(1);
-            prev += curr;
-            return prev
-        }, 0);
-        if(this.xp >= XPTiers.reduce((prev, curr) => prev + curr, 0)) {
-            value += (1 + Math.floor((this.xp - value) / 2000)) * 2000;
+            1350, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850, 1900];
+    
+        var level = 1;
+        var treshold = 0;
+        while (xp >= treshold + XPTiers[level - 1]) {
+            treshold += XPTiers[level - 1]
+            level++;
         }
-        return value - this.xp;
+        var total = XPTiers.reduce((a, b) => a + b, 0)
+        if(this.xp > total) treshold += (Math.floor((this.xp - treshold) / 2000)) * 2000;
+        return treshold - this.xp;
     }
 
     async fetchStats() {
