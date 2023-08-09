@@ -26,7 +26,7 @@ export default class User {
     
         var level = 1;
         var treshold = 0;
-        while (xp >= treshold + XPTiers[level - 1]) {
+        while (this.xp >= treshold + XPTiers[level - 1]) {
             treshold += XPTiers[level - 1]
             level++;
         }
