@@ -23,4 +23,5 @@ export function getLevel(xp) {
     }
     var total = XPTiers.reduce((a, b) => a + b, 0)
     if(xp > total) level += (Math.floor((xp - treshold) / 2000));
+    return level;
 }
