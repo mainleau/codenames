@@ -30,6 +30,7 @@ export default class User {
             treshold += XPTiers[level - 1]
             level++;
         }
+        treshold += XPTiers[level - 1]
         var total = XPTiers.reduce((a, b) => a + b, 0)
         if(this.xp > total) treshold += (Math.floor((this.xp - treshold) / 2000)) * 2000;
         return treshold - this.xp;
