@@ -1,0 +1,16 @@
+export const GAME_MODES = {
+    QUICK_GAME: 0x00,
+    CUSTOM_GAME: 0x01,
+    RANKED_GAME: 0x02,
+    EVENT_GAME: 0x04,
+}
+
+export const USER_FLAGS = {
+    DEFAULT: 0x00,
+    BETA_ACCESS: 0x01,
+    EARLY_BIRD: 0x02,
+    MASTER: 0x04,
+    GRAND_MASTER: 0x08,
+    GUARDIAN: 0x10,
+    ADMINISTRATOR: 0x20,
+}

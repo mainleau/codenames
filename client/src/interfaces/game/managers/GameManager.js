@@ -32,9 +32,12 @@ export default class GameManager extends Collection {
             auth: {
                 token: this.manager.rest.token ?? null
             },
-            query: {
-                id,
-                action: 'join-game'
+            query: id ? {
+                action: 'join-game',
+                id
+            } : {
+                action: 'join-game',
+                mode: 0x00
             }
         });
 

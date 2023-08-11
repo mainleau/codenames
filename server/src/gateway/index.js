@@ -29,7 +29,6 @@ const websocketServer = new io.Server(HTTPServer, {
 });
 
 const client = new Client();
-client.query('DELETE FROM games');
 
 const manager = new Manager(websocketServer, client);
 

@@ -23,8 +23,6 @@ export default class Player {
 
     join(game) {
         game.add(this);
-        this.socket.join(game.id);
-        this.currentGameId = game.id;
     }
 
     toJSON() {

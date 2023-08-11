@@ -230,6 +230,9 @@ export default class Game {
 		if(this.players.get(player.id)) {
 			this.players.get(player.id).socket.disconnect();
 		}
+
+		player.socket.join(this.id);
+        player.currentGameId = this.id;
 		// TODO: show words before game started option
 		// TODO: shuffle words option 
 		player.emit('game-joined', {

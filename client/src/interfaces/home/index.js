@@ -42,9 +42,10 @@ export default class HomeInterface extends Interface {
         gamesContainer.id = 'games-container';
 
         const optionsBar = document.createElement('div');
+        optionsBar.id = 'options-bar';
 
         const createGameCTA = document.createElement('div');
-        createGameCTA.id = 'create-game-cta';
+        createGameCTA.className = 'game-cta';
         createGameCTA.onclick = () => {
             element.remove();
             this.manager.games.create();
@@ -55,7 +56,19 @@ export default class HomeInterface extends Interface {
 
         createGameCTA.appendChild(createGameText);
 
-        optionsBar.append(createGameCTA);
+        const joinGameCTA = document.createElement('div');
+        joinGameCTA.className = 'game-cta';
+        joinGameCTA.onclick = () => {
+            element.remove();
+            this.manager.games.join();
+        }
+
+        const joinGameText = document.createElement('span');
+        joinGameText.textContent = 'Rejoindre une partie';
+
+        joinGameCTA.appendChild(joinGameText);
+
+        optionsBar.append(createGameCTA, joinGameCTA);
 
         const gameList = new GameList(this.manager);
 
