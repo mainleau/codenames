@@ -8,6 +8,7 @@
     },
     "scripts": {
         "prepare": "husky install",
-        "lint": "eslint client --fix && eslint server --fix"
+        "lint": "eslint client --fix && eslint server --fix",
+        "deploy-dev": "sh scripts/deploy-dev.sh"
     }
 }
