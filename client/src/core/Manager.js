@@ -14,16 +14,16 @@ export default class Manager {
         const options = {
             timeout: 15_000,
             cdn: location.hostname !== 'localhost'
-                ? `https://cdn.${location.hostname}`
+                ? `https://cdn.nomdecode.fun`
                 : 'http://localhost:8886',
             gateway: location.hostname !== 'localhost'
-                ? `https://api-games.${location.hostname}`
+                ? `https://api-games.nomdecode.fun`
                 : 'http://localhost:8887',
             api: location.hostname !== 'localhost'
-                ? `https://api-core.${location.hostname}`
+                ? `https://api-core.nomdecode.fun`
                 : 'http://localhost:8888',
             auth: location.hostname !== 'localhost'
-                ? `https://api-auth.${location.hostname}`
+                ? `https://api-auth.nomdecode.fun`
                 : 'http://localhost:8889'
         }
 

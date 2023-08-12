@@ -10,7 +10,8 @@ export default class GameManager extends Collection {
     }
 
     get socketURL() {
-        return `${location.protocol === 'http:' ? 'ws' : 'wss'}://${location.hostname}:8887/play`;
+        const url = new URL(this.manager.rest.options.gateway);
+        return location.hostname !== 'localhost' ? `wss://${url.hostname}/play` : 'ws://localhost:8887';
     }
 
     create() {
