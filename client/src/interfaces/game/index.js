@@ -27,11 +27,10 @@ export default class GameInterface extends Interface {
         this.game.socket.on('game-joined', data => {
             if (data.name) return;
             this.game.name = `Partie ${data.id.slice(0, 3)}`;
-            const settings =
-                data.hostId === data.player.id
-                    ? new SettingsComponent(this.game, data).create()
-                    : '';
-            this.app.append(settings);
+            if(data.hostId === data.player.id) {
+                const settings = new SettingsComponent(this.game, data).create()
+                this.app.append(settings);
+            }
         });
     }
 

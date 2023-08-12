@@ -28,8 +28,12 @@ export default class Manager {
                 entries.forEach(([key]) => {
                     let game = this[key].find(
                         game => game.id === socket.handshake.query.id,
+                    ) || this[key].queue?.find(
+                        game => game.id === socket.handshake.query.id,
                     );
-                    if (game) return (mode = game.mode);
+                    if (game) {
+                        return mode = game.mode;
+                    }
                 });
             }
 

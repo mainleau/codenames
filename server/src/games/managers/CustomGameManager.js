@@ -58,7 +58,7 @@ export default class CustomGameManager extends GameManager {
         game.add(player);
 
         socket.onAny((name, data) => {
-            game.handle(player, socket, { name, data });
+            game.handle(player, { name, data });
         });
     }
 

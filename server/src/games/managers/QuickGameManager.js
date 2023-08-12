@@ -29,10 +29,11 @@ export default class QuickGameManager extends GameManager {
     reconnect(socket, user) {
         const { id } = socket.handshake.query;
 
-        const game = this.get(id);
+        const game = this.get(id) || this.queue.get(id);
         if (!game) return socket.disconnect();
 
-        game.rejoin(socket, user);
+        const player = game.rejoin(socket, user);
+        return { game, player };
     }
 
     async connect(socket) {
@@ -44,30 +45,33 @@ export default class QuickGameManager extends GameManager {
             user = await this.manager.client.users.fetchById(content.id);
         } // TODO: different and shorter id for anonymous users, kept in a localstorage token prop
 
-        if (socket.handshake.query.id) return this.reconnect(socket, user);
+        var player = null;
 
-        const player = new Player(socket, user);
-
-        socket.on('disconnect', () => this.disconnect(player));
-
-        let game = null;
-        if (this.queue.size) {
+        var game = null;
+        if (socket.handshake.query.id) {
+            var { game, player } = this.reconnect(socket, user);
+        } else if (this.queue.size) {
             game = this.queue.first();
+            player = new Player(socket, user);
         } else {
             game = this.create();
             this.queue.set(game.id, game);
+            player = new Player(socket, user);
         }
+
+        socket.onAny((name, data) => {
+            game.handle(player, { name, data });
+        });
+
+        socket.on('disconnect', () => this.disconnect(player));
+
         // TODO: check if player already in a game (or in this game), if so reject (or rejoin)
-        game.add(player);
+        if(!socket.handshake.query.id) game.add(player);
 
         if (game.players.size === this.options.maximumPlayerNumber) {
             this.queue.delete(game.id);
             this.set(game.id, game);
         }
-
-        socket.onAny((name, data) => {
-            game.handle(player, socket, { name, data });
-        });
     }
 
     create() {

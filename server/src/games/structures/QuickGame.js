@@ -1,5 +1,5 @@
 import Game from './Game.js';
-import { GAME_MODES, GAME_PRIVACY } from '../../utils/Constants.js';
+import { GAME_MODES, GAME_PRIVACY, GAME_RULES } from '../../utils/Constants.js';
 
 export default class QuickGame extends Game {
     constructor(...params) {
@@ -7,9 +7,6 @@ export default class QuickGame extends Game {
 
         this.mode = GAME_MODES.QUICK_GAME;
 
-        this.options = {
-            randomRole: true, // TODO: make it effective
-            randomTeam: true, // TODO: make it effective
-        };
+        this.rules = GAME_RULES.RANDOM_ROLE | GAME_RULES.RANDOM_TEAM;
     }
 }

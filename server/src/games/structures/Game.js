@@ -1,20 +1,17 @@
 import * as uuid from 'uuid';
 import Team from './Team.js';
-import { GAME_FLAGS, GAME_ROLES, GAME_STATES } from '../../utils/Constants.js';
+import { GAME_RULES, GAME_ROLES, GAME_STATES } from '../../utils/Constants.js';
 import { getLevel } from '../../utils/index.js';
 import ClueManager from '../managers/ClueManager.js';
 import PlayerManager from '../managers/PlayerManager.js';
 import WordManager from '../managers/WordManager.js';
+import Player from './Player.js';
 
 export default class Game {
     started = false;
-
     ended = false;
-
     clueRemainder = null;
-
     name = null;
-
     constructor(
         manager,
         options = {
@@ -70,208 +67,196 @@ export default class Game {
         words.forEach(word => this.words.set(word.id, word));
     }
 
-    handle(player, event) {
-        if (event.name === 'update-player') {
-            let updated = false;
-            if ('team' in event.data) {
-                if (!event.data.team in this.teams) {
-                    return socket.emit('error', {
-                        message: 'INVALID_TEAM',
-                    });
-                }
-                if (player.team !== event.data.team) updated = true;
+    update(player, data) {
+        var updated = false;
 
-                player.team = event.data.team;
+        if ('team' in data) {
+            if (!data.team in this.teams) {
+                throw new Error('INVALID_TEAM');
             }
+            if (player.team !== data.team) updated = true;
 
-            if ('role' in event.data) {
-                if (!event.data.role in Object.values(GAME_ROLES)) {
-                    return socket.emit('error', {
-                        message: 'INVALID_ROLE',
-                    });
-                }
-                if (player.role !== event.data.role) updated = true;
+            player.team = data.team;
+        }
 
-                player.role = event.data.role;
+        if ('role' in data) {
+            if (!data.role in Object.values(GAME_ROLES)) {
+                throw new Error('INVALID_ROLE');
+            }
+            if (player.role !== data.role) updated = true;
 
-                if (this.started) this.updateWords(player);
+            player.role = data.role;
+
+            if (this.state === GAME_STATES.STARTED) this.updateWords(player);
+        }
+
+        if('nickname' in data && (this.rules & GAME_RULES.NICKNAMES_ALLOWED)) {
+            if(
+                typeof data.nickname !== 'string' || data.nickname.length < 1
+                    || data.nickname.length > this.options.maxNicknameLength
+            ) {
+                throw new Error('INVALID_NICKNAME');
+            }
+                
+            if(player.nickname !== data.nickname) updated = true;
+
+            player.nickname = data.nickname;
+        }
+
+        if(updated) this.broadcast('player-updated', player);
+    }
+
+    giveClue(player, data) {
+        if (player.team !== this.turn.team || player.role !== 1 || player.role !== this.turn.role) {
+            throw new Error('NOT_YOUR_TURN');
+        }
+        if (
+            typeof data.word !== 'string' ||
+            !data.word.match(this.options.clueWordRegex) ||
+            data.word.length > this.options.maxClueWordLength
+        ) {
+            throw new Error('INVALID_CLUE_WORD');
+        }
+        if (!this.options.clueCountChoices.includes(data.count)) {
+            throw new Error('INVALID_CLUE_COUNT');
+        }
+        if (
+            data.relatedWords &&
+            (!Array.isArray(data.relatedWords) || !this.checkRelatedWords(player.team, data.relatedWords))
+        ) {
+            throw new Error('INVALID_RELATED_WORDS');
+        }
+
+        this.clues.set(this.clues.size + 1, {
+            word: data.word,
+            count: data.count,
+            relatedWords: data.relatedWords ?? null,
+            team: this.turn.team,
+        });
+  
+        this.clueRemainder = data.count;
+  
+        this.broadcast('clue-forwarded', {
+            word: data.word,
+            count: data.count,
+        });
+  
+        this.turn.role ^= true;
+        this.players.forEach(player => this.sendClues(player));
+    }
+
+    handle(player, event) {
+        if (event.name === 'start-game') {
+            try {
+                this.start();
+            } catch(error) {
+                return player.socket.emit('error', {
+                    message: error.message,
+                });
+            }
+        }
+
+        if (event.name === 'update-player') {
+            try {
+                this.update(player, event.data);
+            } catch(error) {
+                return player.socket.emit('error', {
+                    message: error.message,
+                });
+            }
+        }
+
+        if (event.name === 'select-card') {
+            this.spymasters.forEach(spymaster => {
+                spymaster.emit('card-selected', {
+                    word: event.data.word,
+                    selected: event.data.selected,
+                });
+            });
+        }
+
+        if (event.name === 'give-clue') {
+            try {
+                this.giveClue(player, event.data);
+            } catch (error) {
+                return player.socket.emit('error', {
+                    message: error.message
+                });
+            }
+        }
+
+        // TODO: check if card has already been revealed before
+        if (event.name === 'reveal-card') {
+            try {
+                this.revealCard(player, event.data);
+            } catch (error) {
+                return player.socket.emit('error', {
+                    message: error.message
+                });
             }
         }
     }
 
-    // Handle(player, socket, event) {
+    revealCard(player, data) {
+        if (player.team !== this.turn.team || player.role !== 0 || player.role !== this.turn.role) {
+            throw new Error('NOT_YOUR_TURN');
+        }
 
-    //   if (event.name === 'update-player') {
-    //     let updated = false;
-    //     if ('team' in event.data) {
-    //       if (!event.data.team in this.teams) {
-    //         return socket.emit('error', {
-    //           message: 'INVALID_TEAM',
-    //         });
-    //       }
-    //       if (player.team !== event.data.team) updated = true;
+        const word = this.words.get(data.word);
 
-    //       player.team = event.data.team;
-    //       this.client.games.update(this.id, {
-    //         playerCountByTeam: this.teams.map(team => team.members.size),
-    //       });
-    //     }
+        const success = word.team === player.team;
 
-    //     if ('role' in event.data) {
-    //       if (!event.data.role in [0, 1]) {
-    //         return socket.emit('error', {
-    //           message: 'INVALID_ROLE',
-    //         });
-    //       }
-    //       if (player.role !== event.data.role) updated = true;
+        if (!isNaN(this.clueRemainder) && this.clueRemainder > 0) {
+            this.clueRemainder -= 1;
+        }
 
-    //       player.role = event.data.role;
+        // TODO: warn the user he can use 0 to "ban" a clue
+        if ((!isNaN(this.clueRemainder) && this.clueRemainder === 0) || !success) {
+            this.turn.team ^= true;
+            this.turn.role ^= true;
+        }
 
-    //       if (this.started) this.updateWords(player);
-    //     }
+        this.broadcast('card-revealed', {
+            word: data.word,
+            team: word.team,
+            clueRemainder: this.clueRemainder,
+        });
 
-    //     if ('nickname' in event.data) {
-    //       if (typeof event.data.nickname !== 'string' || event.data.nickname.length > this.options.maxNicknameLength) {
-    //         return socket.emit('error', {
-    //           message: 'INVALID_NICKNAME',
-    //         });
-    //       }
-    //       if (player.nickname !== event.data.nickname) updated = true;
+        word.revealed = true;
 
-    //       player.nickname = event.data.nickname;
-    //     }
+        if (success && player.isLogged) {
+            this.client.users.incrementStats(player.id, {
+                words_found: 1,
+            });
+            this.client.users.increment(player.id, {
+                xp: 15,
+            });
+        }
 
-    //     if (updated) this.io.emit('player-updated', player);
-    //   }
+        if (!success && player.isLogged) {
+            this.client.users.incrementStats(player.id, {
+                words_missed: 1,
+            });
+            this.client.users.increment(player.id, {
+                xp: 5,
+            });
+        }
 
-    //   if (event.name === 'start-game') {
-    //     if (this.started === true) {
-    //       return socket.emit('error', {
-    //         message: 'GAME_ALREADY_STARTED',
-    //       });
-    //     }
-    //     this.start();
-    //   }
+        if ((word.team === -1 && this.teams.length === 2) || !this.teams[player.team].remainingWords.size) {
+            this.end({
+                winner: word.team === -1 ? +!player.team : player.team,
+            });
+        }
+    }
 
-    //   if (event.name === 'select-card') {
-    //     this.spymasters.forEach(spymaster => {
-    //       spymaster.emit('card-selected', {
-    //         word: event.data.word,
-    //         selected: event.data.selected,
-    //       });
-    //     });
-    //   }
-
-    //   if (event.name === 'give-clue') {
-    //     if (player.team !== this.turn.team || player.role !== 1 || player.role !== this.turn.role) {
-    //       return socket.emit('error', {
-    //         message: 'NOT_YOUR_TURN',
-    //       });
-    //     }
-    //     if (
-    //       typeof event.data.word !== 'string' ||
-    //       !event.data.word.match(this.options.clueWordRegex) ||
-    //       event.data.word.length > this.options.maxClueWordLength
-    //     ) {
-    //       return socket.emit('error', {
-    //         message: 'INVALID_CLUE_WORD',
-    //       });
-    //     }
-    //     if (!this.options.clueCountChoices.includes(event.data.count)) {
-    //       return socket.emit('error', {
-    //         message: 'INVALID_CLUE_COUNT',
-    //       });
-    //     }
-    //     if (
-    //       event.data.relatedWords &&
-    //       (!Array.isArray(event.data.relatedWords) || !this.checkRelatedWords(player.team, event.data.relatedWords))
-    //     ) {
-    //       return socket.emit('error', {
-    //         message: 'INVALID_RELATED_WORDS',
-    //       });
-    //     }
-
-    //     this.clues.set(this.clues.size + 1, {
-    //       word: event.data.word,
-    //       count: event.data.count,
-    //       relatedWords: event.data.relatedWords ?? null,
-    //       team: this.turn.team,
-    //     });
-
-    //     this.clueRemainder = event.data.count;
-
-    //     this.io.emit('clue-forwarded', {
-    //       word: event.data.word,
-    //       count: event.data.count,
-    //     });
-
-    //     this.turn.role ^= true;
-    //     this.players.forEach(player => this.updateClues(player));
-    //   }
-
-    //   // TODO: check if card has already been revealed before
-    //   if (event.name === 'reveal-card') {
-    //     if (player.team !== this.turn.team || player.role !== 0 || player.role !== this.turn.role) {
-    //       return socket.emit('error', {
-    //         message: 'NOT_YOUR_TURN',
-    //       });
-    //     }
-    //     const word = this.words.get(event.data.word);
-
-    //     const success = word.team === player.team;
-
-    //     if (!isNaN(this.clueRemainder) && this.clueRemainder > 0) {
-    //       this.clueRemainder -= 1;
-    //     }
-
-    //     // TODO: warn the user he can use 0 to "ban" a clue
-    //     if ((!isNaN(this.clueRemainder) && this.clueRemainder === 0) || !success) {
-    //       this.turn.team ^= true;
-    //       this.turn.role ^= true;
-    //     }
-
-    //     this.io.emit('card-revealed', {
-    //       word: event.data.word,
-    //       team: word.team,
-    //       clueRemainder: this.clueRemainder,
-    //     });
-
-    //     word.revealed = true;
-
-    //     if (success && player.isLogged) {
-    //       this.client.users.incrementStats(player.id, {
-    //         words_found: 1,
-    //       });
-    //       this.client.users.increment(player.id, {
-    //         xp: 15,
-    //       });
-    //     }
-
-    //     if (!success && player.isLogged) {
-    //       this.client.users.incrementStats(player.id, {
-    //         words_missed: 1,
-    //       });
-    //       this.client.users.increment(player.id, {
-    //         xp: 5,
-    //       });
-    //     }
-
-    //     if ((word.team === -1 && this.teams.length === 2) || !this.teams[player.team].remainingWords.size) {
-    //       this.end({
-    //         winner: word.team === -1 ? +!player.team : player.team,
-    //       });
-    //     }
-    //   }
-    // }
-
-    // checkRelatedWords(team, words) {
-    //   const teamWords = this.teams[team].words;
-    //   return words.every(word => !!teamWords.get(word));
-    // }
+    checkRelatedWords(team, words) {
+      const teamWords = this.teams[team].words;
+      return words.every(word => !!teamWords.get(word));
+    }
 
     remove(player) {
         // Player.currentGameId = null;
-        this.players.delete(player.id);
+        if(this.state === GAME_STATES.LOBBY) this.players.delete(player.id);
         this.broadcast('player-leaved', {
             id: player.id,
         });
@@ -289,7 +274,7 @@ export default class Game {
 
         if (
             this.state === GAME_STATES.STARTED ||
-            this.rules & GAME_FLAGS.SHOW_WORDS_BEFORE_GAME_STARTED
+            this.rules & GAME_RULES.SHOW_WORDS_BEFORE_GAME_STARTED
         ) {
             this.sendWords(player);
         }
@@ -304,55 +289,74 @@ export default class Game {
         player.emit('player-list', this.players);
     }
 
-    // End({ winner }) {
-    //   this.endTime = Date.now();
-    //   this.ended = true;
-    //   this.turn.team = null;
-    //   this.turn.role = null;
+    end({ winner }) {
+      this.endTime = Date.now();
+      this.ended = true;
+      this.turn.team = null;
+      this.turn.role = null;
 
-    //   duration = this.endTime - this.startTime;
-    //   this.io.emit('game-ended', {
-    //     duration,
-    //     winner,
-    //   });
+      duration = this.endTime - this.startTime;
+      this.broadcast('game-ended', {
+        duration,
+        winner,
+      });
 
-    //   this.client.games.remove(this.id);
+      this.client.games.remove(this.id);
 
-    //   this.players.forEach(async player => {
-    //     if (player.team === null) return;
+      this.players.forEach(async player => {
+        if (player.team === null) return;
 
-    //     let gainedXp = player.team === winner ? 100 : 25;
+        let gainedXp = player.team === winner ? 100 : 25;
 
-    //     const hasDoubleXP = player.isLogged ? !!(player.user.flags & 0x01) : false;
-    //     if (hasDoubleXP) gainedXp *= 2;
+        const hasDoubleXP = player.isLogged ? !!(player.user.flags & 0x01) : false;
+        if (hasDoubleXP) gainedXp *= 2;
 
-    //     if (player.isLogged) {
-    //       const level = getLevel(player.user.xp + gainedXp);
-    //       this.client.users
-    //         .increment(player.id, {
-    //           xp: gainedXp,
-    //           level: level - player.user.level,
-    //         })
-    //         .catch(() => {});
-    //       this.client.users
-    //         .incrementStats(player.id, {
-    //           games_played: 1,
-    //         })
-    //         .catch(() => {});
-    //       this.client.users.incrementStats(player.id, {
-    //         games_won: player.team === winner ? 1 : 0,
-    //         games_lost: player.team === winner ? 0 : 1,
-    //       });
-    //     }
+        if (player.isLogged) {
+          const level = getLevel(player.user.xp + gainedXp);
+          this.client.users
+            .increment(player.id, {
+              xp: gainedXp,
+              level: level - player.user.level,
+            })
+            .catch(() => {});
+          this.client.users
+            .incrementStats(player.id, {
+              games_played: 1,
+            })
+            .catch(() => {});
+          this.client.users.incrementStats(player.id, {
+            games_won: player.team === winner ? 1 : 0,
+            games_lost: player.team === winner ? 0 : 1,
+          });
+        }
 
-    //     player.emit('game-rewards', {
-    //       winner,
-    //       xp: gainedXp,
-    //     });
-    //   });
-    // }
+        player.emit('game-rewards', {
+          winner,
+          xp: gainedXp,
+        });
+      });
+    }
+
+    rejoin(socket, user) {
+        var player = this.players.get(user.id);
+
+        if (player) {
+            player.socket = socket;
+            player.user = user;
+        } else {
+            player = new Player(socket, user);
+            this.add(player);
+        }
+
+        socket.join(this.id);
+        return player;
+    }
 
     start() {
+        if (this.state === GAME_STATES.STARTED) {
+            throw new Error('GAME_ALREADY_STARTED');
+        }
+
         this.state = GAME_STATES.STARTED;
         this.turn.team = Math.floor(Math.random() * this.teams.length);
 

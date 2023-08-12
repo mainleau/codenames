@@ -1,5 +1,5 @@
 import * as uuid from 'uuid';
-import { PLAYER_FLAGS } from '../../utils/Constants';
+import { PLAYER_FLAGS } from '../../utils/Constants.js';
 
 export default class Player {
     nickname = null;
@@ -13,7 +13,7 @@ export default class Player {
     constructor(socket, user = {}) {
         this.socket = socket;
 
-        this.flags = PLAYER_FLAGS.NONE;
+        this.flags = PLAYER_FLAGS.DEFAULT;
 
         this.user = user;
         this.id = user.id || uuid.v4();

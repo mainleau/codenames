@@ -59,9 +59,9 @@ export default class SettingsComponent extends Component {
         const confirmCTA = document.createElement('div');
         confirmCTA.className = 'cta';
         confirmCTA.onclick = () => {
-            this.game.socket.emit('update-settings', {
+            this.game.socket.emit('update-game', {
                 name: gameNameInput.value || this.game.name,
-                isPrivate: !!privacyToggleSwitchButton.classList.contains('active'),
+                privacy: +privacyToggleSwitchButton.classList.contains('active'),
             });
             this.element.remove();
             mask.remove();
