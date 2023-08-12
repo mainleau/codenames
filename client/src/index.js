@@ -7,6 +7,8 @@ import RegisterInterface from './interfaces/authentication/RegisterInterface.js'
 
 window.onload = () => new Application().launch();
 
+
+// TODO: create component where admin should be able to select server dev/prod
 class Application {
     constructor() {
         this.manager = new Manager(this);
