@@ -13,7 +13,7 @@ export default class Games extends Collection {
     async fetch() {
         const data = await this.rest.get(this.rest.routes.FETCH_PUBLIC_GAMES, {
             ...this.options,
-            baseURL: this.rest.options.gateway
+            baseURL: this.rest.options.api.games
         });
 
         return data;

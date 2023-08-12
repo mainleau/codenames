@@ -16,15 +16,17 @@ export default class Manager {
             cdn: location.hostname !== 'localhost'
                 ? `https://cdn.nomdecode.fun`
                 : 'http://localhost:8886',
-            gateway: location.hostname !== 'localhost'
-                ? `https://api-games.nomdecode.fun`
-                : 'http://localhost:8887',
-            api: location.hostname !== 'localhost'
-                ? `https://api-core.nomdecode.fun`
-                : 'http://localhost:8888',
-            auth: location.hostname !== 'localhost'
-                ? `https://api-auth.nomdecode.fun`
-                : 'http://localhost:8889'
+            api: {
+                games: location.hostname !== 'localhost'
+                    ? `https://api-games.nomdecode.fun`
+                    : 'http://localhost:8887',
+                core: location.hostname !== 'localhost'
+                    ? `https://api-core.nomdecode.fun`
+                    : 'http://localhost:8888',
+                auth: location.hostname !== 'localhost'
+                    ? `https://api-auth.nomdecode.fun`
+                    : 'http://localhost:8889'
+            }
         }
 
         this.rest = new REST(token, routes, options);

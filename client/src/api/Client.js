@@ -5,7 +5,7 @@ import Users from './managers/Users.js';
 export default class Client {
     constructor(rest) {
         const options = {
-            baseURL: rest.options.api
+            baseURL: rest.options.api.core
         }
 
         this.games = new Games(rest, this, options);
