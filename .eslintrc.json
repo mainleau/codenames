@@ -22,10 +22,11 @@
         }
       ],
       "prettier/prettier": [
-        2,
+        "error",
         {
-          "printWidth": 120,
+          "printWidth": 90,
           "singleQuote": true,
+          "tabWidth": 4,
           "quoteProps": "as-needed",
           "trailingComma": "all",
           "endOfLine": "lf",
@@ -123,7 +124,7 @@
       "key-spacing": "error",
       "keyword-spacing": "error",
       "max-depth": "error",
-      "max-len": ["error", 120, 2],
+      "max-len": ["error", 90, 2],
       "max-nested-callbacks": ["error", { "max": 4 }],
       "max-statements-per-line": ["error", { "max": 2 }],
       "new-cap": "off",

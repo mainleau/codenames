@@ -3,85 +3,85 @@ import UsernameComponent from '../components/UsernameComponent.js';
 import XPBarComponent from '../components/XPBarComponent.js';
 
 export default class ProfileModal extends Modal {
-  constructor() {
-    super({
-      width: 500,
-      height: 700,
-    });
-  }
-
-  open(event, user, complete = false) {
-    super.open(event);
-
-    this.element.id = 'profile-modal';
-
-    const topHeader = document.createElement('div');
-    topHeader.id = 'top-header';
-
-    const username = new UsernameComponent(user).create();
-
-    let XPBar = '';
-    if (complete) {
-      XPBar = new XPBarComponent(user).create();
+    constructor() {
+        super({
+            width: 500,
+            height: 700,
+        });
     }
 
-    topHeader.append(username, XPBar);
+    open(event, user, complete = false) {
+        super.open(event);
 
-    const bottomHeader = document.createElement('div');
-    bottomHeader.id = 'bottom-header';
+        this.element.id = 'profile-modal';
 
-    bottomHeader.append();
+        const topHeader = document.createElement('div');
+        topHeader.id = 'top-header';
 
-    const stats = document.createElement('div');
-    stats.id = 'stats';
+        const username = new UsernameComponent(user).create();
 
-    const gameStats = document.createElement('div');
+        let XPBar = '';
+        if (complete) {
+            XPBar = new XPBarComponent(user).create();
+        }
 
-    const gamesWon = document.createElement('div');
-    const gamesWonTitle = document.createElement('span');
-    gamesWonTitle.textContent = 'Parties gagnées';
-    const gamesWonCount = document.createElement('span');
-    gamesWonCount.textContent = '...';
-    gamesWon.append(gamesWonTitle, gamesWonCount);
+        topHeader.append(username, XPBar);
 
-    const gamesLost = document.createElement('div');
-    const gamesLostTitle = document.createElement('span');
-    gamesLostTitle.textContent = 'Parties perdues';
-    const gamesLostCount = document.createElement('span');
-    gamesLostCount.textContent = '...';
-    gamesLost.append(gamesLostTitle, gamesLostCount);
+        const bottomHeader = document.createElement('div');
+        bottomHeader.id = 'bottom-header';
 
-    gameStats.append(gamesWon, gamesLost);
+        bottomHeader.append();
 
-    const wordStats = document.createElement('div');
+        const stats = document.createElement('div');
+        stats.id = 'stats';
 
-    const wordsFound = document.createElement('div');
-    const wordsFoundTitle = document.createElement('span');
-    wordsFoundTitle.textContent = 'Cartes trouvées';
-    const wordsFoundCount = document.createElement('span');
-    wordsFoundCount.textContent = '...';
-    wordsFound.append(wordsFoundTitle, wordsFoundCount);
+        const gameStats = document.createElement('div');
 
-    const wordsMissed = document.createElement('div');
-    const wordsMissedTitle = document.createElement('span');
-    wordsMissedTitle.textContent = 'Cartes manquées';
-    const wordsMissedCount = document.createElement('span');
-    wordsMissedCount.textContent = '...';
-    wordsMissed.append(wordsMissedTitle, wordsMissedCount);
+        const gamesWon = document.createElement('div');
+        const gamesWonTitle = document.createElement('span');
+        gamesWonTitle.textContent = 'Parties gagnées';
+        const gamesWonCount = document.createElement('span');
+        gamesWonCount.textContent = '...';
+        gamesWon.append(gamesWonTitle, gamesWonCount);
 
-    wordStats.append(wordsFound, wordsMissed);
+        const gamesLost = document.createElement('div');
+        const gamesLostTitle = document.createElement('span');
+        gamesLostTitle.textContent = 'Parties perdues';
+        const gamesLostCount = document.createElement('span');
+        gamesLostCount.textContent = '...';
+        gamesLost.append(gamesLostTitle, gamesLostCount);
 
-    stats.append(gameStats, wordStats);
+        gameStats.append(gamesWon, gamesLost);
 
-    user.fetchStats().then(() => {
-      gamesWonCount.textContent = user.stats.games_won;
-      gamesLostCount.textContent = user.stats.games_lost;
+        const wordStats = document.createElement('div');
 
-      wordsFoundCount.textContent = user.stats.words_found;
-      wordsMissedCount.textContent = user.stats.words_missed;
-    });
+        const wordsFound = document.createElement('div');
+        const wordsFoundTitle = document.createElement('span');
+        wordsFoundTitle.textContent = 'Cartes trouvées';
+        const wordsFoundCount = document.createElement('span');
+        wordsFoundCount.textContent = '...';
+        wordsFound.append(wordsFoundTitle, wordsFoundCount);
 
-    this.element.append(topHeader, bottomHeader, stats);
-    return this.element;
-  }
+        const wordsMissed = document.createElement('div');
+        const wordsMissedTitle = document.createElement('span');
+        wordsMissedTitle.textContent = 'Cartes manquées';
+        const wordsMissedCount = document.createElement('span');
+        wordsMissedCount.textContent = '...';
+        wordsMissed.append(wordsMissedTitle, wordsMissedCount);
+
+        wordStats.append(wordsFound, wordsMissed);
+
+        stats.append(gameStats, wordStats);
+
+        user.fetchStats().then(() => {
+            gamesWonCount.textContent = user.stats.games_won;
+            gamesLostCount.textContent = user.stats.games_lost;
+
+            wordsFoundCount.textContent = user.stats.words_found;
+            wordsMissedCount.textContent = user.stats.words_missed;
+        });
+
+        this.element.append(topHeader, bottomHeader, stats);
+        return this.element;
+    }
 }

@@ -4,71 +4,73 @@ import ProfileModal from '../modals/ProfileModal.js';
 // Import defaultAvatarImage from '../../../../assets/images/default-avatar.svg';
 
 export default class ProfileComponent extends Component {
-  constructor(manager) {
-    super();
+    constructor(manager) {
+        super();
 
-    this.cache = {};
+        this.cache = {};
 
-    this.manager = manager;
-    this.manager.client.users.fetchMe().then(user => {
-      this.cache = user;
-      this.rerender();
-    });
-  }
-
-  create() {
-    this.element = document.createElement('div');
-    this.element.id = 'profile';
-
-    const avatarContainer = document.createElement('div');
-    avatarContainer.id = 'avatar-container';
-
-    const username = this.cache.username ? new UsernameComponent(this.cache).create() : '...';
-    if (this.cache.username) {
-      username.onclick = event => {
-        new ProfileModal().open(event, this.cache, true);
-      };
+        this.manager = manager;
+        this.manager.client.users.fetchMe().then(user => {
+            this.cache = user;
+            this.rerender();
+        });
     }
 
-    const avatar = document.createElement('div');
-    avatar.id = 'avatar';
+    create() {
+        this.element = document.createElement('div');
+        this.element.id = 'profile';
 
-    const avatarImage = document.createElement('img');
-    // AvatarImage.src = defaultAvatarImage;
+        const avatarContainer = document.createElement('div');
+        avatarContainer.id = 'avatar-container';
 
-    avatar.appendChild(avatarImage);
+        const username = this.cache.username
+            ? new UsernameComponent(this.cache).create()
+            : '...';
+        if (this.cache.username) {
+            username.onclick = event => {
+                new ProfileModal().open(event, this.cache, true);
+            };
+        }
 
-    avatarContainer.append(username, avatar);
+        const avatar = document.createElement('div');
+        avatar.id = 'avatar';
 
-    const inventory = document.createElement('div');
-    inventory.id = 'inventory';
+        const avatarImage = document.createElement('img');
+        // AvatarImage.src = defaultAvatarImage;
 
-    const inventoryTitle = document.createElement('div');
-    inventoryTitle.id = 'inventory-title';
+        avatar.appendChild(avatarImage);
 
-    const inventoryTitleText = document.createElement('span');
-    inventoryTitleText.innerText = 'Inventaire';
+        avatarContainer.append(username, avatar);
 
-    inventoryTitle.appendChild(inventoryTitleText);
+        const inventory = document.createElement('div');
+        inventory.id = 'inventory';
 
-    const inventoryItems = document.createElement('div');
-    inventoryItems.id = 'inventory-items';
+        const inventoryTitle = document.createElement('div');
+        inventoryTitle.id = 'inventory-title';
 
-    const goldContainer = document.createElement('div');
+        const inventoryTitleText = document.createElement('span');
+        inventoryTitleText.innerText = 'Inventaire';
 
-    const goldText = document.createElement('span');
-    goldText.innerText = '🪙';
+        inventoryTitle.appendChild(inventoryTitleText);
 
-    const goldAmount = document.createElement('span');
-    goldAmount.innerText = this.cache.gold ?? '...';
+        const inventoryItems = document.createElement('div');
+        inventoryItems.id = 'inventory-items';
 
-    goldContainer.append(goldText, goldAmount);
+        const goldContainer = document.createElement('div');
 
-    inventoryItems.append(goldContainer);
+        const goldText = document.createElement('span');
+        goldText.innerText = '🪙';
 
-    inventory.append(inventoryTitle, inventoryItems);
+        const goldAmount = document.createElement('span');
+        goldAmount.innerText = this.cache.gold ?? '...';
 
-    this.element.append(avatarContainer, inventory);
-    return this.element;
-  }
+        goldContainer.append(goldText, goldAmount);
+
+        inventoryItems.append(goldContainer);
+
+        inventory.append(inventoryTitle, inventoryItems);
+
+        this.element.append(avatarContainer, inventory);
+        return this.element;
+    }
 }

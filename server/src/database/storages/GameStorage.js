@@ -1,55 +1,61 @@
 import { validate as isUUID } from 'uuid';
 
 export default class GameStorage {
-  constructor(client) {
-    this.client = client;
-  }
-
-  create(id, { playerCountByTeam }) {
-    if (!isUUID(id)) throw new Error('INVALID_ID');
-    if (!Array.isArray(playerCountByTeam) || !playerCountByTeam.some(count => Number.isInteger(count) && count >= 0)) {
-      throw new Error('INVALID_PLAYER_COUNT_BY_TEAM');
+    constructor(client) {
+        this.client = client;
     }
 
-    const sql = 'INSERT INTO games (id, player_count_by_team) VALUES ($1, $2)';
+    create(id, { playerCountByTeam }) {
+        if (!isUUID(id)) throw new Error('INVALID_ID');
+        if (
+            !Array.isArray(playerCountByTeam) ||
+            !playerCountByTeam.some(count => Number.isInteger(count) && count >= 0)
+        ) {
+            throw new Error('INVALID_PLAYER_COUNT_BY_TEAM');
+        }
 
-    this.client.query(sql, [id, playerCountByTeam]);
-  }
+        const sql = 'INSERT INTO games (id, player_count_by_team) VALUES ($1, $2)';
 
-  update(id, { playerCountByTeam }) {
-    if (!isUUID(id)) throw new Error('INVALID_ID');
-    if (!Array.isArray(playerCountByTeam) || !playerCountByTeam.some(count => Number.isInteger(count) && count >= 0)) {
-      throw new Error('INVALID_PLAYER_COUNT_BY_TEAM');
+        this.client.query(sql, [id, playerCountByTeam]);
     }
 
-    const sql = 'UPDATE games SET player_count_by_team = $2 WHERE id = $1';
+    update(id, { playerCountByTeam }) {
+        if (!isUUID(id)) throw new Error('INVALID_ID');
+        if (
+            !Array.isArray(playerCountByTeam) ||
+            !playerCountByTeam.some(count => Number.isInteger(count) && count >= 0)
+        ) {
+            throw new Error('INVALID_PLAYER_COUNT_BY_TEAM');
+        }
 
-    this.client.query(sql, [id, playerCountByTeam]);
-  }
+        const sql = 'UPDATE games SET player_count_by_team = $2 WHERE id = $1';
 
-  remove(id) {
-    if (!isUUID(id)) throw new Error('INVALID_ID');
-
-    const sql = 'DELETE FROM games WHERE id = $1';
-
-    this.client.query(sql, [id]);
-  }
-
-  async fetch({ count } = {}) {
-    if (count && !(Number.isInteger(count) && count >= 0)) {
-      throw new Error('INVALID_COUNT');
+        this.client.query(sql, [id, playerCountByTeam]);
     }
 
-    let sql = 'SELECT * FROM games';
-    const params = [];
+    remove(id) {
+        if (!isUUID(id)) throw new Error('INVALID_ID');
 
-    if (count) {
-      sql += ' LIMIT $1';
-      params.push(count);
+        const sql = 'DELETE FROM games WHERE id = $1';
+
+        this.client.query(sql, [id]);
     }
 
-    const response = await this.client.query(sql, params);
+    async fetch({ count } = {}) {
+        if (count && !(Number.isInteger(count) && count >= 0)) {
+            throw new Error('INVALID_COUNT');
+        }
 
-    return response;
-  }
+        let sql = 'SELECT * FROM games';
+        const params = [];
+
+        if (count) {
+            sql += ' LIMIT $1';
+            params.push(count);
+        }
+
+        const response = await this.client.query(sql, params);
+
+        return response;
+    }
 }

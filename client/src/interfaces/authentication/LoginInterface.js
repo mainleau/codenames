@@ -1,74 +1,74 @@
 import Interface from '../../structures/Interface.js';
 
 export default class LoginInterface extends Interface {
-  constructor(manager) {
-    super();
+    constructor(manager) {
+        super();
 
-    this.manager = manager;
-  }
+        this.manager = manager;
+    }
 
-  render() {
-    this.element = document.createElement('div');
-    this.element.id = 'login';
+    render() {
+        this.element = document.createElement('div');
+        this.element.id = 'login';
 
-    const loginContainer = document.createElement('div');
-    loginContainer.id = 'login-container';
+        const loginContainer = document.createElement('div');
+        loginContainer.id = 'login-container';
 
-    const username = document.createElement('div');
-    username.id = 'username';
+        const username = document.createElement('div');
+        username.id = 'username';
 
-    const usernameText = document.createElement('span');
-    usernameText.textContent = 'ADRESSE E-MAIL';
+        const usernameText = document.createElement('span');
+        usernameText.textContent = 'ADRESSE E-MAIL';
 
-    const usernameInput = document.createElement('input');
-    usernameInput.spellcheck = false;
+        const usernameInput = document.createElement('input');
+        usernameInput.spellcheck = false;
 
-    username.append(usernameText, usernameInput);
+        username.append(usernameText, usernameInput);
 
-    const password = document.createElement('div');
-    password.id = 'password';
+        const password = document.createElement('div');
+        password.id = 'password';
 
-    const passwordText = document.createElement('span');
-    passwordText.textContent = 'MOT DE PASSE';
+        const passwordText = document.createElement('span');
+        passwordText.textContent = 'MOT DE PASSE';
 
-    const passwordInput = document.createElement('input');
-    passwordInput.type = 'password';
+        const passwordInput = document.createElement('input');
+        passwordInput.type = 'password';
 
-    password.append(passwordText, passwordInput);
+        password.append(passwordText, passwordInput);
 
-    const loginButton = document.createElement('div');
-    loginButton.id = 'login-button-final';
-    loginButton.onclick = async () => {
-      if (usernameInput.value && passwordInput.value) {
-        const { token } = await this.manager.auth.login({
-          email: usernameInput.value,
-          password: passwordInput.value,
-        });
-        if (token) {
-          localStorage.token = token;
-          this.manager.rest.token = token;
-          this.manager.app.goHome();
-        } else {
-          passwordInput.value = '';
-        }
-      }
-    };
+        const loginButton = document.createElement('div');
+        loginButton.id = 'login-button-final';
+        loginButton.onclick = async () => {
+            if (usernameInput.value && passwordInput.value) {
+                const { token } = await this.manager.auth.login({
+                    email: usernameInput.value,
+                    password: passwordInput.value,
+                });
+                if (token) {
+                    localStorage.token = token;
+                    this.manager.rest.token = token;
+                    this.manager.app.goHome();
+                } else {
+                    passwordInput.value = '';
+                }
+            }
+        };
 
-    const loginButtonText = document.createElement('span');
-    loginButtonText.textContent = 'Connecte-toi !';
+        const loginButtonText = document.createElement('span');
+        loginButtonText.textContent = 'Connecte-toi !';
 
-    loginButton.appendChild(loginButtonText);
+        loginButton.appendChild(loginButtonText);
 
-    loginContainer.append(username, password, loginButton);
+        loginContainer.append(username, password, loginButton);
 
-    const backButton = document.createElement('span');
-    backButton.id = 'back-button';
-    backButton.onclick = () => {
-      this.manager.app.goAuth();
-    };
-    backButton.textContent = '⬅️';
+        const backButton = document.createElement('span');
+        backButton.id = 'back-button';
+        backButton.onclick = () => {
+            this.manager.app.goAuth();
+        };
+        backButton.textContent = '⬅️';
 
-    this.element.append(backButton, loginContainer);
-    return this.element;
-  }
+        this.element.append(backButton, loginContainer);
+        return this.element;
+    }
 }

@@ -15,34 +15,36 @@ app.use(express.json());
 app.use(cors());
 
 app.use((req, _, next) => {
-  const token = req.headers.authorization ? req.headers.authorization.replace('Bearer ', '') : null;
+    const token = req.headers.authorization
+        ? req.headers.authorization.replace('Bearer ', '')
+        : null;
 
-  jwt.verify(token, process.env.JWT_SECRET, (error, content) => {
-    if (error) return next(new Error('INVALID_TOKEN'));
+    jwt.verify(token, process.env.JWT_SECRET, (error, content) => {
+        if (error) return next(new Error('INVALID_TOKEN'));
 
-    req.id = content.id;
-    next();
-  });
+        req.id = content.id;
+        next();
+    });
 });
 
 app.use(routes);
 
 app.use((error, _, res, next) => {
-  if (!error instanceof Error) next();
-  res.status(400).send({
-    message: error.message,
-  });
+    if (!error instanceof Error) next();
+    res.status(400).send({
+        message: error.message,
+    });
 });
 
 const HTTPServer =
-  process.env.NODE_ENV === 'production'
-    ? https.createServer(
-        {
-          cert: fs.readFileSync(process.env.CERT_PATH),
-          key: fs.readFileSync(process.env.KEY_PATH),
-        },
-        app,
-      )
-    : http.createServer(app);
+    process.env.NODE_ENV === 'production'
+        ? https.createServer(
+              {
+                  cert: fs.readFileSync(process.env.CERT_PATH),
+                  key: fs.readFileSync(process.env.KEY_PATH),
+              },
+              app,
+          )
+        : http.createServer(app);
 
 HTTPServer.listen(process.env.API_PORT, () => console.log('API HTTP server started.'));

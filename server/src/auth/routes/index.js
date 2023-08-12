@@ -7,7 +7,7 @@ import Client from '../../database/Client.js';
 const router = express.Router();
 
 const app = initializeApp({
-  apiKey: process.env.FIREBASE_API_KEY,
+    apiKey: process.env.FIREBASE_API_KEY,
 });
 const auth = getAuth(app);
 

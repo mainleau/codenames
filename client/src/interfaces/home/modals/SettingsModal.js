@@ -1,38 +1,38 @@
 import Modal from '../../../structures/Modal.js';
 
 export default class SettingsModal extends Modal {
-  constructor(manager) {
-    super({
-      width: 550,
-      height: 300,
-    });
-    this.manager = manager;
-  }
+    constructor(manager) {
+        super({
+            width: 550,
+            height: 300,
+        });
+        this.manager = manager;
+    }
 
-  open() {
-    super.open(event);
+    open() {
+        super.open(event);
 
-    this.element.id = 'logout-modal';
+        this.element.id = 'logout-modal';
 
-    const changeUsernameCTA = document.createElement('div');
-    changeUsernameCTA.onclick = () => {
-      this.close();
-      delete localStorage.token;
-      delete this.manager.rest.token;
-      this.manager.app.goAuth();
-    };
-    changeUsernameCTA.id = 'change-username-cta';
+        const changeUsernameCTA = document.createElement('div');
+        changeUsernameCTA.onclick = () => {
+            this.close();
+            delete localStorage.token;
+            delete this.manager.rest.token;
+            this.manager.app.goAuth();
+        };
+        changeUsernameCTA.id = 'change-username-cta';
 
-    const changeUsernameText = document.createElement('span');
-    changeUsernameText.textContent = 'Se déconnecter';
+        const changeUsernameText = document.createElement('span');
+        changeUsernameText.textContent = 'Se déconnecter';
 
-    changeUsernameCTA.appendChild(changeUsernameText);
+        changeUsernameCTA.appendChild(changeUsernameText);
 
-    const tos = document.createElement('span');
-    tos.textContent = 'Mentions légales';
-    tos.onclick = () => {
-      tos.style.textAlign = 'center';
-      tos.textContent = `
+        const tos = document.createElement('span');
+        tos.textContent = 'Mentions légales';
+        tos.onclick = () => {
+            tos.style.textAlign = 'center';
+            tos.textContent = `
             Hébergeur :
             Contabo GmbH
             Aschauer Straße 32a
@@ -45,27 +45,27 @@ export default class SettingsModal extends Modal {
             Développeur :
             contact@nomdecode.fun
             `;
-    };
+        };
 
-    const gdpr = document.createElement('span');
-    gdpr.textContent = 'RGPD';
-    gdpr.onclick = () => {
-      gdpr.style.textAlign = 'center';
-      gdpr.textContent = `
+        const gdpr = document.createElement('span');
+        gdpr.textContent = 'RGPD';
+        gdpr.onclick = () => {
+            gdpr.style.textAlign = 'center';
+            gdpr.textContent = `
             Nous enregistrons votre adresse e-mail pour vous identifier uniquement.
             Vous pouvez nous contacter pour consulter ou supprimer ces données.`;
-    };
+        };
 
-    const cgv = document.createElement('span');
-    cgv.textContent = 'CGV';
-    cgv.onclick = () => {
-      cgv.style.textAlign = 'center';
-      cgv.textContent = `
+        const cgv = document.createElement('span');
+        cgv.textContent = 'CGV';
+        cgv.onclick = () => {
+            cgv.style.textAlign = 'center';
+            cgv.textContent = `
             Tout paiement est annulable et remboursable dans les 14 jours suivant la transaction sans justification.
             Le produit vous est livré sous maximum une semaine.
             `;
-    };
+        };
 
-    this.element.append(changeUsernameCTA, tos, gdpr, cgv);
-  }
+        this.element.append(changeUsernameCTA, tos, gdpr, cgv);
+    }
 }

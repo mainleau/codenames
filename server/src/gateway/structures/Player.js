@@ -1,41 +1,40 @@
 import * as uuid from 'uuid';
+import { PLAYER_FLAGS } from '../../utils/Constants';
 
 export default class Player {
-  nickname = null;
+    nickname = null;
 
-  team = null;
+    team = null;
 
-  role = null;
+    role = null;
 
-  currentGameId = null;
+    currentGameId = null;
 
-  constructor(socket, user = {}) {
-    this.socket = socket;
+    constructor(socket, user = {}) {
+        this.socket = socket;
 
-    this.user = user;
-    this.id = user.id || uuid.v4();
-    this.username = user.username || `Joueur ${this.id.slice(-3)}`;
-  }
+        this.flags = PLAYER_FLAGS.NONE;
 
-  get isLogged() {
-    return !!this.user.id;
-  }
+        this.user = user;
+        this.id = user.id || uuid.v4();
+        this.username = user.username || `Joueur ${this.id.slice(-3)}`;
+    }
 
-  emit(...params) {
-    this.socket.emit(...params);
-  }
+    get isLogged() {
+        return !!this.user.id;
+    }
 
-  join(game) {
-    game.add(this);
-  }
+    emit(...params) {
+        this.socket.emit(...params);
+    }
 
-  toJSON() {
-    return {
-      id: this.id,
-      username: this.username,
-      nickname: this.nickname,
-      team: this.team,
-      role: this.role,
-    };
-  }
+    toJSON() {
+        return {
+            id: this.id,
+            username: this.username,
+            nickname: this.nickname,
+            team: this.team,
+            role: this.role,
+        };
+    }
 }
