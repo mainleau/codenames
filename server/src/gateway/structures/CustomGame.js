@@ -1,7 +1,7 @@
 import Game from './Game.js';
 import { GAME_MODES } from '../../utils/Constants.js';
 
-export default class QuickGame extends Game {
+export default class CustomGame extends Game {
   constructor(...params) {
     super(...params);
 
