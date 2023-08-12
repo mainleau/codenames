@@ -2,6 +2,7 @@ export const GAME_MODES = {
   QUICK_GAME: 0x00,
   CUSTOM_GAME: 0x01,
   RANKED_GAME: 0x02,
+  TOURNAMENT_GAME: 0x03,
   EVENT_GAME: 0x04,
 };
 

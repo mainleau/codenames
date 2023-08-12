@@ -1,4 +1,5 @@
 import { GAME_MODES } from '../../utils/Constants.js';
+import CustomGameManager from '../managers/CustomGameManager.js';
 import GameManager from '../managers/GameManager.js';
 import QuickGameManager from '../managers/QuickGameManager.js';
 
@@ -11,10 +12,15 @@ export default class Manager {
     const entries = Object.entries(GAME_MODES);
 
     entries.forEach(([key]) => {
-      this[key] = GAME_MODES[key] === GAME_MODES.QUICK_GAME ? new QuickGameManager(this) : new GameManager(io, client);
+      this[key] =
+        GAME_MODES[key] === GAME_MODES.QUICK_GAME
+          ? new QuickGameManager(this)
+          : GAME_MODES[key] === GAME_MODES.CUSTOM_GAME
+          ? new CustomGameManager(io, client)
+          : new GameManager(io, client);
     });
 
-    io.of('/play').on('connection', async socket => {
+    io.of('/play').on('connection', socket => {
       const { action } = socket.handshake.query;
       const mode = parseInt(socket.handshake.query.mode);
 
