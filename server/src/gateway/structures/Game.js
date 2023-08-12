@@ -45,7 +45,7 @@ export default class Game {
       role: 1,
     };
 
-    this.io = io.of('/play').to(this.id);
+    this.io = io.to(this.id);
   }
 
   get spectators() {

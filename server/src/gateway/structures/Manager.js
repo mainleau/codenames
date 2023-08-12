@@ -13,14 +13,15 @@ export default class Manager {
 
     entries.forEach(([key]) => {
       this[key] =
-        GAME_MODES[key] === GAME_MODES.QUICK_GAME
-          ? new QuickGameManager(this)
-          : GAME_MODES[key] === GAME_MODES.CUSTOM_GAME
-          ? new CustomGameManager(io, client)
-          : new GameManager(io, client);
+      GAME_MODES[key] === GAME_MODES.QUICK_GAME
+      ? new QuickGameManager(this)
+      : GAME_MODES[key] === GAME_MODES.CUSTOM_GAME
+      ? new CustomGameManager(io, client)
+      : new GameManager(io, client);
     });
-
-    io.of('/play').on('connection', socket => {
+    
+    io.on('connection', socket => {
+      console.log(this);
       const { action } = socket.handshake.query;
       const mode = parseInt(socket.handshake.query.mode);
 

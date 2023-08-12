@@ -42,13 +42,13 @@ export default class QuickGameManager extends GameManager {
       const content = jwt.verify(token, process.env.JWT_SECRET);
       user = await this.manager.client.users.fetchById(content.id);
     } // TODO: different and shorter id for anonymous users, kept in a localstorage token prop
-
+    
     if (socket.handshake.query.id) return this.reconnect(socket, user);
 
     const player = new Player(socket, user);
 
     socket.on('disconnect', () => this.disconnect(player));
-
+    
     let game = null;
     if (this.queue.size) {
       game = this.queue.first();

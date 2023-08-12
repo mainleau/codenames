@@ -11,7 +11,7 @@ export default class GameManager extends Collection {
 
   get socketURL() {
     const url = new URL(this.manager.rest.options.api.games);
-    return location.hostname !== 'localhost' ? `wss://${url.hostname}/play` : 'ws://localhost:8887';
+    return location.hostname !== 'localhost' ? `wss://${url.hostname}` : 'ws://localhost:8887';
   }
 
   create() {
