@@ -1,7 +1,7 @@
 export default class Component {
-    constructor() {}
+  constructor() {}
 
-    rerender() {
-        this.element.replaceWith(this.create());
-    };
-} 
+  rerender() {
+    this.element.replaceWith(this.create());
+  }
+}

@@ -1,21 +1,20 @@
 import { Collection } from '../../utils';
 
 export default class Games extends Collection {
-    constructor(rest, client, options) {
-        super();
+  constructor(rest, client, options) {
+    super();
 
-        Object.defineProperty(this, 'rest', { value: rest });
-        Object.defineProperty(this, 'client', { value: client });
-        Object.defineProperty(this, 'options', { value: options });
+    Object.defineProperty(this, 'rest', { value: rest });
+    Object.defineProperty(this, 'client', { value: client });
+    Object.defineProperty(this, 'options', { value: options });
+  }
 
-    }
+  async fetch() {
+    const data = await this.rest.get(this.rest.routes.FETCH_PUBLIC_GAMES, {
+      ...this.options,
+      baseURL: this.rest.options.api.games,
+    });
 
-    async fetch() {
-        const data = await this.rest.get(this.rest.routes.FETCH_PUBLIC_GAMES, {
-            ...this.options,
-            baseURL: this.rest.options.api.games
-        });
-
-        return data;
-    }
+    return data;
+  }
 }

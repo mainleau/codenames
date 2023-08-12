@@ -1,46 +1,46 @@
 export default class UserController {
-    constructor(client) {
-        this.client = client;
+  constructor(client) {
+    this.client = client;
+  }
+
+  async fetchById(req, res, next) {
+    const id = req.id || req.params.id;
+
+    var user;
+    try {
+      var user = await this.client.users.fetchById(id);
+    } catch (error) {
+      return next(error);
     }
 
-    async fetchById(req, res, next) {
-        const id = req.id || req.params.id;
+    return res.send(user);
+  }
 
-        var user;
-        try {
-            var user = await this.client.users.fetchById(id);
-        } catch (error) {
-            return next(error);
-        }
+  async putOnline(req, res, next) {
+    const { id } = req;
 
-        return res.send(user);
+    var online_at;
+    try {
+      var { online_at } = await this.client.users.update(id, {
+        online_at: new Date(),
+      });
+    } catch (error) {
+      return next(error);
     }
 
-    async putOnline(req, res, next) {
-        const id = req.id;
+    return res.send({ online_at });
+  }
 
-        var online_at;
-        try {
-            var { online_at } = await this.client.users.update(id, {
-                online_at: new Date()
-            });
-        } catch (error) {
-            return next(error);
-        }
+  async fetchStatsByUserId(req, res, next) {
+    const id = req.id || req.params.id;
 
-        return res.send({ online_at });
+    var stats;
+    try {
+      var stats = await this.client.users.fetchStatsByUserId(id);
+    } catch (error) {
+      return next(error);
     }
 
-    async fetchStatsByUserId(req, res, next) {
-        const id = req.id || req.params.id;
-
-        var stats;
-        try {
-            var stats = await this.client.users.fetchStatsByUserId(id);
-        } catch (error) {
-            return next(error);
-        }
-
-        return res.send(stats);
-    }
+    return res.send(stats);
+  }
 }

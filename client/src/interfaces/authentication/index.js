@@ -1,51 +1,51 @@
-import Interface from '../../structures/Interface.js';
 import LoginInterface from './LoginInterface.js';
 import RegisterInterface from './RegisterInterface.js';
+import Interface from '../../structures/Interface.js';
 
 export default class AuthenticationInterface extends Interface {
-    constructor(manager, ref) {
-        super();
-        this.ref = ref;
+  constructor(manager, ref) {
+    super();
+    this.ref = ref;
 
-        this.manager = manager;
-    }
+    this.manager = manager;
+  }
 
-    render() {
-        this.element = document.createElement('div');
-        this.element.id = 'authentication';
+  render() {
+    this.element = document.createElement('div');
+    this.element.id = 'authentication';
 
-        const container = document.createElement('div');
-        container.id = 'container';
+    const container = document.createElement('div');
+    container.id = 'container';
 
-        const loginButton = document.createElement('div');
-        loginButton.id = 'login-button';
-        loginButton.onclick = () => {
-            this.element.firstChild.style.display = 'none';
-            const interf = new LoginInterface(this.manager);
-            this.manager.app.element.firstChild.append(interf.render());
-        }
+    const loginButton = document.createElement('div');
+    loginButton.id = 'login-button';
+    loginButton.onclick = () => {
+      this.element.firstChild.style.display = 'none';
+      const interf = new LoginInterface(this.manager);
+      this.manager.app.element.firstChild.append(interf.render());
+    };
 
-        const loginButtonText = document.createElement('span');
-        loginButtonText.textContent = "J'ai déjà un compte";
+    const loginButtonText = document.createElement('span');
+    loginButtonText.textContent = "J'ai déjà un compte";
 
-        loginButton.appendChild(loginButtonText);
+    loginButton.appendChild(loginButtonText);
 
-        const registerButton = document.createElement('div');
-        registerButton.id = 'register-button';
-        registerButton.onclick = () => {
-            this.element.firstChild.style.display = 'none';
-            const interf = new RegisterInterface(this.manager);
-            this.manager.app.element.firstChild.append(interf.render());
-        }
+    const registerButton = document.createElement('div');
+    registerButton.id = 'register-button';
+    registerButton.onclick = () => {
+      this.element.firstChild.style.display = 'none';
+      const interf = new RegisterInterface(this.manager);
+      this.manager.app.element.firstChild.append(interf.render());
+    };
 
-        const registerButtonText = document.createElement('span');
-        registerButtonText.textContent = "Créer un compte";
+    const registerButtonText = document.createElement('span');
+    registerButtonText.textContent = 'Créer un compte';
 
-        registerButton.appendChild(registerButtonText);
+    registerButton.appendChild(registerButtonText);
 
-        container.append(loginButton, registerButton);
+    container.append(loginButton, registerButton);
 
-        this.element.append(container);
-        return this.element;
-    }
+    this.element.append(container);
+    return this.element;
+  }
 }

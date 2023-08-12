@@ -1,68 +1,77 @@
 import dotenv from 'dotenv';
-dotenv.config();
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import jwt from 'jsonwebtoken';
 import { validate as isUUID } from 'uuid';
 
+dotenv.config();
+
 export default class AuthenticationController {
-    constructor(auth, client) {
-        this.auth = auth;
-        this.client = client;
+  constructor(auth, client) {
+    this.auth = auth;
+    this.client = client;
+  }
+
+  async login(req, res, next) {
+    const { email } = req.body;
+    const { password } = req.body;
+
+    let user;
+    try {
+      user = await signInWithEmailAndPassword(this.auth, email, password);
+    } catch (error) {
+      return next(error);
     }
 
-    async login(req, res, next) {
-        const email = req.body.email;
-        const password = req.body.password;
-
-        var user;
-        try {
-            user = await signInWithEmailAndPassword(this.auth, email, password);
-        } catch (error) {
-            return next(error);
-        }
-
-        var id;
-        try {
-            var { id } = await this.client.users.fetchByEmail(email);
-        } catch (error) {
-            return next(error);
-        }
-
-        const token = jwt.sign({
-            id
-        }, process.env.JWT_SECRET, { expiresIn: 30 * 24 * 60 * 60 });
-
-        return res.send({ token });
+    var id;
+    try {
+      var { id } = await this.client.users.fetchByEmail(email);
+    } catch (error) {
+      return next(error);
     }
 
-    async register(req, res, next) {
-        const email = req.body.email;
-        const password = req.body.password;
-        const username = req.body.username;
-        const referrer = req.body.referrer;
+    const token = jwt.sign(
+      {
+        id,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: 30 * 24 * 60 * 60 },
+    );
 
-        var id;
-        try {
-            var { id } = await this.client.users.create({ email, username, referrer });
-            await this.client.users.createStats(id);
-            if(isUUID(referrer)) {
-                this.client.friendships.create({ sender: referrer, receiver: id, status: 1 });
-            }
-        } catch (error) {
-            return next(error);
-        }
+    return res.send({ token });
+  }
 
-        var user;
-        try {
-            user = await createUserWithEmailAndPassword(this.auth, email, password);
-        } catch (error) {
-            return next(error);
-        }
+  async register(req, res, next) {
+    const { email } = req.body;
+    const { password } = req.body;
+    const { username } = req.body;
+    const { referrer } = req.body;
 
-        const token = jwt.sign({
-            id
-        }, process.env.JWT_SECRET, { expiresIn: 30 * 24 * 60 * 60 });
-
-        return res.send({ token });
+    var id;
+    try {
+      var { id } = await this.client.users.create({ email, username, referrer });
+      await this.client.users.createStats(id);
+      if (isUUID(referrer)) {
+        this.client.friendships.create({ sender: referrer, receiver: id, status: 1 });
+      }
+    } catch (error) {
+      return next(error);
     }
+
+    let user;
+    try {
+      user = await createUserWithEmailAndPassword(this.auth, email, password);
+    } catch (error) {
+      return next(error);
+    }
+
+    const token = jwt.sign(
+      {
+        id,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: 30 * 24 * 60 * 60 },
+    );
+
+    return res.send({ token });
+  }
 }
