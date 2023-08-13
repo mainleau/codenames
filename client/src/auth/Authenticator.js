@@ -2,7 +2,7 @@ export default class Authenticator {
     constructor(rest) {
         this.rest = rest;
         this.options = {
-            baseURL: this.rest.options.auth,
+            baseURL: this.rest.options.api.auth,
         };
     }
 
