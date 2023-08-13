@@ -1,6 +1,6 @@
 import express from 'express';
 import st from 'stripe';
-import Client from '../../database/Client.js';
+import Client from '../../../database/Client.js';
 import FriendshipController from '../controllers/FriendshipController.js';
 import GameController from '../controllers/GameController.js';
 import UserController from '../controllers/UserController.js';

@@ -1,7 +1,7 @@
 import * as uuid from 'uuid';
 import Team from './Team.js';
-import { GAME_RULES, GAME_ROLES, GAME_STATES } from '../../utils/Constants.js';
-import { getLevel } from '../../utils/index.js';
+import { GAME_RULES, GAME_ROLES, GAME_STATES } from '../../../utils/Constants.js';
+import { getLevel } from '../../../utils/index.js';
 import ClueManager from '../managers/ClueManager.js';
 import PlayerManager from '../managers/PlayerManager.js';
 import WordManager from '../managers/WordManager.js';

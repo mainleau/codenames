@@ -1,5 +1,5 @@
 import * as uuid from 'uuid';
-import { PLAYER_FLAGS } from '../../utils/Constants.js';
+import { PLAYER_FLAGS } from '../../../utils/Constants.js';
 
 export default class Player {
     nickname = null;

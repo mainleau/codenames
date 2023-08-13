@@ -1,4 +1,4 @@
-import { GAME_MODES } from '../../utils/Constants.js';
+import { GAME_MODES } from '../../../utils/Constants.js';
 import CustomGameManager from '../managers/CustomGameManager.js';
 import GameManager from '../managers/GameManager.js';
 import QuickGameManager from '../managers/QuickGameManager.js';

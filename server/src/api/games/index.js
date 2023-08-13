@@ -8,7 +8,7 @@ import jwt from 'jsonwebtoken';
 import * as io from 'socket.io';
 import routes from './routes/index.js';
 import Manager from './structures/Manager.js';
-import Client from '../database/Client.js';
+import Client from '../../database/Client.js';
 
 dotenv.config();
 

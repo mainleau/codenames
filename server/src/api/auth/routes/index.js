@@ -2,7 +2,7 @@ import express from 'express';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import AuthenticationController from './controllers/AuthenticationController.js';
-import Client from '../../database/Client.js';
+import Client from '../../../database/Client.js';
 
 const router = express.Router();
 

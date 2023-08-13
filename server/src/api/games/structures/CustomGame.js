@@ -1,5 +1,5 @@
 import Game from './Game.js';
-import { GAME_MODES, GAME_RULES } from '../../utils/Constants.js';
+import { GAME_MODES, GAME_RULES } from '../../../utils/Constants.js';
 
 export default class CustomGame extends Game {
     constructor(...params) {
