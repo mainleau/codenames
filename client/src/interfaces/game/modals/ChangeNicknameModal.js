@@ -4,7 +4,7 @@ export default class ChangeNicknameModal extends Modal {
     constructor(game) {
         super({
             width: 550,
-            height: 100,
+            height: 130,
         });
         this.game = game;
     }
@@ -15,7 +15,7 @@ export default class ChangeNicknameModal extends Modal {
         this.element.id = 'new-username-modal';
 
         const title = document.createElement('span');
-        title.textContent = 'NOUVEAU SURNOM :';
+        title.textContent = 'Nouveau surnom :';
 
         const newUsernameContainer = document.createElement('div');
         newUsernameContainer.id = 'new-username-container';

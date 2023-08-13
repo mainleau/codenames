@@ -1,17 +1,28 @@
 #game {
-    height: 100%;
+    display: flex;
+    flex-direction: column;
+    height: inherit;
 }
 
-#game #top-bar {
-    height: 160px;
-    width: 100%;
-    /* background-color: #473535; */
-    background-color: bisque;
+#game #middle-panel > :first-child {
+    padding: 50px 80px;
+}
+
+#game #board-container {
+    display: flex;
+    justify-content: center;
 }
 
 #game #content {
     display: flex;
     height: inherit;
+    flex: 1;
+}
+
+#game #top-bar {
+    width: 100vw;
+    height: 116px;
+    background-color: rosybrown;
 }
 
 #middle-panel {
@@ -21,20 +32,17 @@
     min-width: 0;
     overflow: hidden;
     background-color: bisque;
-    /* background-color: #473535; */
 }
 
 #board {
-    margin: 0 100px;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-gap: 6px;
-    height: fit-content;
-    min-width: 0;
+    width: 900px;
+    aspect-ratio: 3/2;
 }
 
 .card {
-    min-width: 0;
     overflow: hidden;
     background-color: rosybrown;
     border: 10px solid #7A5C5C;
@@ -107,8 +115,8 @@
 }
 
 #bottom-board {
+    min-height: 116px;
     background-color: beige;
-    /* background-color: bisque; */
     height: 100%;
     display: flex;
     align-items: center;
@@ -253,6 +261,7 @@
 }
 
 #new-username-modal {
+    border: #473535 16px solid;
     padding: 0 40px;
     display: flex;
     flex-direction: column;
@@ -265,10 +274,15 @@
     gap: 20px;
 }
 
+#new-username-modal > span {
+    font-size: 1.5em;
+    /* font-weight: bold; */
+}
+
 #new-username-input {
     height: fit-content;
     width: 100%;
-    font-size: 2em;
+    font-size: 2.3em;
     padding: 0 15px;
 }
 
