@@ -10,6 +10,12 @@ export default class GameManager extends Collection {
     static get [Symbol.species]() {
         return Collection;
     }
+
+    connect() {}
+
+    reconnect() {}
+    
+    disconnect() {}
 }
 
 // If(!game.players.size) {

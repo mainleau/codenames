@@ -1,6 +1,6 @@
 import * as uuid from 'uuid';
 import Team from './Team.js';
-import { GAME_RULES, GAME_ROLES, GAME_STATES } from '../../../utils/Constants.js';
+import { GAME_RULES, GAME_ROLES, GAME_STATES, USER_FLAGS } from '../../../utils/Constants.js';
 import { getLevel } from '../../../utils/index.js';
 import ClueManager from '../managers/ClueManager.js';
 import PlayerManager from '../managers/PlayerManager.js';
@@ -18,7 +18,6 @@ export default class Game {
             teamCount: 2,
             maxClueWordLength: 16,
             maxNicknameLength: 16,
-            deathWordCount: 1,
             clueWordRegex: /^[a-zA-Z0-9\\-\\ ]+$/,
             clueCountChoices: [...Array(10).keys(), '∞'],
         },
@@ -27,6 +26,7 @@ export default class Game {
         this.options = options;
 
         this.startTime = Date.now();
+        this.endTime = null;
 
         this.id = uuid.v4();
         this.clues = new ClueManager();
@@ -43,11 +43,19 @@ export default class Game {
             role: GAME_ROLES.SPYMASTER,
         };
 
+        this.settings = {
+            deathWordCount: 1,
+        }
+
         this.mode = null;
         this.rules = null;
         this.state = GAME_STATES.LOBBY;
 
         this.manager.io = this.manager.io.to(this.id);
+    }
+
+    get duration() {
+        return this.endTime - this.startTime;
     }
 
     get spectators() {
@@ -60,6 +68,193 @@ export default class Game {
 
     get spymasters() {
         return this.players.filter(player => player.role === GAME_ROLES.SPYMASTER);
+    }
+
+    broadcast(event, data) {
+        this.players.forEach(player => player.emit(event, data));
+    }
+
+    handle(player, event) {
+        if (event.name === 'start-game') {
+            try {
+                this.start();
+            } catch(error) {
+                return player.socket.emit('error', {
+                    message: error.message,
+                });
+            }
+        }
+
+        if (event.name === 'update-player') {
+            try {
+                this.update(player, event.data);
+            } catch(error) {
+                return player.socket.emit('error', {
+                    message: error.message,
+                });
+            }
+        }
+
+        if (event.name === 'select-card') {
+            this.spymasters.forEach(spymaster => {
+                spymaster.emit('card-selected', {
+                    word: event.data.word,
+                    selected: event.data.selected,
+                });
+            });
+        }
+
+        if (event.name === 'give-clue') {
+            try {
+                this.giveClue(player, event.data);
+            } catch (error) {
+                return player.socket.emit('error', {
+                    message: error.message
+                });
+            }
+        }
+
+        // TODO: check if card has already been revealed before
+        if (event.name === 'reveal-card') {
+            try {
+                this.revealCard(player, event.data);
+            } catch (error) {
+                return player.socket.emit('error', {
+                    message: error.message
+                });
+            }
+        }
+    }
+
+    start() {
+        if (this.state === GAME_STATES.STARTED) {
+            throw new Error('GAME_ALREADY_STARTED');
+        }
+
+        this.state = GAME_STATES.STARTED;
+        this.turn.team = Math.floor(Math.random() * this.teams.length);
+
+        const shuffledWords = this.words.random(this.words.size);
+
+        shuffledWords.slice(0, 9).forEach(word => {
+            this.words.get(word.id).team = 0;
+        });
+        shuffledWords.slice(9, 17).forEach(word => {
+            this.words.get(word.id).team = 1;
+        });
+
+        Array.from({ length: this.settings.deathWordCount }, (_, index) => {
+            this.words.get(shuffledWords[17 + index].id).team = -1;
+        });
+
+        this.words.filter(word => !('team' in word)).forEach(word => (word.team = null));
+
+        this.broadcast('game-started', {
+            turn: this.turn,
+        });
+
+        this.players.forEach(player => this.sendWords(player));
+    }
+
+    end({ winner }) {
+        this.endTime = Date.now();
+        this.ended = true;
+        this.turn.team = null;
+        this.turn.role = null;
+  
+        this.broadcast('game-ended', {
+          duration: this.duration,
+          winner,
+        });
+  
+        this.manager.client.games.remove(this.id);
+        
+        this.reward(winner);
+    }
+
+    reward(winner) {
+        this.players.forEach(async player => {
+            if (player.role === GAME_ROLES.SPECTATOR) return;
+    
+            let gainedXp = player.team === winner ? 100 : 25;
+    
+            const hasDoubleXP = player.isLogged ? player.user.flags & USER_FLAGS.EARLY_BIRD : false;
+            if (hasDoubleXP) gainedXp *= 2;
+    
+            if (player.isLogged) {
+                const level = getLevel(player.user.xp + gainedXp);
+                this.manager.client.users
+                    .increment(player.id, {
+                        xp: gainedXp,
+                        level: level - player.user.level,
+                    })
+                    .catch(() => {});
+                this.manager.client.users
+                    .incrementStats(player.id, {
+                        games_played: 1,
+                    })
+                    .catch(() => {});
+                this.manager.client.users.incrementStats(player.id, {
+                    games_won: player.team === winner ? 1 : 0,
+                    games_lost: player.team === winner ? 0 : 1,
+                });
+            }
+    
+            player.emit('game-rewards', {
+                winner,
+                xp: gainedXp,
+            });
+        });
+    }
+
+    add(player) {
+        player.currentGameId = this.id;
+        player.socket.join(this.id);
+        // TODO: show words before game started option
+        // TODO: shuffle words option
+        player.socket.emit('game-joined', {
+            ...this.toJSON(),
+            player,
+        });
+
+        if (
+            this.state === GAME_STATES.STARTED ||
+            this.rules & GAME_RULES.SHOW_WORDS_BEFORE_GAME_STARTED
+        ) {
+            this.sendWords(player);
+        }
+
+        if (this.state === GAME_STATES.STARTED) {
+            this.sendClues(player);
+        }
+
+        this.players.set(player.id, player);
+        this.manager.io.emit('player-joined', player);
+
+        player.emit('player-list', this.players);
+    }
+
+    remove(player) {
+        // Player.currentGameId = null;
+        if(this.state === GAME_STATES.LOBBY) this.players.delete(player.id);
+        this.broadcast('player-leaved', {
+            id: player.id,
+        });
+    }
+
+    rejoin(socket, user) {
+        var player = this.players.get(user.id);
+
+        if (player) {
+            player.socket = socket;
+            player.user = user;
+        } else {
+            player = new Player(socket, user);
+            this.add(player);
+        }
+
+        socket.join(this.id);
+        return player;
     }
 
     setWords(words) {
@@ -87,7 +282,7 @@ export default class Game {
 
             player.role = data.role;
 
-            if (this.state === GAME_STATES.STARTED) this.updateWords(player);
+            if (this.state === GAME_STATES.STARTED) this.sendWords(player);
         }
 
         if('nickname' in data && (this.rules & GAME_RULES.NICKNAMES_ALLOWED)) {
@@ -145,58 +340,6 @@ export default class Game {
         this.players.forEach(player => this.sendClues(player));
     }
 
-    handle(player, event) {
-        if (event.name === 'start-game') {
-            try {
-                this.start();
-            } catch(error) {
-                return player.socket.emit('error', {
-                    message: error.message,
-                });
-            }
-        }
-
-        if (event.name === 'update-player') {
-            try {
-                this.update(player, event.data);
-            } catch(error) {
-                return player.socket.emit('error', {
-                    message: error.message,
-                });
-            }
-        }
-
-        if (event.name === 'select-card') {
-            this.spymasters.forEach(spymaster => {
-                spymaster.emit('card-selected', {
-                    word: event.data.word,
-                    selected: event.data.selected,
-                });
-            });
-        }
-
-        if (event.name === 'give-clue') {
-            try {
-                this.giveClue(player, event.data);
-            } catch (error) {
-                return player.socket.emit('error', {
-                    message: error.message
-                });
-            }
-        }
-
-        // TODO: check if card has already been revealed before
-        if (event.name === 'reveal-card') {
-            try {
-                this.revealCard(player, event.data);
-            } catch (error) {
-                return player.socket.emit('error', {
-                    message: error.message
-                });
-            }
-        }
-    }
-
     revealCard(player, data) {
         if (player.team !== this.turn.team || player.role !== 0 || player.role !== this.turn.role) {
             throw new Error('NOT_YOUR_TURN');
@@ -225,19 +368,19 @@ export default class Game {
         word.revealed = true;
 
         if (success && player.isLogged) {
-            this.client.users.incrementStats(player.id, {
+            this.manager.client.users.incrementStats(player.id, {
                 words_found: 1,
             });
-            this.client.users.increment(player.id, {
+            this.manager.client.users.increment(player.id, {
                 xp: 15,
             });
         }
 
         if (!success && player.isLogged) {
-            this.client.users.incrementStats(player.id, {
+            this.manager.client.users.incrementStats(player.id, {
                 words_missed: 1,
             });
-            this.client.users.increment(player.id, {
+            this.manager.client.users.increment(player.id, {
                 xp: 5,
             });
         }
@@ -252,138 +395,6 @@ export default class Game {
     checkRelatedWords(team, words) {
       const teamWords = this.teams[team].words;
       return words.every(word => !!teamWords.get(word));
-    }
-
-    remove(player) {
-        // Player.currentGameId = null;
-        if(this.state === GAME_STATES.LOBBY) this.players.delete(player.id);
-        this.broadcast('player-leaved', {
-            id: player.id,
-        });
-    }
-
-    add(player) {
-        player.currentGameId = this.id;
-        player.socket.join(this.id);
-        // TODO: show words before game started option
-        // TODO: shuffle words option
-        player.socket.emit('game-joined', {
-            ...this.toJSON(),
-            player,
-        });
-
-        if (
-            this.state === GAME_STATES.STARTED ||
-            this.rules & GAME_RULES.SHOW_WORDS_BEFORE_GAME_STARTED
-        ) {
-            this.sendWords(player);
-        }
-
-        if (this.state === GAME_STATES.STARTED) {
-            this.sendClues(player);
-        }
-
-        this.players.set(player.id, player);
-        this.manager.io.emit('player-joined', player);
-
-        player.emit('player-list', this.players);
-    }
-
-    end({ winner }) {
-      this.endTime = Date.now();
-      this.ended = true;
-      this.turn.team = null;
-      this.turn.role = null;
-
-      duration = this.endTime - this.startTime;
-      this.broadcast('game-ended', {
-        duration,
-        winner,
-      });
-
-      this.client.games.remove(this.id);
-
-      this.players.forEach(async player => {
-        if (player.team === null) return;
-
-        let gainedXp = player.team === winner ? 100 : 25;
-
-        const hasDoubleXP = player.isLogged ? !!(player.user.flags & 0x01) : false;
-        if (hasDoubleXP) gainedXp *= 2;
-
-        if (player.isLogged) {
-          const level = getLevel(player.user.xp + gainedXp);
-          this.client.users
-            .increment(player.id, {
-              xp: gainedXp,
-              level: level - player.user.level,
-            })
-            .catch(() => {});
-          this.client.users
-            .incrementStats(player.id, {
-              games_played: 1,
-            })
-            .catch(() => {});
-          this.client.users.incrementStats(player.id, {
-            games_won: player.team === winner ? 1 : 0,
-            games_lost: player.team === winner ? 0 : 1,
-          });
-        }
-
-        player.emit('game-rewards', {
-          winner,
-          xp: gainedXp,
-        });
-      });
-    }
-
-    rejoin(socket, user) {
-        var player = this.players.get(user.id);
-
-        if (player) {
-            player.socket = socket;
-            player.user = user;
-        } else {
-            player = new Player(socket, user);
-            this.add(player);
-        }
-
-        socket.join(this.id);
-        return player;
-    }
-
-    start() {
-        if (this.state === GAME_STATES.STARTED) {
-            throw new Error('GAME_ALREADY_STARTED');
-        }
-
-        this.state = GAME_STATES.STARTED;
-        this.turn.team = Math.floor(Math.random() * this.teams.length);
-
-        const shuffledWords = this.words.random(this.words.size);
-
-        shuffledWords.slice(0, 9).forEach(word => {
-            this.words.get(word.id).team = 0;
-        });
-        shuffledWords.slice(9, 17).forEach(word => {
-            this.words.get(word.id).team = 1;
-        });
-
-        Array.from({ length: this.options.deathWordCount }, (_, index) => {
-            this.words.get(shuffledWords[17 + index].id).team = -1;
-        });
-
-        this.words.filter(word => !('team' in word)).forEach(word => (word.team = null));
-
-        this.broadcast('game-started', {
-            turn: this.turn,
-        });
-
-        this.players.forEach(player => this.sendWords(player));
-    }
-
-    broadcast(event, data) {
-        this.players.forEach(player => player.emit(event, data));
     }
 
     sendClues(player) {

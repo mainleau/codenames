@@ -20,6 +20,10 @@ export default class Player {
         this.username = user.username || `Joueur ${this.id.slice(-3)}`;
     }
 
+    get teamId() {
+        return this.team;
+    }
+
     get isLogged() {
         return !!this.user.id;
     }

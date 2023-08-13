@@ -41,6 +41,14 @@ export default class EndComponent extends Component {
         // };
 
         score.append(result);
+        if('points' in this.data) {
+            const points = document.createElement('span');
+            points.style.marginTop = '20px';
+            points.style.textAlign = 'center';
+            points.textContent = `Points : ${this.data.deltaPoints > 0 ? '+' : '-'}
+            ${Math.abs(this.data.deltaPoints)}pts`;
+            score.append(points);
+        }
 
         const button = document.createElement('div');
         button.className = 'cta';

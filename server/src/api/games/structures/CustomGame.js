@@ -2,8 +2,8 @@ import Game from './Game.js';
 import { GAME_MODES, GAME_RULES } from '../../../utils/Constants.js';
 
 export default class CustomGame extends Game {
-    constructor(...params) {
-        super(...params);
+    constructor(manager) {
+        super(manager);
 
         this.mode = GAME_MODES.CUSTOM_GAME;
         this.privacy = null;

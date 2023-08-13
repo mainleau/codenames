@@ -17,10 +17,7 @@ export default class GameInterface extends Interface {
         this.app.appendChild(this.element);
 
         this.game.socket.on('game-rewards', data => {
-            const endComponent = new EndComponent(this.game, this.manager.manager.app, {
-                winner: data.winner,
-                xp: data.xp,
-            }).create();
+            const endComponent = new EndComponent(this.game, this.manager.manager.app, data).create();
             this.element.appendChild(endComponent);
         });
 

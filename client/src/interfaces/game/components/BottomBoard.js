@@ -7,8 +7,15 @@ export default class BottomBoard extends Component {
         this.game = game;
 
         this.game.socket.on('game-joined', data => {
-            this.game.started = data.started;
+            this.game.state = data.state;
+            this.game.rules = data.rules;
+            this.game.settings = data.settings;
             this.game.turn = data.turn;
+            this.game.hostId = data.hostId
+            if(!this.game.players.get(data.player.id)) {
+                this.game.players.set(data.player.id, data.player);
+            }
+            this.game.playerId = data.player.id;
             this.rerender();
         });
 
@@ -146,8 +153,8 @@ export default class BottomBoard extends Component {
                 this.element.appendChild(clueBar);
             }
         }
-
-        if (this.game.started === false) {
+        
+        if (this.game.state === 0 && this.game.hostId === this.game.player.id) {
             this.element.appendChild(startGameCTA);
         }
 

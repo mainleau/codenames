@@ -1,13 +1,14 @@
+import { Collection } from '@discordjs/collection';
 import { GAME_MODES } from '../../../utils/Constants.js';
 import CustomGameManager from '../managers/CustomGameManager.js';
 import GameManager from '../managers/GameManager.js';
 import QuickGameManager from '../managers/QuickGameManager.js';
+import RankedGameManager from '../managers/RankedGameManager.js';
 
 export default class Manager {
     constructor(io, client) {
         this.io = io;
         this.client = client;
-        this.games = new GameManager(io, client);
 
         const entries = Object.entries(GAME_MODES);
 
@@ -17,6 +18,8 @@ export default class Manager {
                     ? new QuickGameManager(this)
                     : GAME_MODES[key] === GAME_MODES.CUSTOM_GAME
                     ? new CustomGameManager(this)
+                    : GAME_MODES[key] === GAME_MODES.RANKED_GAME
+                    ? new RankedGameManager(this)
                     : new GameManager(this);
         });
 
@@ -24,7 +27,7 @@ export default class Manager {
             const { action } = socket.handshake.query;
             var mode = parseInt(socket.handshake.query.mode);
 
-            if (!mode) {
+            if (isNaN(mode)) {
                 entries.forEach(([key]) => {
                     let game = this[key].find(
                         game => game.id === socket.handshake.query.id,
@@ -35,6 +38,10 @@ export default class Manager {
                         return mode = game.mode;
                     }
                 });
+                if(isNaN(mode)) {
+                    socket.emit('error', 'INVALID_GAME_ID');
+                    return socket.disconnect();
+                }
             }
 
             if (action === 'join-game' || action === 'create-game') {
@@ -44,5 +51,9 @@ export default class Manager {
                 }
             }
         });
+    }
+
+    get games() {
+        return new Collection(...Object.keys(GAME_MODES).map(key => this[key]));
     }
 }

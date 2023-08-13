@@ -59,7 +59,6 @@
 }
 
 #games-container {
-    margin-top: 150px;
     width: 1000px;
     display: flex;
     flex-direction: column;
@@ -419,4 +418,17 @@
     border-radius: 30px;
     padding: 2px 12px;
     width: fit-content;
+}
+
+#home #game-ctas {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    gap: 30px;
+}
+
+#home #middle {
+    display: flex;
+    flex-direction: column;
+    gap: 80px;;
 }

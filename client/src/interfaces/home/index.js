@@ -52,9 +52,23 @@ export default class HomeInterface extends Interface {
         };
 
         const createGameText = document.createElement('span');
-        createGameText.textContent = 'Créer une partie';
+        createGameText.textContent = 'Créer une partie personnalisée';
 
         createGameCTA.appendChild(createGameText);
+
+        optionsBar.append(createGameCTA);
+
+        const gameList = new GameList(this.manager);
+
+        const liveGames = gameList.create();
+
+        gamesContainer.append(optionsBar, liveGames);
+
+        const middle = document.createElement('div')
+        middle.id = 'middle';
+
+        const gameCTAs = document.createElement('div');
+        gameCTAs.id = 'game-ctas';
 
         const joinGameCTA = document.createElement('div');
         joinGameCTA.className = 'game-cta';
@@ -64,21 +78,29 @@ export default class HomeInterface extends Interface {
         };
 
         const joinGameText = document.createElement('span');
-        joinGameText.textContent = 'Rejoindre une partie';
+        joinGameText.textContent = 'Partie rapide ⚡';
 
         joinGameCTA.appendChild(joinGameText);
 
-        optionsBar.append(createGameCTA, joinGameCTA);
+        const joinRankedGameCTA = document.createElement('div');
+        joinRankedGameCTA.className = 'game-cta';
+        joinRankedGameCTA.onclick = () => {
+            element.remove();
+            this.manager.games.join(null, 0x02);
+        };
 
-        const gameList = new GameList(this.manager);
+        const joinRankedGameText = document.createElement('span');
+        joinRankedGameText.textContent = 'Partie classée 🏆';
 
-        const liveGames = gameList.create();
+        joinRankedGameCTA.appendChild(joinRankedGameText);
 
-        gamesContainer.append(optionsBar, liveGames);
+        gameCTAs.append(joinGameCTA, joinRankedGameCTA);
+
+        middle.append(gameCTAs, gamesContainer)
 
         const other = new FriendListComponent(this.manager).create();
 
-        content.append(profile, gamesContainer, other);
+        content.append(profile, middle, other);
 
         const buyContainer = document.createElement('div');
         buyContainer.id = 'buy-container';

@@ -353,6 +353,7 @@
     width: 600px;
     height: 600px;
     gap: 20px;
+    border: #473535 16px solid;
 }
 
 #end-component #container {
