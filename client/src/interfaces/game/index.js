@@ -35,20 +35,36 @@ export default class GameInterface extends Interface {
         const element = document.createElement('div');
         element.id = 'game';
 
+        const topBar = document.createElement('div');
+        topBar.id = 'top-bar';
+
         const leftPanel = new LeftPanel(this.game).create();
+
+        const center = document.createElement('div');
 
         const middlePanel = document.createElement('div');
         middlePanel.id = 'middle-panel';
+
+        const boardContainer = document.createElement('div');
+        boardContainer.id = 'board-container';
 
         this.board = new Board(this.game, { size: 5 }).create();
 
         const bottomBoard = new BottomBoard(this.game).create();
 
-        middlePanel.append(this.board, bottomBoard);
+        boardContainer.append(this.board);
+        center.append(boardContainer);
+
+        middlePanel.append(center, bottomBoard);
 
         const rightPanel = new RightPanel(this.game).create();
 
-        element.append(leftPanel, middlePanel, rightPanel);
+        const content = document.createElement('div');
+        content.id = 'content';
+
+        content.append(leftPanel, middlePanel, rightPanel);
+
+        element.append(topBar, content);
         return element;
     }
 }

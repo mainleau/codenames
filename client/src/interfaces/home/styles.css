@@ -7,7 +7,7 @@
     overflow: hidden;
 }
 
-#content {
+#home #content {
     display: flex;
     gap: 20px;
     justify-content: space-between;
