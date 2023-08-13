@@ -68,7 +68,7 @@ export default class GameList extends Component {
             time.className = 'time';
             time.textContent =
                 timeCount > 60
-                    ? `il y a plus de ${Math.floor(timeCount / 60)} minutes`
+                    ? `il y a plus de ${Math.floor(timeCount / 60)} minute${Math.floor(timeCount / 60) > 1 ? 's' : ''}`
                     : `il y a ${timeCount}s`;
 
             if (liveGame !== null) game.append(name, time, teams);
