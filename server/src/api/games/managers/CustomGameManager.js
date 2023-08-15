@@ -13,8 +13,6 @@ export default class CustomGameManager extends GameManager {
     }
 
     disconnect(player) {
-        if (!player.currentGameId) return;
-
         const game = this.get(player.currentGameId);
 
         game.remove(player);
@@ -26,7 +24,9 @@ export default class CustomGameManager extends GameManager {
         const game = this.get(id);
         if (!game) return socket.disconnect();
 
-        game.rejoin(socket, user);
+        const player = game.rejoin(socket, user);
+
+        return { game, player};
     }
 
     async connect(socket) {
@@ -39,27 +39,30 @@ export default class CustomGameManager extends GameManager {
             user = await this.manager.client.users.fetchById(content.id);
         } // TODO: different and shorter id for anonymous users, kept in a localstorage token prop
 
-        if (socket.handshake.query.id) return this.reconnect(socket, user);
-
-        const player = new Player(socket, user);
-
-        socket.on('disconnect', () => this.disconnect(player));
-
-        let game = null;
-        if (isUUID(id)) {
+        var player = null;
+        var game = null;
+        var reconnected = false;
+        if(isUUID(id) && this.find(game => game.players.get(user.id))) {
+            var { game, player } = this.reconnect(socket, user);
+            reconnected = true;
+        } else if (isUUID(id)) {
+            player = new Player(socket, user);
             game = this.get(id);
         } else {
+            player = new Player(socket, user);
             game = this.create();
             game.hostId = player.id; // TODO: add host flag to player
             this.set(game.id, game);
         }
-
+        
         // TODO: check if player already in a game (or in this game), if so reject (or rejoin)
-        game.add(player);
-
+        if(!reconnected) game.add(player);
+        
         socket.onAny((name, data) => {
             game.handle(player, { name, data });
         });
+
+        socket.on('disconnect', () => game.state === 0 && this.disconnect(player));
     }
 
     create() {

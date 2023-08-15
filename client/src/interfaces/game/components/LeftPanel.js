@@ -16,20 +16,8 @@ export default class LeftPanel extends Component {
         const upBanner = document.createElement('div');
         upBanner.className = 'up-banner';
 
-        const options = document.createElement('div');
-        options.className = 'options';
 
-        const backButton = document.createElement('span');
-        backButton.onclick = () => {
-            this.game.socket.close();
-            const home = new HomeInterface(this.game.manager.manager);
-            document.body.firstChild.children[0].replaceWith(home.render());
-        };
-        backButton.textContent = '⬅️';
-
-        options.appendChild(backButton);
-
-        upBanner.appendChild(options);
+        upBanner.append();
 
         const team = new Team(this.game, this.team).create();
 

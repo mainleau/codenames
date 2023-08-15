@@ -5,7 +5,7 @@
 }
 
 #game #middle-panel > :first-child {
-    padding: 50px 80px;
+    padding: 0 80px 50px;
 }
 
 #game #board-container {
@@ -17,12 +17,6 @@
     display: flex;
     height: inherit;
     flex: 1;
-}
-
-#game #top-bar {
-    width: 100vw;
-    height: 116px;
-    background-color: rosybrown;
 }
 
 #middle-panel {
@@ -247,19 +241,6 @@
     justify-content: center;
 }
 
-.options {
-    border-radius: 12px;
-    padding: 5px 25px;
-    background: bisque;
-    display: flex;
-    font-size: 2em;
-    gap: 20px;
-}
-
-.options > span {
-    cursor: pointer;
-}
-
 #new-username-modal {
     border: #473535 16px solid;
     padding: 0 40px;
@@ -461,4 +442,48 @@
     padding: 0 15px;
     font-size: 2em;
     width: 200px;
+}
+
+#game #top-bar {
+    width: 100vw;
+    height: 140px;
+    background-color: bisque;
+    display: flex;
+    align-items: center;
+}
+
+#game #top-bar > div {
+    display: flex;
+    justify-content: center;
+}
+
+#game #top-bar-middle {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+}
+
+#game #top-bar-right, #top-bar-left {
+    width: 350px;
+}
+
+#game #top-bar #game-status {
+    font-size: 2em;
+    background-color: white;
+    padding: 16px 40px;
+    border-radius: 20px;
+}
+
+.options {
+    border-radius: 12px;
+    padding: 5px 25px;
+    background: rosybrown;
+    display: flex;
+    font-size: 2em;
+    gap: 20px;
+}
+
+.options > span {
+    text-shadow: #473535 2px 2px 0;
+    cursor: pointer;
 }

@@ -63,7 +63,7 @@ export default class QuickGameManager extends GameManager {
             game.handle(player, { name, data });
         });
 
-        socket.on('disconnect', () => this.disconnect(player));
+        socket.on('disconnect', () => game.state && this.disconnect(player));
 
         // TODO: check if player already in a game (or in this game), if so reject (or rejoin)
         if(!socket.handshake.query.id) game.add(player);
