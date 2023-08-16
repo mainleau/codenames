@@ -1,4 +1,5 @@
 import Component from '../../../structures/Component.js';
+import UsernameComponent from '../../home/components/UsernameComponent.js';
 
 export default class Team extends Component {
     constructor(game, team) {
@@ -46,10 +47,6 @@ export default class Team extends Component {
         this.element = document.createElement('div');
         this.element.className = 'team';
 
-        const title = document.createElement('span');
-        title.className = 'team-title';
-        title.textContent = `EQUIPE ${this.team ? 'ROUGE' : 'BLEUE'}`;
-
         const listContainer = document.createElement('div');
         listContainer.className = 'list-container';
 
@@ -71,10 +68,11 @@ export default class Team extends Component {
                 if (player.team !== this.team || player.role !== role) return [];
                 const line = document.createElement('div');
 
-                const username = document.createElement('span');
-                username.className = 'username';
-                username.textContent = player.nickname || player.username;
-
+                const username = new UsernameComponent({
+                    nickname: player.nickname,
+                    username: player.username,
+                    level: player.level,
+                }).create();
                 line.append(username);
                 return line;
             });
@@ -86,7 +84,7 @@ export default class Team extends Component {
 
         listContainer.append(firstList, secondList);
 
-        this.element.append(title, listContainer);
+        this.element.append(listContainer);
         return this.element;
     }
 }

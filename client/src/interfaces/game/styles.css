@@ -4,7 +4,7 @@
     height: inherit;
 }
 
-#game #middle-panel > :first-child {
+#game #middle-panel #board-wrapper {
     padding: 0 80px 50px;
 }
 
@@ -224,6 +224,15 @@
     transform: translateY(3px);
 }
 
+#left, #right {
+    display: flex;
+    flex-direction: column;
+}
+
+#left-panel, #right-panel {
+    height: 100%;
+}
+
 #left-panel {
     background-color: #BEF3EB;
     width: 350px;
@@ -319,6 +328,10 @@
     flex-direction: column;
 }
 
+.list-container:first-child {
+    margin-top: 20px;
+}
+
 .team-subtitle {
     font-size: 1.6em;
     font-weight: bold;
@@ -329,8 +342,8 @@
     text-align: center;
 }
 
-.username {
-    font-size: 1.4em;
+#game .username-component {
+    padding-left: 25px;
 }
 
 #game #blur-mask{
@@ -444,30 +457,23 @@
     width: 200px;
 }
 
-#game #top-bar {
-    width: 100vw;
-    height: 140px;
-    background-color: bisque;
-    display: flex;
-    align-items: center;
-}
-
-#game #top-bar > div {
+#game #top-board {
     display: flex;
     justify-content: center;
-}
-
-#game #top-bar-middle {
-    display: flex;
-    justify-content: center;
+    margin: 32px;
     flex: 1;
 }
 
-#game #top-bar-right, #top-bar-left {
+#game #top-right-panel, #top-left-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 350px;
+    height: 90px;
+    background-color: bisque;
 }
 
-#game #top-bar #game-status {
+#game #top-board #game-status {
     font-size: 2em;
     background-color: white;
     padding: 16px 40px;

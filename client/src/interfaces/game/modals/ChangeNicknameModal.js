@@ -22,6 +22,7 @@ export default class ChangeNicknameModal extends Modal {
 
         const newUsernameInput = document.createElement('input');
         newUsernameInput.spellcheck = false;
+        newUsernameInput.maxLength = 16;
         newUsernameInput.id = 'new-username-input';
 
         const changeUsernameCTA = document.createElement('div');

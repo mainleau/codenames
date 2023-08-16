@@ -29,7 +29,11 @@ export default class UsernameComponent extends Component {
 
         const usernameText = document.createElement('span');
         usernameText.className = 'username-text';
-        usernameText.textContent = this.user.username;
+        usernameText.textContent = this.user.nickname || this.user.username;
+
+        if(this.user.nickname) {
+            usernameText.style.fontStyle = 'italic';
+        }
 
         const badges = document.createElement('div');
         badges.id = 'badges';

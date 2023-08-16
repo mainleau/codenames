@@ -36,6 +36,7 @@ export default class Player {
         return {
             id: this.id,
             username: this.username,
+            level: this.user.level,
             nickname: this.nickname,
             team: this.team,
             role: this.role,

@@ -6,6 +6,7 @@ import RightPanel from './components/RightPanel.js';
 import SettingsComponent from './components/SettingsComponent.js';
 import Interface from '../../structures/Interface.js';
 import TopBar from './components/TopBar.js';
+import ChangeNicknameModal from './modals/ChangeNicknameModal.js';
 
 export default class GameInterface extends Interface {
     constructor(manager, game) {
@@ -30,23 +31,76 @@ export default class GameInterface extends Interface {
                 this.app.append(settings);
             }
         });
+
+        this.phase = 0;
+
+        this.game.socket.on('game-started', () => {
+            this.phase = 1;
+            this.rerender();
+        });
+
+        this.game.socket.on('card-revealed', () => {
+            this.phase = 1;
+            this.rerender();
+        });
+
+        this.game.socket.on('clue-forwarded', () => {
+            this.phase = 2;
+            this.rerender();
+        });
     }
 
     render() {
         const element = document.createElement('div');
         element.id = 'game';
 
-        const topBar = new TopBar(this.game, this.manager.manager.app).create();
+        const left = document.createElement('div');
+        left.id = 'left';
+
+        const topLeftPanel = document.createElement('div');
+        topLeftPanel.id = 'top-left-panel';
+
+        const optionsLeft = document.createElement('div');
+        optionsLeft.className = 'options';
+
+        const backButton = document.createElement('span');
+        backButton.onclick = () => {
+            this.game.socket.close();
+            this.manager.manager.app.goHome();
+        };
+        backButton.textContent = '⬅️';
+
+        optionsLeft.appendChild(backButton);
+
+        topLeftPanel.append(optionsLeft);
 
         const leftPanel = new LeftPanel(this.game).create();
 
+        left.append(topLeftPanel, leftPanel);
+
         const center = document.createElement('div');
+        center.id = 'board-wrapper';
 
         const middlePanel = document.createElement('div');
         middlePanel.id = 'middle-panel';
 
         const boardContainer = document.createElement('div');
         boardContainer.id = 'board-container';
+
+        const topBoard = document.createElement('div');
+        topBoard.id = 'top-board';
+
+        const gameStatus = document.createElement('div');
+        gameStatus.id = 'game-status';
+
+        const gameStatusText = document.createElement('span');
+        gameStatusText.textContent = !this.phase ? 'En attente de joueurs...'
+            : this.phase === 1 ? 'Les espions cherchent un indice'
+            : 'Les agents cherchent les cartes';
+
+        gameStatus.append(gameStatusText);
+
+        topBoard.append(gameStatus);
 
         this.board = new Board(this.game, { size: 5 }).create();
 
@@ -55,16 +109,40 @@ export default class GameInterface extends Interface {
         boardContainer.append(this.board);
         center.append(boardContainer);
 
-        middlePanel.append(center, bottomBoard);
+        middlePanel.append(topBoard, center, bottomBoard);
+
+        const right = document.createElement('div');
+        right.id = 'right';
+
+        const topRightPanel = document.createElement('div');
+        topRightPanel.id = 'top-right-panel';
+
+        const optionsRight = document.createElement('div');
+        optionsRight.className = 'options';
+
+        const changeUsernameModal = new ChangeNicknameModal(this.game);
+
+        const changeUsernameCTA = document.createElement('span');
+        changeUsernameCTA.onclick = event => changeUsernameModal.open(event);
+        changeUsernameCTA.textContent = '🏷️';
+
+        const settingsCTA = document.createElement('span');
+        settingsCTA.textContent = '⚙️';
+
+        optionsRight.append(changeUsernameCTA, settingsCTA);
+
+        topRightPanel.append(optionsRight);
 
         const rightPanel = new RightPanel(this.game).create();
+
+        right.append(topRightPanel, rightPanel);
 
         const content = document.createElement('div');
         content.id = 'content';
 
-        content.append(leftPanel, middlePanel, rightPanel);
+        content.append(left, middlePanel, right);
 
-        element.append(topBar, content);
+        element.append(content);
         return element;
     }
 }

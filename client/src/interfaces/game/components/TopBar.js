@@ -8,23 +8,6 @@ export default class TopBar extends Component {
         this.app = app;
 
         // TODO: create GAME_PHASES constants
-
-        this.phase = 0;
-
-        this.game.socket.on('game-started', data => {
-            this.phase = 1;
-            this.rerender();
-        });
-
-        this.game.socket.on('card-revealed', () => {
-            this.phase = 1;
-            this.rerender();
-        });
-
-        this.game.socket.on('clue-forwarded', () => {
-            this.phase = 2;
-            this.rerender();
-        });
     }
 
     create() {
@@ -33,18 +16,6 @@ export default class TopBar extends Component {
 
         const left = document.createElement('div');
         left.id = 'top-bar-left';
-
-        const optionsLeft = document.createElement('div');
-        optionsLeft.className = 'options';
-
-        const backButton = document.createElement('span');
-        backButton.onclick = () => {
-            this.game.socket.close();
-            this.app.goHome();
-        };
-        backButton.textContent = '⬅️';
-
-        optionsLeft.appendChild(backButton);
 
         left.append(optionsLeft);
 

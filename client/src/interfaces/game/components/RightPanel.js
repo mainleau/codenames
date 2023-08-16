@@ -16,7 +16,11 @@ export default class RightPanel extends Component {
         const upBanner = document.createElement('div');
         upBanner.className = 'up-banner';
 
-        upBanner.append();
+        const title = document.createElement('span');
+        title.className = 'team-title';
+        title.textContent = `EQUIPE ${this.team ? 'ROUGE' : 'BLEUE'}`;
+
+        upBanner.append(title);
 
         const team = new Team(this.game, this.team).create();
 
