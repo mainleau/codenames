@@ -1,10 +1,16 @@
 import APIRequest from './APIRequest.js';
+import AuthController from '../api/auth/index.js';
+import CoreController from '../api/core/index.js';
+import GameController from '../api/games/index.js';
 
 export default class REST {
-    constructor(token, routes, options) {
-        this.routes = routes;
-        this.options = options;
+    constructor(token, routes, app) {
         this.token = token;
+        this.routes = routes;
+
+        this.auth = new AuthController(this);
+        this.core = new CoreController(this);
+        this.games = new GameController(this, app);
     }
 
     get(route, options = {}) {

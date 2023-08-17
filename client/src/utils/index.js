@@ -9,6 +9,12 @@ export function isUUID(string) {
     return regex.test(string);
 }
 
+export const jwt = {
+    verify: (token) => {
+        return JSON.parse(atob(token.split('.')[1]));
+    }
+}
+
 export function getLevel(xp) {
     const XPTiers = [
         200, 350, 500, 650, 750, 850, 950, 1050, 1150, 1250, 1350, 1450, 1500, 1550, 1600,

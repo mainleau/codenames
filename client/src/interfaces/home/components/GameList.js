@@ -1,9 +1,9 @@
 import Component from '../../../structures/Component.js';
 
 export default class GameList extends Component {
-    constructor(manager) {
+    constructor(app) {
         super();
-        this.manager = manager;
+        this.app = app;
         this.games = [null, null, null];
         this.fetchGames();
         this.interval = setInterval(
@@ -18,7 +18,7 @@ export default class GameList extends Component {
     }
 
     async fetchGames() {
-        const games = await this.manager.client.games.fetch();
+        const games = await this.app.manager.api.core.games.fetch();
         this.games = games.reverse().concat(new Array(3).fill(null)).slice(0, 3);
         this.rerender();
     }

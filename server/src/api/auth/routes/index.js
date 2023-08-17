@@ -16,5 +16,6 @@ const client = new Client();
 const authentication = new AuthenticationController(auth, client);
 router.post('/register', authentication.register.bind(authentication));
 router.post('/login', authentication.login.bind(authentication));
+router.post('/request', authentication.requestTokenAsGuest.bind(authentication));
 
 export default router;

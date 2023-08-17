@@ -29,7 +29,7 @@ export default class APIRequest {
         }
 
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 15000);
+        const timeout = setTimeout(() => controller.abort(), 15_000);
         return fetch(url, {
             method: this.method,
             headers,

@@ -4,13 +4,13 @@ import ProfileModal from '../modals/ProfileModal.js';
 // Import defaultAvatarImage from '../../../../assets/images/default-avatar.svg';
 
 export default class ProfileComponent extends Component {
-    constructor(manager) {
+    constructor(app) {
         super();
 
         this.cache = {};
-
-        this.manager = manager;
-        this.manager.client.users.fetchMe().then(user => {
+        console.log(app)
+        this.app = app;
+        this.app.manager.api.core.users.fetchMe().then(user => {
             this.cache = user;
             this.rerender();
         });

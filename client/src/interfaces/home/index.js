@@ -5,9 +5,9 @@ import SettingsModal from './modals/SettingsModal.js';
 import Interface from '../../structures/Interface.js';
 
 export default class HomeInterface extends Interface {
-    constructor(manager) {
+    constructor(app) {
         super();
-        this.manager = manager;
+        this.app = app;
     }
 
     render() {
@@ -23,7 +23,7 @@ export default class HomeInterface extends Interface {
         const loginButton = document.createElement('div');
         loginButton.id = 'login-button';
         loginButton.onclick = () => {
-            new SettingsModal(this.manager).open();
+            new SettingsModal(this.app).open();
         };
 
         const loginButtonText = document.createElement('span');
@@ -36,7 +36,8 @@ export default class HomeInterface extends Interface {
         const content = document.createElement('div');
         content.id = 'content';
 
-        const profile = new ProfileComponent(this.manager).create();
+        const profile = new ProfileComponent(this.app).create();
+        if(!localStorage.token) profile.style.filter = 'brightness(0.5)';
 
         const gamesContainer = document.createElement('div');
         gamesContainer.id = 'games-container';
@@ -48,7 +49,7 @@ export default class HomeInterface extends Interface {
         createGameCTA.className = 'game-cta';
         createGameCTA.onclick = () => {
             element.remove();
-            this.manager.games.create(0x01);
+            this.app.api.games.create(0x01);
         };
 
         const createGameText = document.createElement('span');
@@ -58,7 +59,7 @@ export default class HomeInterface extends Interface {
 
         optionsBar.append(createGameCTA);
 
-        const gameList = new GameList(this.manager);
+        const gameList = new GameList(this.app);
 
         const liveGames = gameList.create();
 
@@ -74,7 +75,7 @@ export default class HomeInterface extends Interface {
         joinGameCTA.className = 'game-cta';
         joinGameCTA.onclick = () => {
             element.remove();
-            this.manager.games.join(null, 0x00);
+            this.api.games.join(null, 0x00);
         };
 
         const joinGameText = document.createElement('span');
@@ -86,7 +87,7 @@ export default class HomeInterface extends Interface {
         joinRankedGameCTA.className = 'game-cta';
         joinRankedGameCTA.onclick = () => {
             element.remove();
-            this.manager.games.join(null, 0x02);
+            this.api.games.join(null, 0x02);
         };
 
         const joinRankedGameText = document.createElement('span');
@@ -98,7 +99,8 @@ export default class HomeInterface extends Interface {
 
         middle.append(gameCTAs, gamesContainer)
 
-        const other = new FriendListComponent(this.manager).create();
+        const other = new FriendListComponent(this.app).create();
+        if(!localStorage.token) other.style.filter = 'brightness(0.5)';
 
         content.append(profile, middle, other);
 

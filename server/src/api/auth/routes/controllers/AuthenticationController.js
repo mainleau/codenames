@@ -4,7 +4,7 @@ import {
     signInWithEmailAndPassword,
 } from 'firebase/auth';
 import jwt from 'jsonwebtoken';
-import { validate as isUUID } from 'uuid';
+import { validate as isUUID, v4 } from 'uuid';
 
 dotenv.config();
 
@@ -14,11 +14,27 @@ export default class AuthenticationController {
         this.client = client;
     }
 
+    async requestTokenAsGuest(_, res, __) {
+
+        const id = uuid.v4();
+
+        const token = jwt.sign(
+            {
+                id,
+                guest: true,
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: 30 * 24 * 60 * 60 },
+        );
+
+        return res.send({ token });
+    }
+
     async login(req, res, next) {
         const { email } = req.body;
         const { password } = req.body;
 
-        let user;
+        var user;
         try {
             user = await signInWithEmailAndPassword(this.auth, email, password);
         } catch (error) {
@@ -35,6 +51,7 @@ export default class AuthenticationController {
         const token = jwt.sign(
             {
                 id,
+                guest: false,
             },
             process.env.JWT_SECRET,
             { expiresIn: 30 * 24 * 60 * 60 },
@@ -64,7 +81,7 @@ export default class AuthenticationController {
             return next(error);
         }
 
-        let user;
+        var user;
         try {
             user = await createUserWithEmailAndPassword(this.auth, email, password);
         } catch (error) {
@@ -74,6 +91,7 @@ export default class AuthenticationController {
         const token = jwt.sign(
             {
                 id,
+                guest: false,
             },
             process.env.JWT_SECRET,
             { expiresIn: 30 * 24 * 60 * 60 },

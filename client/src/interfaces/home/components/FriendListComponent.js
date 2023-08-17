@@ -1,17 +1,16 @@
 import UsernameComponent from './UsernameComponent.js';
-import User from '../../../api/structures/User.js';
+import User from '../../../api/core/structures/User.js';
 import Component from '../../../structures/Component.js';
 import ProfileModal from '../modals/ProfileModal.js';
 
 export default class FriendListComponent extends Component {
-    constructor(manager) {
+    constructor(app) {
         super();
 
-        this.manager = manager;
-
+        this.app = app;
         this.cache = [];
 
-        manager.client.friends.fetchWithGames().then(friends => {
+        this.app.manager.api.core.friends.fetchWithGames().then(friends => {
             this.cache = friends;
             this.rerender();
         });

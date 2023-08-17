@@ -1,6 +1,7 @@
 export default {
-    REGISTER: '/register',
+    REQUEST: '/request',
     LOGIN: '/login',
+    REGISTER: '/register',
 
     FETCH_USER_BY_ID: id => `/users/${id}`,
     FETCH_ME: '/users/me',
