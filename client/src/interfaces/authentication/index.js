@@ -2,7 +2,7 @@ import LoginInterface from './LoginInterface.js';
 import RegisterInterface from './RegisterInterface.js';
 import Interface from '../../structures/Interface.js';
 
-export default class AuthenticationInterface extends Interface {
+export default class AuthInterface extends Interface {
     constructor(manager, ref) {
         super();
         this.ref = ref;

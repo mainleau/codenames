@@ -154,7 +154,7 @@
     background-color: salmon;
 }
 
-#menu {
+#home #top-bar #options {
     display: flex;
     flex-direction: row-reverse;
     margin: 20px 40px;

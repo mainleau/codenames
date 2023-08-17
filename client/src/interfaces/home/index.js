@@ -1,8 +1,8 @@
 import FriendListComponent from './components/FriendListComponent.js';
 import GameList from './components/GameList.js';
 import ProfileComponent from './components/ProfileComponent.js';
-import SettingsModal from './modals/SettingsModal.js';
 import Interface from '../../structures/Interface.js';
+import TopBarComponent from './components/TopBarComponent.js';
 
 export default class HomeInterface extends Interface {
     constructor(app) {
@@ -11,33 +11,18 @@ export default class HomeInterface extends Interface {
     }
 
     render() {
-        document.title = 'Nom de code (BÊTA)';
         history.replaceState(null, '', '/');
 
-        const element = document.createElement('div');
-        element.id = 'home';
+        this.element = document.createElement('div');
+        this.element.id = 'home';
 
-        const menu = document.createElement('div');
-        menu.id = 'menu';
-
-        const loginButton = document.createElement('div');
-        loginButton.id = 'login-button';
-        loginButton.onclick = () => {
-            new SettingsModal(this.app).open();
-        };
-
-        const loginButtonText = document.createElement('span');
-        loginButtonText.textContent = '⚙️';
-
-        loginButton.appendChild(loginButtonText);
-
-        menu.append(loginButton);
+        const topBar = new TopBarComponent(this.app).create();
 
         const content = document.createElement('div');
         content.id = 'content';
 
         const profile = new ProfileComponent(this.app).create();
-        if(!localStorage.token) profile.style.filter = 'brightness(0.5)';
+        if(!this.app.manager.api.token) profile.style.filter = 'brightness(0.5)';
 
         const gamesContainer = document.createElement('div');
         gamesContainer.id = 'games-container';
@@ -48,7 +33,7 @@ export default class HomeInterface extends Interface {
         const createGameCTA = document.createElement('div');
         createGameCTA.className = 'game-cta';
         createGameCTA.onclick = () => {
-            element.remove();
+            this.element.remove();
             this.app.api.games.create(0x01);
         };
 
@@ -74,7 +59,7 @@ export default class HomeInterface extends Interface {
         const joinGameCTA = document.createElement('div');
         joinGameCTA.className = 'game-cta';
         joinGameCTA.onclick = () => {
-            element.remove();
+            this.element.remove();
             this.api.games.join(null, 0x00);
         };
 
@@ -86,7 +71,7 @@ export default class HomeInterface extends Interface {
         const joinRankedGameCTA = document.createElement('div');
         joinRankedGameCTA.className = 'game-cta';
         joinRankedGameCTA.onclick = () => {
-            element.remove();
+            this.element.remove();
             this.api.games.join(null, 0x02);
         };
 
@@ -124,7 +109,7 @@ export default class HomeInterface extends Interface {
 
         buyContainer.append(buy);
 
-        element.append(menu, content, buyContainer);
-        return element;
+        this.element.append(topBar, content, buyContainer);
+        return this.element;
     }
 }

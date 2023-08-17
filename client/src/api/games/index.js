@@ -21,6 +21,12 @@ export default class GameController extends BaseController {
             : `ws://${url.hostname}:8887`;
     }
 
+    async fetch() {
+        const data = await this.api.games.get(this.routes.FETCH_PUBLIC_GAMES);
+
+        return data;
+    }
+
     create(mode) {
         const socket = io(this.socketURL, {
             auth: {

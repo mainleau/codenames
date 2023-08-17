@@ -5,7 +5,6 @@ import LeftPanel from './components/LeftPanel.js';
 import RightPanel from './components/RightPanel.js';
 import SettingsComponent from './components/SettingsComponent.js';
 import Interface from '../../structures/Interface.js';
-import TopBar from './components/TopBar.js';
 import ChangeNicknameModal from './modals/ChangeNicknameModal.js';
 
 export default class GameInterface extends Interface {
