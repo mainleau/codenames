@@ -11,8 +11,8 @@ export default class RankedGameManager extends GameManager {
         this.queue = new Collection();
 
         this.options = {
-            maxPlayerCount: 6,
-            maxOperativeCount: 2,
+            maxPlayerCount: 4,
+            maxOperativeCount: 1,
             maxSpymasterCount: 1,
         };
     }
@@ -76,9 +76,8 @@ export default class RankedGameManager extends GameManager {
         // TODO: check if player already in a game (or in this game), if so reject (or rejoin)
         if(!socket.handshake.query.id) game.add(player);
 
-        if (game.players.size === this.options.maximumPlayerNumber) {
-            this.queue.delete(game.id);
-            this.set(game.id, game);
+        if (game.players.size === this.options.maxPlayerCount) {
+            setTimeout(() => game.start(), 3000);
         }
     }
 
