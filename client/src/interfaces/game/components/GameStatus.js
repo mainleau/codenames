@@ -32,7 +32,7 @@ export default class GameStatus extends Component {
 
         const gameStatusText = document.createElement('span');
         gameStatusText.textContent = this.game.state === 0 ? 'En attente de joueurs...'
-        ? this.game.state === 4 : 'La partie va commencer...'
+        : this.game.state === 4 ? 'La partie va commencer...'
         : this.game.turn === 1 ? 'Les espions cherchent un indice'
         : 'Les agents cherchent les cartes';
 
