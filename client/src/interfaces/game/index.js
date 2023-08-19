@@ -15,7 +15,7 @@ export default class GameInterface extends Interface {
         this.game = game;
 
         this.game.socket.on('game-rewards', data => {
-            const endComponent = new EndComponent(this.game, this.manager.manager.app, data).create();
+            const endComponent = new EndComponent(this.game, this.app, data).create();
             this.element.appendChild(endComponent);
         });
 
@@ -29,11 +29,11 @@ export default class GameInterface extends Interface {
                 this.game.players.set(data.player.id, data.player);
             }
             this.game.playerId = data.player.id;
+            this.game.name = data.name || `Partie ${data.id.slice(0, 3)}`;
             if(!data.name && data.hostId === data.player.id) {
                 const settings = new SettingsComponent(this.game, data).create()
                 this.app.element.append(settings);
             }
-            this.game.name = data.name || `Partie ${data.id.slice(0, 3)}`;
         });
     }
 

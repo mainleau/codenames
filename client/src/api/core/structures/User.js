@@ -1,6 +1,6 @@
 export default class User {
-    constructor(client, { id, username, flags, xp, level, gold, gems }) {
-        this.client = client;
+    constructor(api, { id, username, flags, xp, level, gold, gems }) {
+        this.api = api;
 
         this.id = id;
         this.username = username;
@@ -31,6 +31,6 @@ export default class User {
     }
 
     async fetchStats() {
-        this.stats = await this.client.users.fetchStatsByUserId(this.id);
+        this.stats = await this.api.core.users.fetchStatsByUserId(this.id);
     }
 }

@@ -6,6 +6,8 @@ export default class BottomBoard extends Component {
         super();
         this.game = game;
 
+        this.clue = '';
+
         this.game.socket.on('game-joined', () => {
             this.rerender();
         });
@@ -21,6 +23,7 @@ export default class BottomBoard extends Component {
         });
 
         this.game.socket.on('clue-forwarded', data => {
+            this.clue = '';
             this.game.teams[this.game.turn.team].clues.set(
                 this.game.teams[this.game.turn.team].size,
                 {
@@ -78,12 +81,12 @@ export default class BottomBoard extends Component {
         const clueCountSelector = new ClueCountSelector(this.game).create(clueCountText);
 
         const clueWordInput = document.createElement('input');
-        // If(this.game.clue) clueWordInput.value = this.game.clue;
+        if(this.clue) clueWordInput.value = this.clue;
         clueWordInput.spellcheck = false;
         clueWordInput.style.textTransform = true ? 'uppercase' : 'none';
         clueWordInput.id = 'clue-word-input';
         clueWordInput.oninput = () => {
-            // This.game.clue = clueWordInput.value;
+            this.clue = clueWordInput.value;
         };
 
         const giveClueCTA = document.createElement('div');

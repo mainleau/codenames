@@ -11,7 +11,7 @@ export default class Users extends Collection {
     async fetchMe() {
         const data = await this.api.core.get(this.api.routes.FETCH_ME);
 
-        return new User(this.client, data);
+        return new User(this.api, data);
     }
 
     async fetchById(id) {
@@ -19,7 +19,7 @@ export default class Users extends Collection {
             params: [id],
         });
 
-        return new User(this.client, data);
+        return new User(this.api, data);
     }
 
     async fetchStatsByUserId(id) {

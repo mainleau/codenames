@@ -159,6 +159,7 @@ export default class Game {
     end({ winner }) {
         this.endTime = Date.now();
         this.ended = true;
+        this.state = GAME_STATES.ENDED;
         this.turn.team = null;
         this.turn.role = null;
   
@@ -258,7 +259,11 @@ export default class Game {
             player: player
         });
         socket.emit('player-list', this.players);
-        socket.emit('word-list', this.words);
+        socket.emit('word-list',
+        player.role === GAME_ROLES.SPYMASTER
+            ? this.words.toJSON({ withTeam: true })
+            : this.words.toJSON()
+        );
         socket.emit('clue-list', this.clues);
 
         socket.join(this.id);

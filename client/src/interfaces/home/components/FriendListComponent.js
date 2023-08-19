@@ -37,7 +37,7 @@ export default class FriendListComponent extends Component {
             const friendContainer = document.createElement('div');
             friendContainer.className = 'friend-container';
             friendContainer.onclick = event => {
-                const user = new User(this.manager.client, friend);
+                const user = new User(this.app.manager.api, friend);
                 new ProfileModal().open(event, user);
             };
 

@@ -5,7 +5,7 @@ export default manager => {
     const router = express.Router();
 
     router.get('/list/public', (_, res) => {
-        const games = manager['CUSTOM_GAME'].filter(game => !game.privacy & GAME_PRIVACY.PRIVATE);
+        const games = manager['CUSTOM_GAME'].filter(game => !game.privacy & GAME_PRIVACY.PRIVATE && game.state !== 2);
         res.send(games);
     });
 
