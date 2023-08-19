@@ -21,5 +21,5 @@ export function getDeltaPoints(myRating, opponentRating, myGameResult) {
 }
 
 export function getTeamAveragePoints(points) {
-    return (points.reduce((a, b) => a + b, 0) / points.length) || 1200;
+    return (points.reduce((a, b) => a + b, 0) / points.length) || 1000;
 }

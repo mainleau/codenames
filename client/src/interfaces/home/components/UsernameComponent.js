@@ -1,15 +1,25 @@
 import Component from '../../../structures/Component.js';
+import ProfileModal from '../modals/ProfileModal.js';
 
 export default class UsernameComponent extends Component {
-    constructor(user) {
+    constructor(user, onclick = true, nickname = null, completed = false) {
         super();
 
         this.user = user;
+
+        this.onclick = onclick;
+
+        this.user.nickname = nickname;
+        this.completed = completed;
     }
 
     create() {
         this.element = document.createElement('div');
         this.element.className = 'username-component';
+        if(this.onclick) this.element.onclick = event => {
+            new ProfileModal().open(event, this.user, this.completed);
+        }
+        if(this.onclick) this.element.classList.add('clickable');
 
         const levelContainer = document.createElement('div');
         levelContainer.className = 'level-container';

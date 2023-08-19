@@ -1,6 +1,7 @@
 import UsernameComponent from './UsernameComponent.js';
 import Component from '../../../structures/Component.js';
 import ProfileModal from '../modals/ProfileModal.js';
+import RankingModal from '../modals/RankingModal.js';
 // Import defaultAvatarImage from '../../../../assets/images/default-avatar.svg';
 
 export default class ProfileComponent extends Component {
@@ -19,18 +20,18 @@ export default class ProfileComponent extends Component {
 
     create() {
         this.element = document.createElement('div');
-        this.element.id = 'profile';
+        this.element.id = 'profile-component';
 
         const avatarContainer = document.createElement('div');
         avatarContainer.id = 'avatar-container';
 
         const username = this.cache.username
-            ? new UsernameComponent(this.cache).create()
+            ? new UsernameComponent(this.cache, true, null, true).create()
             : '...';
         if (this.cache.username) {
-            username.onclick = event => {
-                new ProfileModal().open(event, this.cache, true);
-            };
+            // username.onclick = event => {
+            //     new ProfileModal().open(event, this.cache, true);
+            // };
         }
 
         const avatar = document.createElement('div');
@@ -67,7 +68,21 @@ export default class ProfileComponent extends Component {
 
         goldContainer.append(goldText, goldAmount);
 
-        inventoryItems.append(goldContainer);
+        const pointsContainer = document.createElement('div');
+        pointsContainer.id = 'points-container';
+        pointsContainer.onclick = event => {
+            new RankingModal(this.app.manager.api).open(event);
+        }
+
+        const pointsText = document.createElement('span');
+        pointsText.innerText = '🏆';
+
+        const pointsAmount = document.createElement('span');
+        pointsAmount.innerText = this.cache.points ?? '...';
+
+        pointsContainer.append(pointsText, pointsAmount);
+
+        inventoryItems.append(goldContainer, pointsContainer);
 
         inventory.append(inventoryTitle, inventoryItems);
 

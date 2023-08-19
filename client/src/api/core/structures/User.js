@@ -1,14 +1,15 @@
 export default class User {
-    constructor(api, { id, username, flags, xp, level, gold, gems }) {
+    constructor(api, data) {
         this.api = api;
 
-        this.id = id;
-        this.username = username;
-        this.flags = flags;
-        this.xp = xp;
-        this.level = level;
-        this.gold = gold;
-        this.gems = gems;
+        this.id = data.id;
+        this.username = data.username;
+        this.flags = data.flags;
+        this.xp = data.xp;
+        this.level = data.level;
+        this.points = data.points;
+        this.gold = data.gold;
+        this.gems = data.gems;
         this.stats = null;
     }
 

@@ -1,3 +1,4 @@
+import User from '../../../api/core/structures/User.js';
 import Component from '../../../structures/Component.js';
 import UsernameComponent from '../../home/components/UsernameComponent.js';
 
@@ -68,11 +69,9 @@ export default class Team extends Component {
                 if (player.team !== this.team || player.role !== role) return [];
                 const line = document.createElement('div');
 
-                const username = new UsernameComponent({
-                    nickname: player.nickname,
-                    username: player.username,
-                    level: player.level,
-                }).create();
+                const user = new User(this.game.manager.api, player);
+
+                const username = new UsernameComponent(user, !!player.level, player.nickname).create();
                 line.append(username);
                 return line;
             });
