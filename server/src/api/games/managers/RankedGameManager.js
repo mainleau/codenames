@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import GameManager from './GameManager.js';
 import Player from '../structures/Player.js';
 import RankedGame from '../structures/RankedGame.js';
+import { GAME_STATES } from '../../../utils/Constants.js';
 
 export default class RankedGameManager extends GameManager {
     constructor(manager) {
@@ -11,8 +12,8 @@ export default class RankedGameManager extends GameManager {
         this.queue = new Collection();
 
         this.options = {
-            maxPlayerCount: 6,
-            maxOperativeCount: 2,
+            maxPlayerCount: 4,
+            maxOperativeCount: 1,
             maxSpymasterCount: 1,
         };
     }
@@ -76,9 +77,12 @@ export default class RankedGameManager extends GameManager {
         // TODO: check if player already in a game (or in this game), if so reject (or rejoin)
         if(!socket.handshake.query.id) game.add(player);
 
-        if (game.players.size === this.options.maximumPlayerNumber) {
-            this.queue.delete(game.id);
-            this.set(game.id, game);
+        if (game.players.size === this.options.maxPlayerCount) {
+            this.state = GAME_STATES.STARTING;
+            game.broadcast('game-starting', {
+                state: this.state
+            });
+            setTimeout(() => game.start(), 3000);
         }
     }
 

@@ -19,6 +19,10 @@ export default class GameInterface extends Interface {
             this.element.appendChild(endComponent);
         });
 
+        this.game.socket.on('game-starting', data => {
+            this.game.state = data.state;
+        });
+
         this.game.socket.on('game-joined', data => {
             this.game.state = data.state;
             this.game.rules = data.rules;

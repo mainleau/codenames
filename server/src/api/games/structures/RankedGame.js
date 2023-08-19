@@ -8,7 +8,7 @@ export default class RankedGame extends Game {
 
         this.mode = GAME_MODES.RANKED_GAME;
 
-        this.rules = GAME_RULES.RANDOM_ROLE | GAME_RULES.RANDOM_TEAM;
+        this.rules = GAME_RULES.RANDOM_ROLE | GAME_RULES.RANDOM_TEAM | GAME_RULES.TEAM_ROLE_LOCK;
     }
 
     handle(player, event) {
@@ -21,6 +21,14 @@ export default class RankedGame extends Game {
         const game = this.manager['RANKED_GAME'].queue.get(this.id);
         this.manager['RANKED_GAME'].queue.delete(this.id);
         this.manager['RANKED_GAME'].set(game.id, game);
+
+        // TODO: make this according to max player count
+        this.players.random(this.players.size).map((player, index) => {
+            this.update(player, {
+                role: index % 2 === 0 ? GAME_ROLES.OPERATIVE : GAME_ROLES.SPYMASTER,
+                team: Math.floor(index / 2) === 0 ? 0 : 1,
+            }, true);
+        });
     }
 
     reward(winner) {
