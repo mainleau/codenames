@@ -1,50 +1,41 @@
+import Manager from './core/Manager.js';
 import AuthenticationInterface from './interfaces/authentication/index.js';
 import HomeInterface from './interfaces/home/index.js';
-import Manager from './core/Manager.js';
-import { isUUID } from './utils/index.js';
-import './styles.css';
 import RegisterInterface from './interfaces/authentication/RegisterInterface.js';
+import './styles.css';
+import { isUUID } from './utils/index.js';
+import GameInterface from './interfaces/game/index.js';
 
 window.onload = () => new Application().launch();
 
+// TODO: create component where admin should be able to select server dev/prod
 class Application {
+    launched = false;
     constructor() {
+        this.name = 'Nomdecode';
+        this.version = '0.0.1';
+        
         this.manager = new Manager(this);
     }
-    
-    launch() {
-        const element = this.element = document.createElement('div');
-        element.id = 'app';
-        document.body.replaceChildren(element);
-        
-        const path = location.pathname.substring(1);
 
-        const ref = new URLSearchParams(location.search).get('ref');
-        
-        if(isUUID(path)) {
-            this.manager.games.join(path);
-        } else if(localStorage.token) {
-            this.goHome();
-        } else if (isUUID(ref)) {
-            this.goAuth(true);
-        } else {
-            this.goAuth();
-        }
+    launch() {
+        if(this.launched) throw new Error('APPLICATION_ALREADY_LAUNCHED');
+        this.launched = true;
+
+        this.element = document.createElement('div');
+        this.element.id = 'app';
+        document.body.replaceChildren(this.element);
+
+        this.manager.init();
     }
 
-    goAuth(ref = false) {
-        const authentication = new AuthenticationInterface(this.manager, ref).render();
-        this.element.replaceChildren(authentication);
-        if(ref) {
-            const interf = new RegisterInterface(this.manager);
-            authentication.firstChild.style.display = 'none';
-            authentication.append(interf.render());
-        }
+    goAuth() {
+        const ref = new URLSearchParams(location.search).get('ref');
+        new AuthenticationInterface(this, ref).make();
     }
 
     goHome() {
-        const home = new HomeInterface(this.manager).render();
-        this.element.replaceChildren(home);
+        new HomeInterface(this).make();
     }
 }
 

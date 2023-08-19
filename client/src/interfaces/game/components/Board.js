@@ -43,42 +43,55 @@ export default class Board extends Component {
 
             card.style.cursor = 'pointer';
 
-            if(word && 'revealed' in word) {
+            if (word && 'revealed' in word) {
                 card.classList.add('reversed');
             }
 
-            if(this.game.reversedCards.includes(index)) {
+            if (this.game.reversedCards.includes(index)) {
                 card.classList.add('reversed');
             }
 
-            if(word && word.selected) {
+            if (word && word.selected) {
                 card.classList.add('selected');
             }
 
-            if(word && [0, 1, -1, null].includes(word.team)) {
+            if (word && [0, 1, -1, null].includes(word.team)) {
                 card.classList.add(
-                    word.team === 0 ? 'first-team'
-                    : word.team === 1 ? 'second-team'
-                    : word.team === -1 ? 'death'
-                    : 'default'
+                    word.team === 0
+                        ? 'first-team'
+                        : word.team === 1
+                        ? 'second-team'
+                        : word.team === -1
+                        ? 'death'
+                        : 'default',
                 );
             }
 
             card.onclick = () => {
-                if(this.game.turn.team === this.game.player.team) {
-                    if(this.game.turn.role === this.game.player.role && this.game.player.role === 1) {
-                        if(!card.classList.contains(this.game.player.team ? 'second-team' : 'first-team')) return;
+                if (this.game.turn.team === this.game.player.team) {
+                    if (
+                        this.game.turn.role === this.game.player.role &&
+                        this.game.player.role === 1
+                    ) {
+                        if (
+                            !card.classList.contains(
+                                this.game.player.team ? 'second-team' : 'first-team',
+                            )
+                        ) return;
                         this.game.emit('select-card', {
                             word: this.game.words.at(index).id,
-                            selected: !card.classList.contains('selected')
+                            selected: !card.classList.contains('selected'),
                         });
-                    } else if(this.game.turn.role === this.game.player.role && this.game.player.role === 0) {
+                    } else if (
+                        this.game.turn.role === this.game.player.role &&
+                        this.game.player.role === 0
+                    ) {
                         this.game.emit('reveal-card', {
-                            word: word.id
+                            word: word.id,
                         });
                     }
                 }
-            }
+            };
 
             const name = document.createElement('span');
             name.textContent = this.game.words.size ? word.name : '???';

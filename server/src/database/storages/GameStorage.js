@@ -6,12 +6,12 @@ export default class GameStorage {
     }
 
     create(id, { playerCountByTeam }) {
-        if(!isUUID(id)) throw new Error('INVALID_ID'); 
-        if(
-            !Array.isArray(playerCountByTeam)
-            || !playerCountByTeam.some(count => Number.isInteger(count) && count >= 0)
+        if (!isUUID(id)) throw new Error('INVALID_ID');
+        if (
+            !Array.isArray(playerCountByTeam) ||
+            !playerCountByTeam.some(count => Number.isInteger(count) && count >= 0)
         ) {
-            throw new Error('INVALID_PLAYER_COUNT_BY_TEAM'); 
+            throw new Error('INVALID_PLAYER_COUNT_BY_TEAM');
         }
 
         const sql = 'INSERT INTO games (id, player_count_by_team) VALUES ($1, $2)';
@@ -20,12 +20,12 @@ export default class GameStorage {
     }
 
     update(id, { playerCountByTeam }) {
-        if(!isUUID(id)) throw new Error('INVALID_ID');
-        if(
-            !Array.isArray(playerCountByTeam)
-            || !playerCountByTeam.some(count => Number.isInteger(count) && count >= 0)
+        if (!isUUID(id)) throw new Error('INVALID_ID');
+        if (
+            !Array.isArray(playerCountByTeam) ||
+            !playerCountByTeam.some(count => Number.isInteger(count) && count >= 0)
         ) {
-            throw new Error('INVALID_PLAYER_COUNT_BY_TEAM'); 
+            throw new Error('INVALID_PLAYER_COUNT_BY_TEAM');
         }
 
         const sql = 'UPDATE games SET player_count_by_team = $2 WHERE id = $1';
@@ -34,7 +34,7 @@ export default class GameStorage {
     }
 
     remove(id) {
-        if(!isUUID(id)) throw new Error('INVALID_ID'); 
+        if (!isUUID(id)) throw new Error('INVALID_ID');
 
         const sql = 'DELETE FROM games WHERE id = $1';
 
@@ -42,16 +42,16 @@ export default class GameStorage {
     }
 
     async fetch({ count } = {}) {
-        if(count && !(Number.isInteger(count) && count >= 0)) {
+        if (count && !(Number.isInteger(count) && count >= 0)) {
             throw new Error('INVALID_COUNT');
         }
 
-        var sql = 'SELECT * FROM games';
+        let sql = 'SELECT * FROM games';
         const params = [];
 
-        if(count) {
+        if (count) {
             sql += ' LIMIT $1';
-            params.push(count)
+            params.push(count);
         }
 
         const response = await this.client.query(sql, params);

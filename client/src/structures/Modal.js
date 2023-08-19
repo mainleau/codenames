@@ -14,7 +14,7 @@ export default class Modal {
     close() {
         window.removeEventListener('click', this.check);
         this.element.remove();
-        this.mask.remove()
+        this.mask.remove();
     }
 
     open(event) {

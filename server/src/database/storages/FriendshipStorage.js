@@ -6,13 +6,13 @@ export default class FriendshipStorage {
     }
 
     async create({ sender, receiver, status }) {
-        if(!isUUID(sender)) {
+        if (!isUUID(sender)) {
             throw new Error('INVALID_SENDER_ID');
         }
-        if(!isUUID(receiver)) {
+        if (!isUUID(receiver)) {
             throw new Error('INVALID_RECEIVER_ID');
         }
-        if(status && ![0, 1].includes(status)) {
+        if (status && ![0, 1].includes(status)) {
             throw new Error('INVALID_FRIENDSHIP_STATUS');
         }
 
@@ -23,10 +23,10 @@ export default class FriendshipStorage {
     }
 
     async update({ sender, receiver, status }) {
-        if(!isUUID(sender)) {
+        if (!isUUID(sender)) {
             throw new Error('INVALID_SENDER_ID');
         }
-        if(!isUUID(receiver)) {
+        if (!isUUID(receiver)) {
             throw new Error('INVALID_RECEIVER_ID');
         }
 
@@ -37,19 +37,19 @@ export default class FriendshipStorage {
     }
 
     async fetchRequestsByUserId(id) {
-        if(!isUUID(id)) throw new Error('INVALID_ID');
+        if (!isUUID(id)) throw new Error('INVALID_ID');
 
         const sql = `SELECT sender, receiver, status FROM friendships
         WHERE sender = $1 OR receiver = $1`;
 
         const response = await this.client.query(sql, [id]);
-        if(!response.length) throw new Error('FRIENDSHIP_NOT_FOUND');
+        if (!response.length) throw new Error('FRIENDSHIP_NOT_FOUND');
 
         return response;
     }
 
     async fetchByUserId(id) {
-        if(!isUUID(id)) throw new Error('INVALID_ID');
+        if (!isUUID(id)) throw new Error('INVALID_ID');
 
         const sql = `SELECT id, username, flags, level, online_at FROM users WHERE id IN (
             SELECT
@@ -65,16 +65,16 @@ export default class FriendshipStorage {
     }
 
     async fetch(options = { count }) {
-        var sql = 'SELECT sender, receiver, status FROM friendships';
+        let sql = 'SELECT sender, receiver, status FROM friendships';
         const params = [];
 
-        if(options.count) {
+        if (options.count) {
             sql += ' LIMIT $1';
             params.push(options.count);
         }
 
         const response = await this.client.query(sql, params);
-        
+
         return response;
     }
 }

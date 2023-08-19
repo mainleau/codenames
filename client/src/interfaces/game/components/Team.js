@@ -1,4 +1,5 @@
 import Component from '../../../structures/Component.js';
+import UsernameComponent from '../../home/components/UsernameComponent.js';
 
 export default class Team extends Component {
     constructor(game, team) {
@@ -23,8 +24,8 @@ export default class Team extends Component {
 
         this.game.socket.on('player-updated', data => {
             const player = this.game.players.get(data.id);
-            
-            // if(player.id === this.playerId) {
+
+            // If(player.id === this.playerId) {
             //     if(data.role === 0) {
             //         this.words.forEach((word, index) => {
             //             if(!this.reversedCards.has(index)) delete word.team;
@@ -37,18 +38,14 @@ export default class Team extends Component {
             player.role = data.role;
             player.team = data.team;
             player.nickname = data.nickname;
-            // player.nickname = data.nickname;
+            // Player.nickname = data.nickname;
             this.rerender();
         });
     }
 
     create() {
-        this.element  = document.createElement('div');
+        this.element = document.createElement('div');
         this.element.className = 'team';
-        
-        const title = document.createElement('span');
-        title.className = 'team-title';
-        title.textContent = `EQUIPE ${this.team ? 'ROUGE' : 'BLEUE'}`;
 
         const listContainer = document.createElement('div');
         listContainer.className = 'list-container';
@@ -58,24 +55,26 @@ export default class Team extends Component {
             subtitle.style.cursor = 'pointer';
             subtitle.className = 'team-subtitle';
             subtitle.textContent = role ? 'ESPIONS' : 'AGENTS';
-            subtitle.onclick = () => this.game.emit('update-player', {
-                team: this.team,
-                role
-            });
+            subtitle.onclick = () =>
+                this.game.emit('update-player', {
+                    team: this.team,
+                    role,
+                });
 
             const list = document.createElement('div');
             list.className = 'list';
 
             const players = this.game.players.map(player => {
-                if(player.team !== this.team || player.role !== role) return [];
+                if (player.team !== this.team || player.role !== role) return [];
                 const line = document.createElement('div');
 
-                const username = document.createElement('span');
-                username.className = 'username';
-                username.textContent = player.nickname || player.username;
-
+                const username = new UsernameComponent({
+                    nickname: player.nickname,
+                    username: player.username,
+                    level: player.level,
+                }).create();
                 line.append(username);
-                return line
+                return line;
             });
 
             list.append(subtitle, ...players);
@@ -85,7 +84,7 @@ export default class Team extends Component {
 
         listContainer.append(firstList, secondList);
 
-        this.element.append(title, listContainer);
+        this.element.append(listContainer);
         return this.element;
     }
 }

@@ -4,26 +4,26 @@ export default class WordStorage {
     }
 
     async fetch({ count, random = false } = {}) {
-        if(count && !(Number.isInteger(count) && count > 0)) {
+        if (count && !(Number.isInteger(count) && count > 0)) {
             throw new Error('INVALID_COUNT');
         }
-        if(random && typeof random !== 'boolean') {
+        if (random && typeof random !== 'boolean') {
             throw new Error('INVALID_COUNT');
         }
 
-        var sql = 'SELECT * FROM words';
+        let sql = 'SELECT * FROM words';
         const params = [];
 
-        if(random) {
+        if (random) {
             sql += ' ORDER BY RANDOM()';
         }
-        if(count) {
+        if (count) {
             sql += ' LIMIT $1';
-            params.push(count)
+            params.push(count);
         }
 
         const response = await this.client.query(sql, [count]);
-        if(!response.length) throw new Error('NO_WORD_FOUND');
+        if (!response.length) throw new Error('NO_WORD_FOUND');
 
         return response;
     }

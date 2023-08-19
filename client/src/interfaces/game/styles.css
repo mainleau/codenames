@@ -1,6 +1,22 @@
 #game {
     display: flex;
+    flex-direction: column;
     height: inherit;
+}
+
+#game #middle-panel #board-wrapper {
+    padding: 0 80px 50px;
+}
+
+#game #board-container {
+    display: flex;
+    justify-content: center;
+}
+
+#game #content {
+    display: flex;
+    height: inherit;
+    flex: 1;
 }
 
 #middle-panel {
@@ -13,19 +29,19 @@
 }
 
 #board {
-    margin: 50px 100px;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-gap: 6px;
-    height: fit-content;
-    min-width: 0;
+    width: 900px;
+    aspect-ratio: 3/2;
 }
 
 .card {
-    min-width: 0;
     overflow: hidden;
     background-color: rosybrown;
-    border: 10px solid #7A5C5C;
+    border-color: #7A5C5C;
+    border-width: 8px;
+    border-style: solid;
     aspect-ratio: 3/2;
     border-radius: 20px;
     display: flex;
@@ -39,50 +55,50 @@
 
 .card.default {
     background-color: rosybrown;
-    border: 10px solid #7A5C5C;
+    border-color: #7A5C5C;
 }
 
 .card.default.reversed {
     background-color: #7A5C5C;
-    border: 10px solid rosybrown;
+    border-color: rosybrown;
 }
 
 .card.first-team {
     background-color: #BEF3EB;
-    border: 10px solid #88ADA8;
+    border-color: #88ADA8;
 }
 
 .card.first-team.reversed {
     background-color: #88ADA8;
-    border: 10px solid #BEF3EB;
+    border-color: #BEF3EB;
 }
 
 .card.second-team {
     background-color: salmon;
-    border: 10px solid #B85F55;
+    border-color: #B85F55;
 }
 
 .card.second-team.reversed {
     background-color: #B85F55;
-    border: 10px solid salmon;
+    border-color: salmon;
 }
 
 .card.death {
     background-color: lightslategray;
-    border: 10px solid #4E5964;
+    border-color: #4E5964;
 }
 
 .card.death.reversed {
     background-color: #4E5964;
-    border: 10px solid lightslategray;
+    border-color: lightslategray;
 }
 
 .card.selected {
-    border: 10px solid #473535;
+    border-color: #473535;
 }
 
 .card > span {
-    font-size: 1.6em;
+    font-size: 1.5em;
     font-weight: bold;
     position: absolute;
     top: 75%;
@@ -95,6 +111,7 @@
 }
 
 #bottom-board {
+    min-height: 116px;
     background-color: beige;
     height: 100%;
     display: flex;
@@ -209,6 +226,15 @@
     transform: translateY(3px);
 }
 
+#left, #right {
+    display: flex;
+    flex-direction: column;
+}
+
+#left-panel, #right-panel {
+    height: 100%;
+}
+
 #left-panel {
     background-color: #BEF3EB;
     width: 350px;
@@ -226,20 +252,8 @@
     justify-content: center;
 }
 
-.options {
-    border-radius: 12px;
-    padding: 5px 25px;
-    background: bisque;
-    display: flex;
-    font-size: 2em;
-    gap: 20px;
-}
-
-.options > span {
-    cursor: pointer;
-}
-
 #new-username-modal {
+    border: #473535 16px solid;
     padding: 0 40px;
     display: flex;
     flex-direction: column;
@@ -252,10 +266,15 @@
     gap: 20px;
 }
 
+#new-username-modal > span {
+    font-size: 1.5em;
+    /* font-weight: bold; */
+}
+
 #new-username-input {
     height: fit-content;
     width: 100%;
-    font-size: 2em;
+    font-size: 2.3em;
     padding: 0 15px;
 }
 
@@ -311,6 +330,10 @@
     flex-direction: column;
 }
 
+.list-container:first-child {
+    margin-top: 20px;
+}
+
 .team-subtitle {
     font-size: 1.6em;
     font-weight: bold;
@@ -321,8 +344,8 @@
     text-align: center;
 }
 
-.username {
-    font-size: 1.4em;
+#game .username-component {
+    padding-left: 25px;
 }
 
 #game #blur-mask{
@@ -353,6 +376,7 @@
     width: 600px;
     height: 600px;
     gap: 20px;
+    border: #473535 16px solid;
 }
 
 #end-component #container {
@@ -433,4 +457,41 @@
     padding: 0 15px;
     font-size: 2em;
     width: 200px;
+}
+
+#game #top-board {
+    display: flex;
+    justify-content: center;
+    margin: 32px;
+    flex: 1;
+}
+
+#game #top-right-panel, #top-left-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 350px;
+    height: 90px;
+    background-color: bisque;
+}
+
+#game #top-board #game-status-component {
+    font-size: 2em;
+    background-color: white;
+    padding: 16px 40px;
+    border-radius: 20px;
+}
+
+.options {
+    border-radius: 12px;
+    padding: 5px 25px;
+    background: rosybrown;
+    display: flex;
+    font-size: 2em;
+    gap: 20px;
+}
+
+.options > span {
+    text-shadow: #473535 2px 2px 0;
+    cursor: pointer;
 }

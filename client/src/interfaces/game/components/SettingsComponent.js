@@ -1,4 +1,4 @@
-import Component from "../../../structures/Component";
+import Component from '../../../structures/Component';
 
 export default class SettingsComponent extends Component {
     constructor(game) {
@@ -25,7 +25,7 @@ export default class SettingsComponent extends Component {
         const gameNameTitle = document.createElement('span');
         gameNameTitle.textContent = 'Nom de la partie';
 
-        const gameNameInput = this.gameNameInput = document.createElement('input');
+        const gameNameInput = (this.gameNameInput = document.createElement('input'));
         gameNameInput.placeholder = this.game.name;
         gameNameInput.maxLength = 12;
         gameNameInput.spellcheck = false;
@@ -45,9 +45,10 @@ export default class SettingsComponent extends Component {
         privacyToggleSwitch.onclick = () => {
             privacyToggleSwitchButton.classList.toggle('active');
             privacyToggleSwitch.style.backgroundColor =
-                privacyToggleSwitchButton.classList.contains('active') ? 'palegreen'
-                : '#F67280';
-        }
+                privacyToggleSwitchButton.classList.contains('active')
+                    ? 'palegreen'
+                    : '#F67280';
+        };
 
         const privacyToggleSwitchButton = document.createElement('div');
 
@@ -58,19 +59,19 @@ export default class SettingsComponent extends Component {
         const confirmCTA = document.createElement('div');
         confirmCTA.className = 'cta';
         confirmCTA.onclick = () => {
-            this.game.socket.emit('update-settings', {
+            this.game.socket.emit('update-game', {
                 name: gameNameInput.value || this.game.name,
-                privacy: !!privacyToggleSwitchButton.classList.contains('active')
+                privacy: +privacyToggleSwitchButton.classList.contains('active'),
             });
             this.element.remove();
             mask.remove();
-        }
+        };
 
         const confirmCTAText = document.createElement('span');
         confirmCTAText.textContent = 'Confirmer';
 
         confirmCTA.append(confirmCTAText);
-        
+
         this.element.append(title, gameName, privacy, confirmCTA);
         this.gameInterface.append(mask);
         return this.element;

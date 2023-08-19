@@ -1,16 +1,17 @@
+import UsernameComponent from './UsernameComponent.js';
 import Component from '../../../structures/Component.js';
 import ProfileModal from '../modals/ProfileModal.js';
-import UsernameComponent from './UsernameComponent.js';
-// import defaultAvatarImage from '../../../../assets/images/default-avatar.svg';
+// Import defaultAvatarImage from '../../../../assets/images/default-avatar.svg';
 
 export default class ProfileComponent extends Component {
-    constructor(manager) {
+    constructor(app) {
         super();
 
-        this.cache = {}
+        this.cache = {};
+        this.app = app;
 
-        this.manager = manager;
-        this.manager.client.users.fetchMe().then(user => {
+        if(this.app.manager.api.isGuest) return;
+        this.app.manager.api.core.users.fetchMe().then(user => {
             this.cache = user;
             this.rerender();
         });
@@ -22,17 +23,21 @@ export default class ProfileComponent extends Component {
 
         const avatarContainer = document.createElement('div');
         avatarContainer.id = 'avatar-container';
-        
-        const username = this.cache.username ? new UsernameComponent(this.cache).create() : '...';
-        if(this.cache.username) username.onclick = event => {
-            new ProfileModal().open(event, this.cache, true);
+
+        const username = this.cache.username
+            ? new UsernameComponent(this.cache).create()
+            : '...';
+        if (this.cache.username) {
+            username.onclick = event => {
+                new ProfileModal().open(event, this.cache, true);
+            };
         }
 
         const avatar = document.createElement('div');
         avatar.id = 'avatar';
-    
+
         const avatarImage = document.createElement('img');
-        // avatarImage.src = defaultAvatarImage;
+        // AvatarImage.src = defaultAvatarImage;
 
         avatar.appendChild(avatarImage);
 

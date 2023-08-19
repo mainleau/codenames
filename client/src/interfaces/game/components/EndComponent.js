@@ -22,29 +22,40 @@ export default class EndComponent extends Component {
 
         const title = document.createElement('span');
         title.id = 'title';
-        title.textContent = this.data.winner === this.game.player.team ? 'VICTOIRE' : 'DEFAITE';
+        title.textContent =
+            this.data.winner === this.game.player.team ? 'VICTOIRE' : 'DEFAITE';
 
         const score = document.createElement('div');
         score.id = 'scores';
 
         const result = document.createElement('span');
-        result.textContent = `${this.data.winner === this.game.player.team ? 'Partie gagnée' : 'Partie perdue'} :
+        result.textContent = `${
+            this.data.winner === this.game.player.team ? 'Partie gagnée' : 'Partie perdue'
+        } :
         + ${this.data.xp}xp`;
 
-        // var span;
+        // Var span;
         // if(this.data.scores.goodCards) {
         //     span = document.createElement('span');
         //     span.textContent = `Bonnes cartes : + ${this.data.scores.goodCards * 15}xp`;
         // };
 
         score.append(result);
+        if('points' in this.data) {
+            const points = document.createElement('span');
+            points.style.marginTop = '20px';
+            points.style.textAlign = 'center';
+            points.textContent = `Points : ${this.data.deltaPoints > 0 ? '+' : '-'}
+            ${Math.abs(this.data.deltaPoints)}pts`;
+            score.append(points);
+        }
 
         const button = document.createElement('div');
         button.className = 'cta';
         button.id = 'button';
         button.onclick = () => {
             this.app.goHome();
-        }
+        };
         const buttonText = document.createElement('span');
         buttonText.textContent = "Aller à l'accueil";
 

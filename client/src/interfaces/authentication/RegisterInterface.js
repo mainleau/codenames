@@ -16,9 +16,9 @@ export default class RegisterInterface extends Interface {
 
         const username = document.createElement('div');
         username.id = 'username';
-        
+
         const usernameText = document.createElement('span');
-        usernameText.textContent = "PSEUDONYME"
+        usernameText.textContent = 'PSEUDONYME';
 
         const usernameInput = document.createElement('input');
         usernameInput.spellcheck = false;
@@ -27,21 +27,21 @@ export default class RegisterInterface extends Interface {
 
         const email = document.createElement('div');
         email.id = 'email';
-        
+
         const emailText = document.createElement('span');
-        emailText.textContent = 'ADRESSE E-MAIL'
+        emailText.textContent = 'ADRESSE E-MAIL';
 
         const emailInput = document.createElement('input');
         emailInput.spellcheck = false;
 
         email.append(emailText, emailInput);
-        
+
         const password = document.createElement('div');
         password.id = 'password';
-        
+
         const passwordText = document.createElement('span');
-        passwordText.textContent = 'MOT DE PASSE'
-        
+        passwordText.textContent = 'MOT DE PASSE';
+
         const passwordInput = document.createElement('input');
         passwordInput.type = 'password';
 
@@ -50,22 +50,25 @@ export default class RegisterInterface extends Interface {
         const loginButton = document.createElement('div');
         loginButton.id = 'login-button-final';
         loginButton.onclick = async () => {
-            if(usernameInput.value && passwordInput.value) {
-                const { token } = await this.manager.auth.register({
-                    email: emailInput.value,
-                    password: passwordInput.value
-                }, {
-                    username: usernameInput.value,
-                    referrer: new URLSearchParams(location.search).get('ref')
-                });
-                if(token) {
+            if (usernameInput.value && passwordInput.value) {
+                const { token } = await this.manager.auth.register(
+                    {
+                        email: emailInput.value,
+                        password: passwordInput.value,
+                    },
+                    {
+                        username: usernameInput.value,
+                        referrer: new URLSearchParams(location.search).get('ref'),
+                    },
+                );
+                if (token) {
                     localStorage.token = token;
                     this.manager.app.goHome();
                 } else {
                     passwordInput.value = '';
                 }
             }
-        }
+        };
 
         const loginButtonText = document.createElement('span');
         loginButtonText.textContent = 'Enregistre-toi !';
@@ -80,7 +83,7 @@ export default class RegisterInterface extends Interface {
             this.manager.app.goAuth();
         };
         backButton.textContent = '⬅️';
- 
+
         this.element.append(backButton, loginContainer);
         return this.element;
     }

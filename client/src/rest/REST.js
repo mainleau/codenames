@@ -1,10 +1,30 @@
 import APIRequest from './APIRequest.js';
+import AuthController from '../api/auth/index.js';
+import CoreController from '../api/core/index.js';
+import GameController from '../api/games/index.js';
+import { jwt } from '../utils/index.js';
 
 export default class REST {
-    constructor(token, routes, options) {
-        this.routes = routes;
-        this.options = options;
+    constructor(token, routes, app) {
         this.token = token;
+        
+        this.routes = routes;
+        
+        this.auth = new AuthController(this);
+        this.core = new CoreController(this);
+        this.games = new GameController(this, app);
+
+        if(!this.token) this.auth.post(routes.REQUEST).then(({ token }) => this.setToken(token));
+    }
+
+    get isGuest() {
+        const content = this.token ? jwt.verify(this.token) : {};
+        return content.guest !== false;
+    }
+
+    setToken(token) {
+        this.token = token;
+        localStorage.token = token;
     }
 
     get(route, options = {}) {
@@ -17,7 +37,6 @@ export default class REST {
 
     async #request(method, route, options) {
         const request = new APIRequest(this, method, route, options);
-    
         const response = await request.make();
 
         switch (response.status) {
@@ -28,12 +47,10 @@ export default class REST {
             default:
                 if (response.status !== 200) throw new Error('ERROR_OCCURED');
         }
-    
+
         if (response.headers.get('Content-Type')?.startsWith('application/json')) {
             return response.json();
-        } else {
-            throw new Error('INVALID_RESPONSE');
         }
+        throw new Error('INVALID_RESPONSE');
     }
-
 }

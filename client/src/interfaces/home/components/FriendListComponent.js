@@ -1,17 +1,17 @@
-import User from '../../../api/structures/User.js';
+import UsernameComponent from './UsernameComponent.js';
+import User from '../../../api/core/structures/User.js';
 import Component from '../../../structures/Component.js';
 import ProfileModal from '../modals/ProfileModal.js';
-import UsernameComponent from './UsernameComponent.js';
 
 export default class FriendListComponent extends Component {
-    constructor(manager) {
+    constructor(app) {
         super();
 
-        this.manager = manager;
-
+        this.app = app;
         this.cache = [];
 
-        manager.client.friends.fetchWithGames().then(friends => {
+        if(this.app.manager.api.isGuest) return;
+        this.app.manager.api.core.friends.fetchWithGames().then(friends => {
             this.cache = friends;
             this.rerender();
         });
@@ -37,26 +37,30 @@ export default class FriendListComponent extends Component {
             const friendContainer = document.createElement('div');
             friendContainer.className = 'friend-container';
             friendContainer.onclick = event => {
-                const user = new User(this.manager.client, friend);
+                const user = new User(this.app.manager.api, friend);
                 new ProfileModal().open(event, user);
-            }
+            };
 
             const username = new UsernameComponent(friend).create();
 
             const status = document.createElement('div');
             status.className = 'user-status';
 
-            if(friend.currentGameId) status.onclick = () => {
-                document.body.firstChild.children[0].remove();
-                this.manager.games.join(friend.currentGameId);
+            if (friend.currentGameId) {
+                status.onclick = () => {
+                    document.body.firstChild.children[0].remove();
+                    this.manager.games.join(friend.currentGameId, 0x01);
+                };
             }
 
-            if(friend.currentGameId) status.style.cursor = 'pointer';
+            if (friend.currentGameId) status.style.cursor = 'pointer';
 
             status.style.backgroundColor =
-                friend.currentGameId !== null ? 'lightblue'
-                : new Date(friend.online_at).getTime() + 10 * 60 * 1000 > Date.now() ? 'lightgreen'
-                : 'salmon';
+                friend.currentGameId !== null
+                    ? 'lightblue'
+                    : new Date(friend.online_at).getTime() + 10 * 60 * 1000 > Date.now()
+                    ? 'lightgreen'
+                    : 'salmon';
 
             friendContainer.append(username, status);
             return friendContainer;

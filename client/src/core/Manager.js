@@ -1,48 +1,40 @@
-import routes from '../rest/routes.js';
-import Client from '../api/Client.js';
-import Authenticator from '../auth/Authenticator.js';
-import GameManager from '../interfaces/game/managers/GameManager.js';
+import GameInterface from '../interfaces/game/index.js';
 import REST from '../rest/REST.js';
+import routes from '../rest/routes.js';
+import { isUUID, jwt } from '../utils/index.js';
+import GameHandler from './GameHandler.js';
 
 // TODO: add special items for 10 first players, 100 first players, 1000, 10000 etc.
 export default class Manager {
     constructor(app) {
         this.app = app;
 
-        const token = localStorage.token;
+        const { token } = localStorage;
 
-        const options = {
-            timeout: 15_000,
-            cdn: location.hostname !== 'localhost'
-                ? `https://cdn.nomdecode.fun`
-                : 'http://localhost:8886',
-            gateway: location.hostname !== 'localhost'
-                ? `https://api-games.nomdecode.fun`
-                : 'http://localhost:8887',
-            api: location.hostname !== 'localhost'
-                ? `https://api-core.nomdecode.fun`
-                : 'http://localhost:8888',
-            auth: location.hostname !== 'localhost'
-                ? `https://api-auth.nomdecode.fun`
-                : 'http://localhost:8889'
+        this.games = new GameHandler(this.app);
+
+        this.api = new REST(token, routes, this.app);
+    }
+
+    init() {
+        const path = location.pathname.substring(1);
+
+        if (isUUID(path)) {
+            this.games.join(path);
+        } else {
+            this.app.goHome();
         }
-
-        this.rest = new REST(token, routes, options);
-
-        this.auth = new Authenticator(this.rest);
-        this.client = new Client(this.rest);
-
-        this.games = new GameManager(this);
-
-        this.login();
     }
 
-    login() {
-        if(!this.rest.token) return;
-        this.client.users.putMeOnline();
-        const interval = setInterval(() => {
-            if(!this.rest.token) return clearInterval(interval);
-            this.client.users.putMeOnline();
-        }, 5 * 60 * 1000);
-    }
+    // login() {
+    //     if (!this.rest.token) return;
+    //     this.client.users.putMeOnline();
+    //     const interval = setInterval(
+    //         () => {
+    //             if (!this.rest.token) return clearInterval(interval);
+    //             this.client.users.putMeOnline();
+    //         },
+    //         5 * 60 * 1000,
+    //     );
+    // }
 }

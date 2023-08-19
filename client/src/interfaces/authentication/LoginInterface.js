@@ -1,10 +1,10 @@
 import Interface from '../../structures/Interface.js';
 
 export default class LoginInterface extends Interface {
-    constructor(manager) {
-        super();
+    constructor(app) {
+        super(app);
 
-        this.manager = manager;
+        this.manager = app.manager;
     }
 
     render() {
@@ -16,21 +16,21 @@ export default class LoginInterface extends Interface {
 
         const username = document.createElement('div');
         username.id = 'username';
-        
+
         const usernameText = document.createElement('span');
-        usernameText.textContent = 'ADRESSE E-MAIL'
+        usernameText.textContent = 'ADRESSE E-MAIL';
 
         const usernameInput = document.createElement('input');
         usernameInput.spellcheck = false;
 
         username.append(usernameText, usernameInput);
-        
+
         const password = document.createElement('div');
         password.id = 'password';
-        
+
         const passwordText = document.createElement('span');
-        passwordText.textContent = 'MOT DE PASSE'
-        
+        passwordText.textContent = 'MOT DE PASSE';
+
         const passwordInput = document.createElement('input');
         passwordInput.type = 'password';
 
@@ -39,19 +39,19 @@ export default class LoginInterface extends Interface {
         const loginButton = document.createElement('div');
         loginButton.id = 'login-button-final';
         loginButton.onclick = async () => {
-            if(usernameInput.value && passwordInput.value) {
-                const { token } = await this.manager.auth.login({
-                    email: usernameInput.value, password: passwordInput.value
+            if (usernameInput.value && passwordInput.value) {
+                const { token } = await this.app.manager.api.auth.login({
+                    email: usernameInput.value,
+                    password: passwordInput.value,
                 });
-                if(token) {
-                    localStorage.token = token;
-                    this.manager.rest.token = token;
-                    this.manager.app.goHome();
+                if (token) {
+                    this.app.manager.api.setToken(token);
+                    this.app.goHome();
                 } else {
                     passwordInput.value = '';
                 }
             }
-        }
+        };
 
         const loginButtonText = document.createElement('span');
         loginButtonText.textContent = 'Connecte-toi !';
@@ -63,10 +63,10 @@ export default class LoginInterface extends Interface {
         const backButton = document.createElement('span');
         backButton.id = 'back-button';
         backButton.onclick = () => {
-            this.manager.app.goAuth();
+            this.app.goAuth();
         };
         backButton.textContent = '⬅️';
- 
+
         this.element.append(backButton, loginContainer);
         return this.element;
     }

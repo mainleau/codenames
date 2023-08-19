@@ -2,26 +2,25 @@ export default class APIRequest {
     constructor(rest, method, route, options) {
         this.rest = rest;
         this.method = method;
-        if(options.params) {
-            route = route.apply(this, options.params)
+        if (options.params) {
+            route = route.apply(this, options.params);
         }
         this.route = route;
         this.options = options;
     }
 
-
     make() {
-        var url = this.options.baseURL + this.route;
+        let url = this.options.baseURL + this.route;
 
-        if(this.options.query) {
+        if (this.options.query) {
             url += `?${new URLSearchParams(options.query).toString()}`;
         }
 
         const headers = {};
         let body;
 
-        if(!this.options.noauth) {
-            headers['Authorization'] = `Bearer ${this.rest.token}`;
+        if (!this.options.noauth) {
+            headers.Authorization = `Bearer ${this.rest.token}`;
         }
 
         if (this.options.body !== null && this.options.body !== undefined) {
@@ -30,12 +29,12 @@ export default class APIRequest {
         }
 
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 15000);
+        const timeout = setTimeout(() => controller.abort(), 15_000);
         return fetch(url, {
             method: this.method,
             headers,
             body,
-            signal: controller.signal
+            signal: controller.signal,
         }).finally(() => clearTimeout(timeout));
     }
 }

@@ -6,7 +6,7 @@ export default class ProfileModal extends Modal {
     constructor() {
         super({
             width: 500,
-            height: 700
+            height: 700,
         });
     }
 
@@ -20,8 +20,8 @@ export default class ProfileModal extends Modal {
 
         const username = new UsernameComponent(user).create();
 
-        var XPBar = '';
-        if(complete) {
+        let XPBar = '';
+        if (complete) {
             XPBar = new XPBarComponent(user).create();
         }
 
@@ -71,7 +71,7 @@ export default class ProfileModal extends Modal {
 
         wordStats.append(wordsFound, wordsMissed);
 
-        stats.append(gameStats, wordStats)
+        stats.append(gameStats, wordStats);
 
         user.fetchStats().then(() => {
             gamesWonCount.textContent = user.stats.games_won;

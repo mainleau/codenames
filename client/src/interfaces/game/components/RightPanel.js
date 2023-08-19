@@ -1,6 +1,6 @@
+import Team from './Team.js';
 import Component from '../../../structures/Component.js';
 import ChangeNicknameModal from '../modals/ChangeNicknameModal.js';
-import Team from './Team.js';
 
 export default class RightPanel extends Component {
     constructor(game) {
@@ -10,27 +10,17 @@ export default class RightPanel extends Component {
     }
 
     create() {
-        const element = document.createElement('div');
+        const element = this.element = document.createElement('div');
         element.id = 'right-panel';
 
         const upBanner = document.createElement('div');
         upBanner.className = 'up-banner';
 
-        const options = document.createElement('div');
-        options.className = 'options';
+        const title = document.createElement('span');
+        title.className = 'team-title';
+        title.textContent = `EQUIPE ${this.team ? 'ROUGE' : 'BLEUE'}`;
 
-        const changeUsernameModal = new ChangeNicknameModal(this.game);
-
-        const changeUsernameCTA = document.createElement('span');
-        changeUsernameCTA.onclick = event => changeUsernameModal.open(event);
-        changeUsernameCTA.textContent = '🏷️';
-
-        const settingsCTA = document.createElement('span');
-        settingsCTA.textContent = '⚙️';
-        
-        options.append(changeUsernameCTA, settingsCTA);
-
-        upBanner.appendChild(options);
+        upBanner.append(title);
 
         const team = new Team(this.game, this.team).create();
 

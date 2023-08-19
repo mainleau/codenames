@@ -5,31 +5,32 @@ const { name, version } = require('./package.json');
 module.exports = {
     entry: './src/index.js',
     output: {
-        path: __dirname + '/build',
+        path: `${__dirname}/build`,
         filename: `${name}-${version}.min.js`,
     },
     mode: 'development',
     plugins: [
         new HtmlWebpackPlugin({
-            title: '',
+            title: 'Nom de code (BÊTA)',
             meta: {
                 charset: 'utf-8',
-            }
+            },
         }),
-        new MiniCssExtractPlugin()
-        ],
+        new MiniCssExtractPlugin(),
+    ],
     module: {
         rules: [
             {
                 test: /\.css$/,
                 use: [MiniCssExtractPlugin.loader, 'css-loader'],
-            }, {
+            },
+            {
                 test: /\.svg$/,
-                use: 'file-loader'
-            }
+                use: 'file-loader',
+            },
         ],
     },
     devServer: {
-        historyApiFallback: true
-    }
+        historyApiFallback: true,
+    },
 };

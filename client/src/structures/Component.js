@@ -3,5 +3,5 @@ export default class Component {
 
     rerender() {
         this.element.replaceWith(this.create());
-    };
-} 
+    }
+}

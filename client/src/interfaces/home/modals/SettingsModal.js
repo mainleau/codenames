@@ -1,12 +1,13 @@
 import Modal from '../../../structures/Modal.js';
 
 export default class SettingsModal extends Modal {
-    constructor(manager) {
+    constructor(app) {
         super({
             width: 550,
-            height: 300
+            height: 300,
         });
-        this.manager = manager;
+        this.app = app;
+        this.manager = app.manager;
     }
 
     open() {
@@ -17,14 +18,18 @@ export default class SettingsModal extends Modal {
         const changeUsernameCTA = document.createElement('div');
         changeUsernameCTA.onclick = () => {
             this.close();
-            delete localStorage.token;
-            delete this.manager.rest.token;
-            this.manager.app.goAuth();
-        }
+            if(this.manager.api.isGuest) {
+                this.app.goAuth();
+            } else {
+                delete localStorage.token;
+                delete this.manager.api.token;
+                this.app.goHome();
+            }
+        };
         changeUsernameCTA.id = 'change-username-cta';
 
         const changeUsernameText = document.createElement('span');
-        changeUsernameText.textContent = 'Se déconnecter';
+        changeUsernameText.textContent = this.manager.api.isGuest ? 'Se connecter' : 'Se déconnecter';
 
         changeUsernameCTA.appendChild(changeUsernameText);
 
@@ -44,8 +49,8 @@ export default class SettingsModal extends Modal {
 
             Développeur :
             contact@nomdecode.fun
-            `
-        }
+            `;
+        };
 
         const gdpr = document.createElement('span');
         gdpr.textContent = 'RGPD';
@@ -53,8 +58,8 @@ export default class SettingsModal extends Modal {
             gdpr.style.textAlign = 'center';
             gdpr.textContent = `
             Nous enregistrons votre adresse e-mail pour vous identifier uniquement.
-            Vous pouvez nous contacter pour consulter ou supprimer ces données.`
-        }
+            Vous pouvez nous contacter pour consulter ou supprimer ces données.`;
+        };
 
         const cgv = document.createElement('span');
         cgv.textContent = 'CGV';
@@ -64,7 +69,7 @@ export default class SettingsModal extends Modal {
             Tout paiement est annulable et remboursable dans les 14 jours suivant la transaction sans justification.
             Le produit vous est livré sous maximum une semaine.
             `;
-        }
+        };
 
         this.element.append(changeUsernameCTA, tos, gdpr, cgv);
     }

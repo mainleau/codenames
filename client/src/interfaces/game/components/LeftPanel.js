@@ -1,6 +1,6 @@
+import Team from './Team.js';
 import Component from '../../../structures/Component.js';
 import HomeInterface from '../../home/index.js';
-import Team from './Team.js';
 
 export default class LeftPanel extends Component {
     constructor(game) {
@@ -10,26 +10,17 @@ export default class LeftPanel extends Component {
     }
 
     create() {
-        const element = document.createElement('div');
+        const element = this.element = document.createElement('div');
         element.id = 'left-panel';
 
         const upBanner = document.createElement('div');
         upBanner.className = 'up-banner';
 
-        const options = document.createElement('div');
-        options.className = 'options';
+        const title = document.createElement('span');
+        title.className = 'team-title';
+        title.textContent = `EQUIPE ${this.team ? 'ROUGE' : 'BLEUE'}`;
 
-        const backButton = document.createElement('span');
-        backButton.onclick = () => {
-            this.game.socket.close();
-            const home = new HomeInterface(this.game.manager.manager);
-            document.body.firstChild.children[0].replaceWith(home.render());
-        };
-        backButton.textContent = '⬅️';
-
-        options.appendChild(backButton);
-
-        upBanner.appendChild(options);
+        upBanner.append(title);
 
         const team = new Team(this.game, this.team).create();
 

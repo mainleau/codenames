@@ -1,40 +1,46 @@
 import Component from '../../../structures/Component.js';
 
 export default class GameList extends Component {
-    constructor(manager) {
+    constructor(app) {
         super();
-        this.manager = manager;
+        this.app = app;
         this.games = [null, null, null];
         this.fetchGames();
-        this.interval = setInterval(() => {
-            if(!document.body.contains(this.element)) {
-                return this.interval = clearInterval(this.interval);
-            }
-            this.fetchGames();
-        }, 10 * 60 * 1000);
+        this.interval = setInterval(
+            () => {
+                if (!document.body.contains(this.element)) {
+                    return (this.interval = clearInterval(this.interval));
+                }
+                this.fetchGames();
+            },
+            10 * 60 * 1000,
+        );
     }
 
     async fetchGames() {
-        const games = await this.manager.client.games.fetch();
+        const games = await this.app.manager.api.games.fetch();
         this.games = games.reverse().concat(new Array(3).fill(null)).slice(0, 3);
         this.rerender();
     }
 
     create() {
         this.element = document.createElement('div');
-        
-        const games = this.games.map((liveGame => {
+
+        const games = this.games.map(liveGame => {
             const game = document.createElement('div');
-            if(liveGame !== null) game.style.cursor = 'pointer'; else game.style.opacity = 0.5;
+            if (liveGame !== null) game.style.cursor = 'pointer';
+            else game.style.opacity = 0.5;
             game.className = 'live-game';
-            if(liveGame !== null) game.onclick = () => {
-                document.body.firstChild.children[0].remove();
-                this.manager.games.join(liveGame.id);
+            if (liveGame !== null) {
+                game.onclick = () => {
+                    this.app.manager.games.join(liveGame.id, 0x01);
+                };
             }
 
             const name = document.createElement('span');
             name.className = 'name';
-            name.textContent = liveGame !== null ? liveGame.name || 'Partie sans nom' : '';
+            name.textContent =
+                liveGame !== null ? liveGame.name || 'Partie sans nom' : '';
 
             const teams = document.createElement('div');
             teams.className = 'teams';
@@ -60,14 +66,14 @@ export default class GameList extends Component {
             const time = document.createElement('span');
             time.className = 'time';
             time.textContent =
-            timeCount > 60 ? `il y a plus de ${Math.floor(timeCount / 60)} minutes`
-            : `il y a ${timeCount}s`;
+                timeCount > 60
+                    ? `il y a plus de ${Math.floor(timeCount / 60)} minute${Math.floor(timeCount / 60) > 1 ? 's' : ''}`
+                    : `il y a ${timeCount}s`;
 
-
-            if(liveGame !== null) game.append(name, time, teams);
+            if (liveGame !== null) game.append(name, time, teams);
 
             return game;
-        }));
+        });
 
         this.element.append(...games);
         return this.element;
