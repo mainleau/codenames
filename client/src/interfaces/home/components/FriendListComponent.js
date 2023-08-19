@@ -36,12 +36,10 @@ export default class FriendListComponent extends Component {
         const friends = (this.cache || []).map(friend => {
             const friendContainer = document.createElement('div');
             friendContainer.className = 'friend-container';
-            friendContainer.onclick = event => {
-                const user = new User(this.app.manager.api, friend);
-                new ProfileModal().open(event, user);
-            };
 
-            const username = new UsernameComponent(friend).create();
+            const user = new User(this.app.manager.api, friend);
+            
+            const username = new UsernameComponent(user).create();
 
             const status = document.createElement('div');
             status.className = 'user-status';

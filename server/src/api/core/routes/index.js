@@ -4,6 +4,7 @@ import Client from '../../../database/Client.js';
 import FriendshipController from '../controllers/FriendshipController.js';
 import GameController from '../controllers/GameController.js';
 import UserController from '../controllers/UserController.js';
+import RankingController from '../controllers/RankingController.js';
 
 const router = express.Router({
     caseSensitive: true,
@@ -70,6 +71,14 @@ router.get('/users/:id/stats', (req, res, next) => {
         return next(new Error('TOKEN_NOT_PROVIDED'));
     }
     users.fetchStatsByUserId(req, res, next);
+});
+
+const rankings = new RankingController(client);
+router.get('/ranking/point', (req, res, next) => {
+    if (typeof req.headers.authorization !== 'string') {
+        return next(new Error('TOKEN_NOT_PROVIDED'));
+    }
+    rankings.fetchPoint(req, res, next);
 });
 
 const friends = new FriendshipController(client);

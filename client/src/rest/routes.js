@@ -9,6 +9,8 @@ export default {
     FETCH_OWN_STATS: '/users/me/stats',
     PUT_ME_ONLINE: '/online',
 
+    FETCH_POINT_RANKING: '/ranking/point',
+
     FETCH_FRIENDS: '/friends',
     FETCH_FRIEND_REQUESTS: '/friends/requests',
     SEND_FRIEND_REQUEST: id => `/friends/requests/${id}`,

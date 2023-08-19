@@ -344,8 +344,14 @@
     text-align: center;
 }
 
+.list > :not(.team-subtitle) {
+    display: flex;
+    flex-direction: column;
+}
+
 #game .username-component {
-    padding-left: 25px;
+    margin-left: 25px;
+    width: fit-content;
 }
 
 #game #blur-mask{

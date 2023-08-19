@@ -1,3 +1,4 @@
+import User from '../../../api/core/structures/User.js';
 import Modal from '../../../structures/Modal.js';
 import UsernameComponent from '../components/UsernameComponent.js';
 import XPBarComponent from '../components/XPBarComponent.js';
@@ -18,7 +19,7 @@ export default class ProfileModal extends Modal {
         const topHeader = document.createElement('div');
         topHeader.id = 'top-header';
 
-        const username = new UsernameComponent(user).create();
+        const username = new UsernameComponent(user, false).create();
 
         let XPBar = '';
         if (complete) {

@@ -11,20 +11,28 @@ export default class Modal {
         };
     }
 
+    rerender() {
+        this.element.replaceWith(this.render());
+    }
+
+    open(event) {
+        this.render(event);
+    }
+
     close() {
         window.removeEventListener('click', this.check);
         this.element.remove();
         this.mask.remove();
     }
 
-    open(event) {
+    render(event) {
         this.element = document.createElement('div');
         this.element.className = 'modal';
         this.element.style.width = `${this.width}px`;
         this.element.style.height = `${this.height}px`;
 
-        document.body.append(this.element, this.mask);
-        event.stopPropagation();
+        if(event) document.body.append(this.element, this.mask);
+        if(event) event.stopPropagation();
         window.addEventListener('click', this.check);
     }
 }

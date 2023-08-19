@@ -131,12 +131,16 @@ export default class UserStorage {
         return response[0];
     }
 
-    async fetch(options = { count }) {
+    async fetch(options = { order, count }) {
         let sql = 'SELECT id, username, flags, xp, level, points, gold, gems FROM users';
         const params = [];
 
+        if (options.order) {
+            sql += ` ORDER BY points DESC`;
+        }
+
         if (options.count) {
-            sql += ' LIMIT $1';
+            sql += ` LIMIT $${params.length + 1}`;
             params.push(options.count);
         }
 
