@@ -65,6 +65,8 @@ export default class RankedGameManager extends GameManager {
             player = new Player(socket, user);
         }
 
+        if(!game) return;
+
         socket.onAny((name, data) => {
             game.handle(player, { name, data });
         });
