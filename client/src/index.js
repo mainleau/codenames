@@ -29,15 +29,10 @@ class Application {
         this.manager.init();
     }
 
-    // goAuth(ref = false) {
-    //     const authentication = new AuthenticationInterface(this, ref).render();
-    //     this.element.replaceChildren(authentication);
-    //     if (ref) {
-    //         const interf = new RegisterInterface(this);
-    //         authentication.firstChild.style.display = 'none';
-    //         authentication.append(interf.render());
-    //     }
-    // }
+    goAuth() {
+        const ref = new URLSearchParams(location.search).get('ref');
+        new AuthenticationInterface(this, ref).make();
+    }
 
     goHome() {
         new HomeInterface(this).make();

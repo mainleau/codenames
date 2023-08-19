@@ -18,7 +18,6 @@ export default class Manager {
 
     init() {
         const path = location.pathname.substring(1);
-        // const ref = new URLSearchParams(location.search).get('ref');
 
         if (isUUID(path)) {
             this.games.join(path);

@@ -57,8 +57,6 @@ export default class CustomGameManager extends GameManager {
             this.set(game.id, game);
         }
 
-        console.log(game)
-
         player.guest = content.guest === true;
         
         // TODO: check if player already in a game (or in this game), if so reject (or rejoin)

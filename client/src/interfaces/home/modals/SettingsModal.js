@@ -1,12 +1,13 @@
 import Modal from '../../../structures/Modal.js';
 
 export default class SettingsModal extends Modal {
-    constructor(manager) {
+    constructor(app) {
         super({
             width: 550,
             height: 300,
         });
-        this.manager = manager;
+        this.app = app;
+        this.manager = app.manager;
     }
 
     open() {
@@ -18,13 +19,13 @@ export default class SettingsModal extends Modal {
         changeUsernameCTA.onclick = () => {
             this.close();
             delete localStorage.token;
-            delete this.manager.rest.token;
-            this.manager.app.goAuth();
+            delete this.manager.api.token;
+            this.app.goAuth();
         };
         changeUsernameCTA.id = 'change-username-cta';
 
         const changeUsernameText = document.createElement('span');
-        changeUsernameText.textContent = 'Se déconnecter';
+        changeUsernameText.textContent = this.manager.api.isGuest ? 'Se connecter' : 'Se déconnecter';
 
         changeUsernameCTA.appendChild(changeUsernameText);
 

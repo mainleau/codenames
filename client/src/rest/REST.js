@@ -2,13 +2,11 @@ import APIRequest from './APIRequest.js';
 import AuthController from '../api/auth/index.js';
 import CoreController from '../api/core/index.js';
 import GameController from '../api/games/index.js';
-import { isUUID, jwt } from '../utils/index.js';
+import { jwt } from '../utils/index.js';
 
 export default class REST {
     constructor(token, routes, app) {
         this.token = token;
-        const content = token ? jwt.verify(token) : {};
-        this._guest = content.guest === true;
         
         this.routes = routes;
         
@@ -20,7 +18,8 @@ export default class REST {
     }
 
     get isGuest() {
-        return this._guest;
+        const content = this.token ? jwt.verify(this.token) : {};
+        return content.guest !== false;
     }
 
     setToken(token) {
@@ -38,7 +37,6 @@ export default class REST {
 
     async #request(method, route, options) {
         const request = new APIRequest(this, method, route, options);
-
         const response = await request.make();
 
         switch (response.status) {

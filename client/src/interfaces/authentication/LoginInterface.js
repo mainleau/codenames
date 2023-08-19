@@ -1,10 +1,10 @@
 import Interface from '../../structures/Interface.js';
 
 export default class LoginInterface extends Interface {
-    constructor(manager) {
-        super();
+    constructor(app) {
+        super(app);
 
-        this.manager = manager;
+        this.manager = app.manager;
     }
 
     render() {
@@ -40,14 +40,13 @@ export default class LoginInterface extends Interface {
         loginButton.id = 'login-button-final';
         loginButton.onclick = async () => {
             if (usernameInput.value && passwordInput.value) {
-                const { token } = await this.manager.auth.login({
+                const { token } = await this.app.manager.api.auth.login({
                     email: usernameInput.value,
                     password: passwordInput.value,
                 });
                 if (token) {
-                    localStorage.token = token;
-                    this.manager.rest.token = token;
-                    this.manager.app.goHome();
+                    this.app.manager.api.setToken(token);
+                    this.app.goHome();
                 } else {
                     passwordInput.value = '';
                 }
@@ -64,7 +63,7 @@ export default class LoginInterface extends Interface {
         const backButton = document.createElement('span');
         backButton.id = 'back-button';
         backButton.onclick = () => {
-            this.manager.app.goAuth();
+            this.app.goAuth();
         };
         backButton.textContent = '⬅️';
 

@@ -6,14 +6,14 @@ export default class BaseController {
     get(route, options) {
         return this.api.get(route, {
             ...this.options,
-            options
+            ...options
         });
     }
 
     post(route, options) {
         return this.api.post(route, {
             ...this.options,
-            options
+            ...options
         });
     }
 }

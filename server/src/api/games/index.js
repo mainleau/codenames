@@ -43,8 +43,8 @@ app.use((req, _, next) => {
         ? req.headers.authorization.replace('Bearer ', '')
         : null;
 
-    jwt.verify(token, process.env.JWT_SECRET, (error, content) => {
-        if (error) return next(new Error('INVALID_TOKEN'));
+    jwt.verify(token, process.env.JWT_SECRET, (error, content = {}) => {
+        // if (error) return next(new Error('INVALID_TOKEN'));
 
         req.id = content.id;
         next();

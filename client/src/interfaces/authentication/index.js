@@ -3,11 +3,12 @@ import RegisterInterface from './RegisterInterface.js';
 import Interface from '../../structures/Interface.js';
 
 export default class AuthInterface extends Interface {
-    constructor(manager, ref) {
+    constructor(app, ref) {
         super();
         this.ref = ref;
 
-        this.manager = manager;
+        this.app = app;
+        this.manager = app.manager;
     }
 
     render() {
@@ -21,8 +22,8 @@ export default class AuthInterface extends Interface {
         loginButton.id = 'login-button';
         loginButton.onclick = () => {
             this.element.firstChild.style.display = 'none';
-            const interf = new LoginInterface(this.manager);
-            this.manager.app.element.firstChild.append(interf.render());
+            const interf = new LoginInterface(this.app);
+            this.app.element.firstChild.append(interf.render());
         };
 
         const loginButtonText = document.createElement('span');
