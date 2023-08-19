@@ -61,6 +61,8 @@ export default class QuickGameManager extends GameManager {
             player = new Player(socket, user);
         }
 
+        if(!game) return;
+
         player.guest = content.guest === true;
 
         socket.onAny((name, data) => {
