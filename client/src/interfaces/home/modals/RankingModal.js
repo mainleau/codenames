@@ -1,14 +1,21 @@
 import Modal from '../../../structures/Modal.js';
+import UsernameComponent from '../components/UsernameComponent.js';
 
 export default class RankingModal extends Modal {
-    constructor(api) {
+    constructor(api, type) {
         super({
             width: 500,
             height: 700
         });
 
+        this.type = type;
+
         this.cache = [];
-        api.core.rankings.fetchPoint().then(data => {
+        if(this.type === 0) api.core.rankings.fetchXP().then(data => {
+            this.cache = data;
+            this.rerender();
+        });
+        if(this.type === 1) api.core.rankings.fetchPoint().then(data => {
             this.cache = data;
             this.rerender();
         });
@@ -23,7 +30,19 @@ export default class RankingModal extends Modal {
         this.element.id = 'ranking-modal';
 
         const title = document.createElement('span');
-        title.textContent = 'Classement';
+        title.textContent = `Classement des ${this.type === 0 ? 'XP' : 'Points'}`;
+
+        const header = document.createElement('div');
+        header.style.marginBottom = '10px';
+        header.style.fontWeight = 'bold';
+
+        const headerTexts = ['Rang', 'Points'].map(text => {
+            const headerText = document.createElement('span');
+            headerText.textContent = text;
+            return headerText;
+        });
+
+        header.append(...headerTexts);
 
         const container = document.createElement('div');
         container.id = 'ranking-container';
@@ -31,14 +50,17 @@ export default class RankingModal extends Modal {
         const ranking = this.cache.map((user, index) => {
             const userContainer = document.createElement('div');
 
-            const userText = document.createElement('span');
-            userText.textContent = `${index + 1} - ${user.username} (${user.points})`;
+            const rankText = document.createElement('span');
+            rankText.textContent = `${index + 1} ${user.username} `;
 
-            userContainer.append(userText)
+            const countText = document.createElement('span');
+            countText.textContent = this.type === 0 ? user.xp : user.points;
+
+            userContainer.append(rankText, countText)
             return userContainer;
         });
 
-        container.append(...ranking);
+        container.append(header, ...ranking);
 
         this.element.append(title, container);
 

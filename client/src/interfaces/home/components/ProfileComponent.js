@@ -26,7 +26,7 @@ export default class ProfileComponent extends Component {
         avatarContainer.id = 'avatar-container';
 
         const username = this.cache.username
-            ? new UsernameComponent(this.cache, true, null, true).create()
+            ? new UsernameComponent(this.cache, true, null, true, this.app.manager.api).create()
             : '...';
         if (this.cache.username) {
             // username.onclick = event => {
@@ -71,7 +71,7 @@ export default class ProfileComponent extends Component {
         const pointsContainer = document.createElement('div');
         pointsContainer.id = 'points-container';
         pointsContainer.onclick = event => {
-            new RankingModal(this.app.manager.api).open(event);
+            new RankingModal(this.app.manager.api, 1).open(event);
         }
 
         const pointsText = document.createElement('span');

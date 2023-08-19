@@ -74,6 +74,12 @@ router.get('/users/:id/stats', (req, res, next) => {
 });
 
 const rankings = new RankingController(client);
+router.get('/ranking/xp', (req, res, next) => {
+    if (typeof req.headers.authorization !== 'string') {
+        return next(new Error('TOKEN_NOT_PROVIDED'));
+    }
+    rankings.fetchXP(req, res, next);
+});
 router.get('/ranking/point', (req, res, next) => {
     if (typeof req.headers.authorization !== 'string') {
         return next(new Error('TOKEN_NOT_PROVIDED'));

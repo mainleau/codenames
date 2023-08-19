@@ -1,15 +1,20 @@
 import Component from '../../../structures/Component.js';
+import RankingModal from '../modals/RankingModal.js';
 
 export default class XPBarComponent extends Component {
-    constructor(user) {
+    constructor(api, user) {
         super();
 
+        this.api = api;
         this.user = user;
     }
 
     create() {
         this.element = document.createElement('div');
         this.element.id = 'xp-bar-component';
+        this.element.onclick = event => {
+            new RankingModal(this.api, 0).open(event);
+        }
 
         const bar = document.createElement('div');
         bar.id = 'bar';

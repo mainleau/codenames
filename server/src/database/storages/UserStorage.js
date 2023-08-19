@@ -136,7 +136,7 @@ export default class UserStorage {
         const params = [];
 
         if (options.order) {
-            sql += ` ORDER BY points DESC`;
+            sql += ` ORDER BY ${options.order} DESC`;
         }
 
         if (options.count) {
