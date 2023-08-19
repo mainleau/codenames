@@ -13,4 +13,10 @@ export default class Rankings extends Collection {
 
         return data.map(user => new User(this.api, user));
     }
+
+    async fetchXP() {
+        const data = await this.api.core.get(this.api.routes.FETCH_XP_RANKING);
+
+        return data.map(user => new User(this.api, user));
+    }
 }

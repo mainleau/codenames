@@ -4,11 +4,12 @@ import UsernameComponent from '../components/UsernameComponent.js';
 import XPBarComponent from '../components/XPBarComponent.js';
 
 export default class ProfileModal extends Modal {
-    constructor() {
+    constructor(api) {
         super({
             width: 500,
             height: 700,
         });
+        this.api = api;
     }
 
     open(event, user, complete = false) {
@@ -23,7 +24,7 @@ export default class ProfileModal extends Modal {
 
         let XPBar = '';
         if (complete) {
-            XPBar = new XPBarComponent(user).create();
+            XPBar = new XPBarComponent(this.api, user).create();
         }
 
         topHeader.append(username, XPBar);

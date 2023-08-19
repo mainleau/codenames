@@ -2,10 +2,11 @@ import Component from '../../../structures/Component.js';
 import ProfileModal from '../modals/ProfileModal.js';
 
 export default class UsernameComponent extends Component {
-    constructor(user, onclick = true, nickname = null, completed = false) {
+    constructor(user, onclick = true, nickname = null, completed = false, api) {
         super();
 
         this.user = user;
+        this.api = api;
 
         this.onclick = onclick;
 
@@ -17,7 +18,7 @@ export default class UsernameComponent extends Component {
         this.element = document.createElement('div');
         this.element.className = 'username-component';
         if(this.onclick) this.element.onclick = event => {
-            new ProfileModal().open(event, this.user, this.completed);
+            new ProfileModal(this.api).open(event, this.user, this.completed);
         }
         if(this.onclick) this.element.classList.add('clickable');
 
