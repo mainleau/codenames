@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import GameManager from './GameManager.js';
 import Player from '../structures/Player.js';
 import RankedGame from '../structures/RankedGame.js';
+import { GAME_STATES } from '../../../utils/Constants.js';
 
 export default class RankedGameManager extends GameManager {
     constructor(manager) {
@@ -77,6 +78,10 @@ export default class RankedGameManager extends GameManager {
         if(!socket.handshake.query.id) game.add(player);
 
         if (game.players.size === this.options.maxPlayerCount) {
+            this.state = GAME_STATES.STARTING;
+            game.broadcast('game-starting', {
+                state: this.state
+            });
             setTimeout(() => game.start(), 3000);
         }
     }

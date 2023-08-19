@@ -128,7 +128,8 @@ export default class Game {
 
     start() {
         if (this.state === GAME_STATES.STARTED) {
-            throw new Error('GAME_ALREADY_STARTED');
+            // throw new Error('GAME_ALREADY_STARTED');
+            return;
         }
 
         this.state = GAME_STATES.STARTED;
@@ -275,7 +276,13 @@ export default class Game {
         words.forEach(word => this.words.set(word.id, word));
     }
 
-    update(player, data) {
+    update(player, data, force = false) {
+        if(
+            (this.rules & GAME_RULES.TEAM_ROLE_LOCK
+            || (this.state === GAME_STATES.STARTED && TEAM_ROLE_LOCK_WHEN_STARTED)) && !force
+        ) {
+            throw new Error('TEAM_ROLE_LOCKED');
+        }
         var updated = false;
 
         if ('team' in data) {

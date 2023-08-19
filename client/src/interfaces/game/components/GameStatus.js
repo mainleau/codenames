@@ -9,7 +9,11 @@ export default class GameStatus extends Component {
             this.rerender();
         });
 
-        this.game.socket.on('game-joined', data => {
+        this.game.socket.on('game-starting', () => {
+            this.rerender()
+        });
+
+        this.game.socket.on('game-joined', () => {
             this.rerender();
         });
 
@@ -27,7 +31,8 @@ export default class GameStatus extends Component {
         element.id = 'game-status-component';
 
         const gameStatusText = document.createElement('span');
-        gameStatusText.textContent = !this.game.state ? 'En attente de joueurs...'
+        gameStatusText.textContent = this.game.state === 0 ? 'En attente de joueurs...'
+        ? this.game.state === 4 : 'La partie va commencer...'
         : this.game.turn === 1 ? 'Les espions cherchent un indice'
         : 'Les agents cherchent les cartes';
 
