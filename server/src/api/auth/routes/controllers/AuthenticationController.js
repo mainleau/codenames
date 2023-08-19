@@ -16,7 +16,7 @@ export default class AuthenticationController {
 
     async requestTokenAsGuest(_, res, __) {
 
-        const id = uuid.v4();
+        const id = v4();
 
         const token = jwt.sign(
             {

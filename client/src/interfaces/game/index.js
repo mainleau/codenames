@@ -8,14 +8,10 @@ import Interface from '../../structures/Interface.js';
 import ChangeNicknameModal from './modals/ChangeNicknameModal.js';
 
 export default class GameInterface extends Interface {
-    constructor(manager, game) {
-        super();
-        this.manager = manager;
+    constructor(app, game) {
+        super(app);
+        this.manager = app.manager;
         this.game = game;
-
-        this.app = document.body.firstChild;
-        this.element = this.render();
-        this.app.appendChild(this.element);
 
         this.game.socket.on('game-rewards', data => {
             const endComponent = new EndComponent(this.game, this.manager.manager.app, data).create();
@@ -27,7 +23,7 @@ export default class GameInterface extends Interface {
             this.game.name = `Partie ${data.id.slice(0, 3)}`;
             if(data.hostId === data.player.id) {
                 const settings = new SettingsComponent(this.game, data).create()
-                this.app.append(settings);
+                this.app.element.append(settings);
             }
         });
 
@@ -50,7 +46,7 @@ export default class GameInterface extends Interface {
     }
 
     render() {
-        const element = document.createElement('div');
+        const element = this.element = document.createElement('div');
         element.id = 'game';
 
         const left = document.createElement('div');
@@ -65,7 +61,7 @@ export default class GameInterface extends Interface {
         const backButton = document.createElement('span');
         backButton.onclick = () => {
             this.game.socket.close();
-            this.manager.manager.app.goHome();
+            this.app.goHome();
         };
         backButton.textContent = '⬅️';
 

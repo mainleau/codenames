@@ -40,9 +40,10 @@ export default class RankedGameManager extends GameManager {
         const { token } = socket.handshake.auth;
 
         let user = null;
+        var content = {};
         if (token) {
-            const content = jwt.verify(token, process.env.JWT_SECRET);
-            user = await this.manager.client.users.fetchById(content.id);
+            content = jwt.verify(token, process.env.JWT_SECRET);
+            if(content.guest === false) user = await this.manager.client.users.fetchById(content.id);
         }
 
         if(!user) {

@@ -38,21 +38,21 @@ export default class UsernameComponent extends Component {
         const badges = document.createElement('div');
         badges.id = 'badges';
 
-        if (this.user.flags & 0x10) {
-            const guardianBadge = document.createElement('span');
-            guardianBadge.textContent = '🛡️';
-            badges.append(guardianBadge);
-        }
+        // if (this.user.flags & 0x10) {
+        //     const guardianBadge = document.createElement('span');
+        //     guardianBadge.textContent = '🛡️';
+        //     badges.append(guardianBadge);
+        // }
 
-        if (this.user.flags & 0x01) {
-            const earlyBirdBadge = document.createElement('span');
-            earlyBirdBadge.textContent = '🐦';
-            badges.append(earlyBirdBadge);
-        }
+        // if (this.user.flags & 0x01) {
+        //     const earlyBirdBadge = document.createElement('span');
+        //     earlyBirdBadge.textContent = '🐦';
+        //     badges.append(earlyBirdBadge);
+        // }
+        if(this.user.level) this.element.append(levelContainer);
 
         this.element.append(
-            levelContainer,
-            usernameText /* Badges.children.length ? badges : '' */,
+            usernameText,
         );
         return this.element;
     }

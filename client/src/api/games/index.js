@@ -22,7 +22,7 @@ export default class GameController extends BaseController {
     }
 
     async fetch() {
-        const data = await this.api.games.get(this.routes.FETCH_PUBLIC_GAMES);
+        const data = await this.api.games.get(this.api.routes.FETCH_PUBLIC_GAMES);
 
         return data;
     }
@@ -39,7 +39,7 @@ export default class GameController extends BaseController {
         });
 
         const game = new Game(this.app, socket);
-        new GameInterface(this.app, game);
+        return game;
     }
 
     join(id, mode) {
@@ -60,6 +60,6 @@ export default class GameController extends BaseController {
         });
 
         const game = new Game(this.app, socket);
-        new GameInterface(this.app, game);
+        return game;
     }
 }

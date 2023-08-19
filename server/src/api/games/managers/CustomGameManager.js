@@ -33,10 +33,12 @@ export default class CustomGameManager extends GameManager {
         const { token } = socket.handshake.auth;
         const id = socket.handshake.query.id;
 
-        let user = null;
+        let user = {};
+        var content = {};
         if (token) {
-            const content = jwt.verify(token, process.env.JWT_SECRET);
-            user = await this.manager.client.users.fetchById(content.id);
+            content = jwt.verify(token, process.env.JWT_SECRET);
+            if(content.guest === false) user = await this.manager.client.users.fetchById(content.id);
+            else user.id = content.id;
         } // TODO: different and shorter id for anonymous users, kept in a localstorage token prop
 
         var player = null;
@@ -54,6 +56,10 @@ export default class CustomGameManager extends GameManager {
             game.hostId = player.id; // TODO: add host flag to player
             this.set(game.id, game);
         }
+
+        console.log(game)
+
+        player.guest = content.guest === true;
         
         // TODO: check if player already in a game (or in this game), if so reject (or rejoin)
         if(!reconnected) game.add(player);

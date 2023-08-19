@@ -18,7 +18,7 @@ export default class GameList extends Component {
     }
 
     async fetchGames() {
-        const games = await this.app.manager.api.core.games.fetch();
+        const games = await this.app.manager.api.games.fetch();
         this.games = games.reverse().concat(new Array(3).fill(null)).slice(0, 3);
         this.rerender();
     }
@@ -33,8 +33,7 @@ export default class GameList extends Component {
             game.className = 'live-game';
             if (liveGame !== null) {
                 game.onclick = () => {
-                    document.body.firstChild.children[0].remove();
-                    this.manager.games.join(liveGame.id, 0x01);
+                    this.app.manager.games.join(liveGame.id, 0x01);
                 };
             }
 

@@ -7,7 +7,7 @@ export default class ClueCountSelector extends Component {
     }
 
     create(clueCountText) {
-        const element = document.createElement('div');
+        const element = this.element = document.createElement('div');
         element.id = 'clue-count-selector';
         element.style.visibility = 'hidden';
 

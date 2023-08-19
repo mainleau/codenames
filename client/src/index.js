@@ -26,38 +26,21 @@ class Application {
         this.element.id = 'app';
         document.body.replaceChildren(this.element);
 
-        this.init();
+        this.manager.init();
     }
 
-    init() {
-        const path = location.pathname.substring(1);
-        // const ref = new URLSearchParams(location.search).get('ref');
-
-        if (isUUID(path)) {
-            this.manager.api.games.join(path);
-        } else {
-            this.goHome();
-        }
-    }
-
-    goAuth(ref = false) {
-        const authentication = new AuthenticationInterface(this, ref).render();
-        this.element.replaceChildren(authentication);
-        if (ref) {
-            const interf = new RegisterInterface(this);
-            authentication.firstChild.style.display = 'none';
-            authentication.append(interf.render());
-        }
-    }
-
-    goGame() {
-        const game = new GameInterface(this).render();
-        this.element.replaceChildren(game);
-    }
+    // goAuth(ref = false) {
+    //     const authentication = new AuthenticationInterface(this, ref).render();
+    //     this.element.replaceChildren(authentication);
+    //     if (ref) {
+    //         const interf = new RegisterInterface(this);
+    //         authentication.firstChild.style.display = 'none';
+    //         authentication.append(interf.render());
+    //     }
+    // }
 
     goHome() {
-        const home = new HomeInterface(this).render();
-        this.element.replaceChildren(home);
+        new HomeInterface(this).make();
     }
 }
 

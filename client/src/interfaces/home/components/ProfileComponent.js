@@ -8,8 +8,9 @@ export default class ProfileComponent extends Component {
         super();
 
         this.cache = {};
-        console.log(app)
         this.app = app;
+
+        if(this.app.manager.api.isGuest) return;
         this.app.manager.api.core.users.fetchMe().then(user => {
             this.cache = user;
             this.rerender();

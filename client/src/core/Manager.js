@@ -1,6 +1,8 @@
+import GameInterface from '../interfaces/game/index.js';
 import REST from '../rest/REST.js';
 import routes from '../rest/routes.js';
 import { isUUID, jwt } from '../utils/index.js';
+import GameHandler from './GameHandler.js';
 
 // TODO: add special items for 10 first players, 100 first players, 1000, 10000 etc.
 export default class Manager {
@@ -8,21 +10,21 @@ export default class Manager {
         this.app = app;
 
         const { token } = localStorage;
-        
-        // const content = token ? jwt.verify(token) : null;
+
+        this.games = new GameHandler(this.app);
 
         this.api = new REST(token, routes, this.app);
+    }
 
+    init() {
         const path = location.pathname.substring(1);
         // const ref = new URLSearchParams(location.search).get('ref');
 
-        // if (isUUID(path)) {
-        //     this.api.games.join(path);
-        // } else {
-        //     this.app.goHome();
-        // }
-
-        // this.login();
+        if (isUUID(path)) {
+            this.games.join(path);
+        } else {
+            this.app.goHome();
+        }
     }
 
     // login() {

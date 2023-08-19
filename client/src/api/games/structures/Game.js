@@ -13,8 +13,8 @@ export default class Game {
         role: null,
     };
 
-    constructor(manager, socket, options = { teamCount: 2 }) {
-        this.manager = manager;
+    constructor(app, socket, options = { teamCount: 2 }) {
+        this.manager = app.manager;
 
         this.name = null;
 

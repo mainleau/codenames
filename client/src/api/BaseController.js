@@ -11,7 +11,7 @@ export default class BaseController {
     }
 
     post(route, options) {
-        return this.api.get(route, {
+        return this.api.post(route, {
             ...this.options,
             options
         });

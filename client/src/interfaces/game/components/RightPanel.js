@@ -10,7 +10,7 @@ export default class RightPanel extends Component {
     }
 
     create() {
-        const element = document.createElement('div');
+        const element = this.element = document.createElement('div');
         element.id = 'right-panel';
 
         const upBanner = document.createElement('div');

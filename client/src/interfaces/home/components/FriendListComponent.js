@@ -10,6 +10,7 @@ export default class FriendListComponent extends Component {
         this.app = app;
         this.cache = [];
 
+        if(this.app.manager.api.isGuest) return;
         this.app.manager.api.core.friends.fetchWithGames().then(friends => {
             this.cache = friends;
             this.rerender();
