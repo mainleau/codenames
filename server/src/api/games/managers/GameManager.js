@@ -11,17 +11,18 @@ export default class GameManager extends Collection {
         return Collection;
     }
 
+    prepareDeletion(game) {
+        if(!game.players.size) {
+            setTimeout(() => {
+                if(game.players.size) return;
+                this.delete(game.id);
+            }, 30000);
+        }
+    }
+
     connect() {}
 
     reconnect() {}
     
     disconnect() {}
 }
-
-// If(!game.players.size) {
-// 	setTimeout(() => {
-// 		if(game.players.size) return;
-// 		this.delete(game.id);
-// 		this.client.games.remove(game.id);
-// 	}, 30000);
-// }

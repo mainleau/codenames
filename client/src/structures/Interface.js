@@ -9,8 +9,6 @@ export default class Interface {
     }
 
     rerender() {
-        const newElement = this.render();
-        this.element.replaceWith(newElement);
-        this.element = newElement;
+        this.make();
     }
 }

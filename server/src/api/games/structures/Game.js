@@ -253,6 +253,14 @@ export default class Game {
             this.add(player);
         }
 
+        socket.emit('game-joined', {
+            ...this.toJSON(),
+            player: player
+        });
+        socket.emit('player-list', this.players);
+        socket.emit('word-list', this.words);
+        socket.emit('clue-list', this.clues);
+
         socket.join(this.id);
         return player;
     }

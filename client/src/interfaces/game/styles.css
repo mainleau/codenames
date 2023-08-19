@@ -39,7 +39,9 @@
 .card {
     overflow: hidden;
     background-color: rosybrown;
-    border: 10px solid #7A5C5C;
+    border-color: #7A5C5C;
+    border-width: 8px;
+    border-style: solid;
     aspect-ratio: 3/2;
     border-radius: 20px;
     display: flex;
@@ -53,50 +55,50 @@
 
 .card.default {
     background-color: rosybrown;
-    border: 10px solid #7A5C5C;
+    border-color: #7A5C5C;
 }
 
 .card.default.reversed {
     background-color: #7A5C5C;
-    border: 10px solid rosybrown;
+    border-color: rosybrown;
 }
 
 .card.first-team {
     background-color: #BEF3EB;
-    border: 10px solid #88ADA8;
+    border-color: #88ADA8;
 }
 
 .card.first-team.reversed {
     background-color: #88ADA8;
-    border: 10px solid #BEF3EB;
+    border-color: #BEF3EB;
 }
 
 .card.second-team {
     background-color: salmon;
-    border: 10px solid #B85F55;
+    border-color: #B85F55;
 }
 
 .card.second-team.reversed {
     background-color: #B85F55;
-    border: 10px solid salmon;
+    border-color: salmon;
 }
 
 .card.death {
     background-color: lightslategray;
-    border: 10px solid #4E5964;
+    border-color: #4E5964;
 }
 
 .card.death.reversed {
     background-color: #4E5964;
-    border: 10px solid lightslategray;
+    border-color: lightslategray;
 }
 
 .card.selected {
-    border: 10px solid #473535;
+    border-color: #473535;
 }
 
 .card > span {
-    font-size: 1.6em;
+    font-size: 1.5em;
     font-weight: bold;
     position: absolute;
     top: 75%;
@@ -473,7 +475,7 @@
     background-color: bisque;
 }
 
-#game #top-board #game-status {
+#game #top-board #game-status-component {
     font-size: 2em;
     background-color: white;
     padding: 16px 40px;

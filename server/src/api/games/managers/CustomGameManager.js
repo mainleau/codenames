@@ -14,8 +14,10 @@ export default class CustomGameManager extends GameManager {
 
     disconnect(player) {
         const game = this.get(player.currentGameId);
+        if(!player.currentGameId) return;
 
         game.remove(player);
+        this.prepareDeletion(game);
     }
 
     reconnect(socket, user) {
@@ -66,7 +68,7 @@ export default class CustomGameManager extends GameManager {
             game.handle(player, { name, data });
         });
 
-        socket.on('disconnect', () => game.state === 0 && this.disconnect(player));
+        socket.on('disconnect', () => !game.state && this.disconnect(player));
     }
 
     create() {

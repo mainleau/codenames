@@ -6,16 +6,7 @@ export default class BottomBoard extends Component {
         super();
         this.game = game;
 
-        this.game.socket.on('game-joined', data => {
-            this.game.state = data.state;
-            this.game.rules = data.rules;
-            this.game.settings = data.settings;
-            this.game.turn = data.turn;
-            this.game.hostId = data.hostId
-            if(!this.game.players.get(data.player.id)) {
-                this.game.players.set(data.player.id, data.player);
-            }
-            this.game.playerId = data.player.id;
+        this.game.socket.on('game-joined', () => {
             this.rerender();
         });
 
@@ -61,8 +52,8 @@ export default class BottomBoard extends Component {
     }
 
     create() {
-        this.element = document.createElement('div');
-        this.element.id = 'bottom-board';
+        const element = this.element = document.createElement('div');
+        element.id = 'bottom-board';
 
         const clueBar = document.createElement('div');
         clueBar.id = 'clue-bar';
@@ -142,7 +133,8 @@ export default class BottomBoard extends Component {
         startGameCTA.append(startGameText);
 
         if (this.game.turn.role === 0) {
-            this.element.appendChild(clueWordContainer);
+            console.log('aaaa')
+            element.appendChild(clueWordContainer);
         }
 
         if (this.game.turn.role === 1) {
@@ -150,14 +142,15 @@ export default class BottomBoard extends Component {
                 this.game.turn.team === this.game.player.team &&
                 this.game.turn.role === this.game.player.role
             ) {
-                this.element.appendChild(clueBar);
+                element.appendChild(clueBar);
             }
         }
         
         if (this.game.state === 0 && this.game.hostId === this.game.player.id) {
-            this.element.appendChild(startGameCTA);
+            console.log(this.game.state)
+            element.appendChild(startGameCTA);
         }
 
-        return this.element;
+        return element;
     }
 }

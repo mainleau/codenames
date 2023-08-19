@@ -6,6 +6,7 @@ import RightPanel from './components/RightPanel.js';
 import SettingsComponent from './components/SettingsComponent.js';
 import Interface from '../../structures/Interface.js';
 import ChangeNicknameModal from './modals/ChangeNicknameModal.js';
+import GameStatus from './components/GameStatus.js';
 
 export default class GameInterface extends Interface {
     constructor(app, game) {
@@ -19,35 +20,26 @@ export default class GameInterface extends Interface {
         });
 
         this.game.socket.on('game-joined', data => {
-            if (data.name) return;
-            this.game.name = `Partie ${data.id.slice(0, 3)}`;
-            if(data.hostId === data.player.id) {
+            this.game.state = data.state;
+            this.game.rules = data.rules;
+            this.game.settings = data.settings;
+            this.game.turn = data.turn;
+            this.game.hostId = data.hostId
+            if(!this.game.players.get(data.player.id)) {
+                this.game.players.set(data.player.id, data.player);
+            }
+            this.game.playerId = data.player.id;
+            if(!data.name && data.hostId === data.player.id) {
                 const settings = new SettingsComponent(this.game, data).create()
                 this.app.element.append(settings);
             }
-        });
-
-        this.phase = 0;
-
-        this.game.socket.on('game-started', () => {
-            this.phase = 1;
-            this.rerender();
-        });
-
-        this.game.socket.on('card-revealed', () => {
-            this.phase = 1;
-            this.rerender();
-        });
-
-        this.game.socket.on('clue-forwarded', () => {
-            this.phase = 2;
-            this.rerender();
+            this.game.name = data.name || `Partie ${data.id.slice(0, 3)}`;
         });
     }
 
     render() {
-        const element = this.element = document.createElement('div');
-        element.id = 'game';
+        this.element = document.createElement('div');
+        this.element.id = 'game';
 
         const left = document.createElement('div');
         left.id = 'left';
@@ -85,15 +77,7 @@ export default class GameInterface extends Interface {
         const topBoard = document.createElement('div');
         topBoard.id = 'top-board';
 
-        const gameStatus = document.createElement('div');
-        gameStatus.id = 'game-status';
-
-        const gameStatusText = document.createElement('span');
-        gameStatusText.textContent = !this.phase ? 'En attente de joueurs...'
-            : this.phase === 1 ? 'Les espions cherchent un indice'
-            : 'Les agents cherchent les cartes';
-
-        gameStatus.append(gameStatusText);
+        const gameStatus = this.gameStatus = new GameStatus(this.game).create();
 
         topBoard.append(gameStatus);
 
@@ -137,7 +121,7 @@ export default class GameInterface extends Interface {
 
         content.append(left, middlePanel, right);
 
-        element.append(content);
-        return element;
+        this.element.append(content);
+        return this.element;
     }
 }

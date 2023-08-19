@@ -12,8 +12,8 @@ export default class HomeInterface extends Interface {
     render() {
         history.replaceState(null, '', '/');
 
-        this.element = document.createElement('div');
-        this.element.id = 'home';
+        const element = this.element = document.createElement('div');
+        element.id = 'home';
 
         const topBar = new TopBarComponent(this.app).create();
 
@@ -108,7 +108,7 @@ export default class HomeInterface extends Interface {
 
         buyContainer.append(buy);
 
-        this.element.append(topBar, content, buyContainer);
-        return this.element;
+        element.append(topBar, content, buyContainer);
+        return element;
     }
 }
