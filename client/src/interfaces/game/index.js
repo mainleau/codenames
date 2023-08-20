@@ -41,6 +41,7 @@ export default class GameInterface extends Interface {
         });
 
         this.game.socket.on('game-started', data => {
+            this.game.turn = data.turn;
             this.game.state = 1;
         });
 
