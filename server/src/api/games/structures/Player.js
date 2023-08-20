@@ -25,7 +25,7 @@ export default class Player {
     }
 
     get isLogged() {
-        return !!this.user.xp;
+        return 'xp' in this.user;
     }
 
     emit(...params) {
