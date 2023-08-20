@@ -5,6 +5,7 @@ import RegisterInterface from './interfaces/authentication/RegisterInterface.js'
 import './styles.css';
 import { isUUID } from './utils/index.js';
 import GameInterface from './interfaces/game/index.js';
+import AlertModal from './interfaces/home/modals/AlertModal.js';
 
 window.onload = () => new Application().launch();
 
@@ -36,6 +37,10 @@ class Application {
 
     goHome() {
         new HomeInterface(this).make();
+    }
+
+    alert(title, message) {
+        new AlertModal(title, message).open();
     }
 }
 

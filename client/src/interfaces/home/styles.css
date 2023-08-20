@@ -369,6 +369,27 @@
     gap: 20px;
 }
 
+#alert-modal {
+    padding: 40px 50px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+#alert-modal > span:first-child {
+    background-color: rosybrown;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 2em;
+}
+
+#alert-modal > span:last-child {
+    font-size: 1.4em;
+    margin-bottom: 20px;
+}
+
 #xp-bar-component {
     border-radius: 20px;
     padding: 6px 10px;

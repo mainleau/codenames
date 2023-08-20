@@ -12,7 +12,7 @@ export default class Modal {
     }
 
     rerender() {
-        this.element.replaceWith(this.render());
+        this.element.replaceWith(this.render(null, true));
     }
 
     open(event) {
@@ -25,13 +25,13 @@ export default class Modal {
         this.mask.remove();
     }
 
-    render(event) {
+    render(event, rerender = false) {
         this.element = document.createElement('div');
         this.element.className = 'modal';
-        this.element.style.width = `${this.width}px`;
-        this.element.style.height = `${this.height}px`;
+        if(this.width) this.element.style.width = `${this.width}px`;
+        if(this.height) this.element.style.height = `${this.height}px`;
 
-        if(event) document.body.append(this.element, this.mask);
+        if(!rerender) document.body.append(this.element, this.mask);
         if(event) event.stopPropagation();
         window.addEventListener('click', this.check);
     }

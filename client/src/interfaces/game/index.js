@@ -39,6 +39,17 @@ export default class GameInterface extends Interface {
                 this.app.element.append(settings);
             }
         });
+
+        this.game.socket.on('error', (data) => {
+            if(data.message === 'GAME_NOT_FOUND') {
+                this.app.goHome();
+                this.app.alert('Partie introuvable', "Cette partie n'existe pas ou n'est plus disponible.");
+            } else if(data.message === 'INVALID_NICKNAME') {
+                this.app.alert('Surnom invalide', "Un surnom doit contenir entre 1 et 16 caractères.");
+            } else {
+                this.app.alert('Erreur sécifique', data.message);
+            }
+        });
     }
 
     render() {

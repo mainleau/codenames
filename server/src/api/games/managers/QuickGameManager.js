@@ -61,7 +61,12 @@ export default class QuickGameManager extends GameManager {
             player = new Player(socket, user);
         }
 
-        if(!game) return;
+        if(!game) {
+            socket.emit('error', {
+                message: 'GAME_NOT_FOUND'
+            });
+            return socket.disconnect();
+        }
 
         player.guest = content.guest === true;
 

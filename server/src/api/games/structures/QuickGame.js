@@ -7,7 +7,7 @@ export default class QuickGame extends Game {
 
         this.mode = GAME_MODES.QUICK_GAME;
 
-        this.rules = GAME_RULES.NONE;
+        this.rules = GAME_RULES.TEAM_ROLE_LOCK_WHEN_STARTED;
     }
 
     start() {
