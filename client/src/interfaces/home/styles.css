@@ -83,6 +83,7 @@
 }
 
 .game-cta {
+    display: flex;
     cursor: pointer;
     width: fit-content;
     font-size: 1.6em;
@@ -168,6 +169,7 @@
 
 #home #login-button {
     cursor: pointer;
+    display: flex;
     padding: 10px;
     border-radius: 20px;
     background-color: palegoldenrod;
@@ -237,6 +239,14 @@
     align-items: center;
     flex-direction: column;
     gap: 10px;
+    height: auto !important;
+    padding: 30px;
+    width: auto !important;
+}
+
+#logout-modal > span {
+    width: 300px;
+    text-align: center;
 }
 
 #buy-container {
@@ -499,4 +509,71 @@
     font-size: 2.2em;
     text-align: center;
     margin-top: 22px;
+}
+
+@media (max-width: 1700px) {
+    * {
+        font-size: 0.99em;
+    }
+    #home #games-container {
+        width: 900px;
+    }
+    #friend-list-component, #profile-component {
+        width: 300px;
+    }
+}
+
+@media (max-width: 1600px) {
+    * {
+        font-size: 0.98em;
+    }
+    #home #games-container {
+        width: 800px;
+    }
+    #friend-list-component, #profile-component {
+        width: 290px;
+    }
+}
+
+@media (max-width: 1500px) {
+    #friend-list-component {
+        display: none;
+    }
+    #home #content {
+        justify-content: space-evenly;
+    }
+}
+
+@media (max-width: 1200px) {
+    #home #games-container {
+        width: 425px;
+    }
+    #profile-component {
+        display: none;
+    }
+    #home #content {
+        justify-content: center;
+    }
+    #games-container > :last-child {
+        grid-template-columns: unset;
+        padding: 50px 135px;
+    }
+    #game-ctas {
+        flex-direction: column;
+    }
+    #buy-container {
+        display: none;
+    }
+    .teams > div {
+        padding: 0;
+    }
+}
+
+@media (max-width: 450px) {
+    .game-cta {
+        font-size: 1.3em;
+    }
+    #games-container > :last-child {
+        padding: 50px 122px;
+    }
 }
