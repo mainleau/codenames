@@ -39,7 +39,7 @@ export default class GameInterface extends Interface {
             if(!data.name && data.hostId === data.player.id) {
                 if(this.settings) return;
                 this.settings = new SettingsComponent(this.game, data).create();
-                this.app.element.append(settings);
+                this.app.element.append(this.settings);
             }
         });
 
