@@ -40,6 +40,10 @@ export default class GameInterface extends Interface {
             }
         });
 
+        this.game.socket.on('game-started', data => {
+            this.game.state = 1;
+        });
+
         this.game.socket.on('error', (data) => {
             if(data.message === 'GAME_NOT_FOUND') {
                 this.app.goHome();
