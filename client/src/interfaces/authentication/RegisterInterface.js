@@ -62,7 +62,7 @@ export default class RegisterInterface extends Interface {
                     },
                 );
                 if (token) {
-                    localStorage.token = token;
+                    this.manager.api.setToken(token);
                     this.manager.app.goHome();
                 } else {
                     passwordInput.value = '';
