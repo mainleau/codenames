@@ -175,7 +175,7 @@ export default class Game {
     }
 
     reward(winner) {
-        console.log(players);
+        console.log(this.players);
         this.players.forEach(async player => {
             console.log(player, player.isLogged);
             if (player.role === GAME_ROLES.SPECTATOR) return;
