@@ -8,6 +8,8 @@ export default class Game {
 
     words = null;
 
+    state = null;
+
     turn = {
         team: null,
         role: null,

@@ -20,17 +20,8 @@ export default class BottomBoard extends Component {
             if (data.id === this.game.playerId) this.rerender();
         });
 
-        this.game.socket.on('clue-forwarded', data => {
+        this.game.socket.on('clue-forwarded', () => {
             this.clue = '';
-            this.game.teams[this.game.turn.team].clues.set(
-                this.game.teams[this.game.turn.team].size,
-                {
-                    word: data.word,
-                    count: data.count,
-                    relatedWords: data.relatedWords,
-                },
-            );
-            this.game.turn.role ^= true;
             this.rerender();
         });
 
@@ -134,7 +125,6 @@ export default class BottomBoard extends Component {
         startGameCTA.append(startGameText);
 
         if (this.game.turn.role === 0) {
-            console.log('aaaa')
             element.appendChild(clueWordContainer);
         }
 
