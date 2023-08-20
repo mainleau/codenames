@@ -279,7 +279,7 @@ export default class Game {
     update(player, data, force = false) {
         if(
             (this.rules & GAME_RULES.TEAM_ROLE_LOCK
-            || (this.state === GAME_STATES.STARTED && TEAM_ROLE_LOCK_WHEN_STARTED)) && !force
+            || (this.state === GAME_STATES.STARTED && GAME_RULES.TEAM_ROLE_LOCK_WHEN_STARTED)) && !force
         ) {
             throw new Error('TEAM_ROLE_LOCKED');
         }
