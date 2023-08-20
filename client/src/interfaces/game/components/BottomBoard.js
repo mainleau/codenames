@@ -138,7 +138,6 @@ export default class BottomBoard extends Component {
         }
         
         if (this.game.state === 0 && this.game.hostId === this.game.player.id) {
-            console.log(this.game.state)
             element.appendChild(startGameCTA);
         }
 
