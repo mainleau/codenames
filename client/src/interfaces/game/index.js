@@ -25,7 +25,7 @@ export default class GameInterface extends Interface {
 
         this.game.socket.on('game-joined', data => {
             this.game.id = data.id;
-            this.game.socket.io.opts.query = `action=join-game&id=${data.id}`;
+            this.game.socket.io.opts.query = `action=join-game&id=${data.id}&mode=${data.mode}`;
             this.game.state = data.state;
             this.game.rules = data.rules;
             this.game.settings = data.settings;
@@ -37,7 +37,8 @@ export default class GameInterface extends Interface {
             this.game.playerId = data.player.id;
             this.game.name = data.name || `Partie ${data.id.slice(0, 3)}`;
             if(!data.name && data.hostId === data.player.id) {
-                const settings = new SettingsComponent(this.game, data).create()
+                if(this.settings) return;
+                this.settings = new SettingsComponent(this.game, data).create();
                 this.app.element.append(settings);
             }
         });
