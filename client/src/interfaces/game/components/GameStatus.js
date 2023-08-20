@@ -31,9 +31,10 @@ export default class GameStatus extends Component {
         element.id = 'game-status-component';
 
         const gameStatusText = document.createElement('span');
-        gameStatusText.textContent = !this.game.state ? 'En attente de joueurs...'
+        gameStatusText.textContent = this.game.state === null ? '...'
+        : this.game.state === 0 ? 'En attente de joueurs...'
         : this.game.state === 4 ? 'La partie va commencer...'
-        : this.game.turn === 1 ? 'Les espions cherchent un indice'
+        : this.game.turn.role === 1 ? 'Les espions cherchent un indice'
         : 'Les agents cherchent les cartes';
 
         element.append(gameStatusText);

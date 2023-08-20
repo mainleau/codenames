@@ -40,6 +40,18 @@ export default class GameInterface extends Interface {
             }
         });
 
+        this.game.socket.on('clue-forwarded', data => {
+            this.game.teams[this.game.turn.team].clues.set(
+                this.game.teams[this.game.turn.team].size,
+                {
+                    word: data.word,
+                    count: data.count,
+                    relatedWords: data.relatedWords,
+                },
+            );
+            this.game.turn.role ^= true;
+        });
+
         this.game.socket.on('game-started', data => {
             this.game.turn = data.turn;
             this.game.state = 1;
