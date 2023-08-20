@@ -36,6 +36,7 @@ export default class GameController extends BaseController {
                 mode,
                 action: 'create-game',
             },
+            transports: ['websocket']
         });
 
         const game = new Game(this.app, socket);
@@ -57,6 +58,7 @@ export default class GameController extends BaseController {
                     mode,
                     action: 'join-game',
                 },
+            transports: ['websocket']
         });
 
         const game = new Game(this.app, socket);
