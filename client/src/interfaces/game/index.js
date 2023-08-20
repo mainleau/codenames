@@ -24,6 +24,8 @@ export default class GameInterface extends Interface {
         });
 
         this.game.socket.on('game-joined', data => {
+            this.game.id = data.id;
+            this.game.socket.io.opts.query = `action=join-game&id=${data.id}`;
             this.game.state = data.state;
             this.game.rules = data.rules;
             this.game.settings = data.settings;
