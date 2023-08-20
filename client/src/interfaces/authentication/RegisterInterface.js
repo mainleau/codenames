@@ -1,10 +1,10 @@
 import Interface from '../../structures/Interface.js';
 
 export default class RegisterInterface extends Interface {
-    constructor(manager) {
+    constructor(app) {
         super();
 
-        this.manager = manager;
+        this.manager = app.manager;
     }
 
     render() {
@@ -51,7 +51,7 @@ export default class RegisterInterface extends Interface {
         loginButton.id = 'login-button-final';
         loginButton.onclick = async () => {
             if (usernameInput.value && passwordInput.value) {
-                const { token } = await this.manager.auth.register(
+                const { token } = await this.manager.api.auth.register(
                     {
                         email: emailInput.value,
                         password: passwordInput.value,

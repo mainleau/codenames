@@ -35,7 +35,7 @@ export default class AuthInterface extends Interface {
         registerButton.id = 'register-button';
         registerButton.onclick = () => {
             this.element.firstChild.style.display = 'none';
-            const interf = new RegisterInterface(this.manager);
+            const interf = new RegisterInterface(this.app);
             this.manager.app.element.firstChild.append(interf.render());
         };
 
