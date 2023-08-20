@@ -76,8 +76,8 @@ input {
     transform: translateX(100%);
 }
 
-@media (max-width: 800px) {
+/* @media (max-width: 800px) {
     * {
         display: none;
     }
-}
+} */
