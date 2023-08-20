@@ -175,7 +175,9 @@ export default class Game {
     }
 
     reward(winner) {
+        console.log(players);
         this.players.forEach(async player => {
+            console.log(player, player.isLogged);
             if (player.role === GAME_ROLES.SPECTATOR) return;
     
             let gainedXp = player.team === winner ? 100 : 25;
