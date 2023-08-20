@@ -12,8 +12,7 @@ export default class BottomBoard extends Component {
             this.rerender();
         });
 
-        this.game.socket.on('game-started', data => {
-            this.game.turn = data.turn;
+        this.game.socket.on('game-started', () => {
             this.rerender();
         });
 
