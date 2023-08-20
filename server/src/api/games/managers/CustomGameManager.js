@@ -58,8 +58,13 @@ export default class CustomGameManager extends GameManager {
             game.hostId = player.id; // TODO: add host flag to player
             this.set(game.id, game);
         }
-
-        if(!game) return;
+        
+        if(!game) {
+            socket.emit('error', {
+                message: 'GAME_NOT_FOUND'
+            });
+            return socket.disconnect();
+        }
 
         player.guest = content.guest === true;
 

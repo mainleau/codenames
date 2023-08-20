@@ -31,7 +31,12 @@ export default class RankedGameManager extends GameManager {
         const { id } = socket.handshake.query;
 
         const game = this.get(id) || this.queue.get(id);
-        if (!game) return socket.disconnect();
+        if (!game) {
+            socket.emit('error', {
+                message: 'GAME_NOT_FOUND'
+            });
+            return socket.disconnect();
+        }
 
         const player = game.rejoin(socket, user);
         return { game, player };
@@ -48,15 +53,19 @@ export default class RankedGameManager extends GameManager {
         }
 
         if(!user) {
-            socket.emit('error', 'ACCOUNT_REQUIRED');
+            socket.emit('error', {
+                message: 'ACCOUNT_REQUIRED'
+            });
             return socket.disconnect();
         }
 
         var player = null;
 
         var game = null;
+        var reconnected = false;
         if (socket.handshake.query.id) {
             var { game, player } = this.reconnect(socket, user);
+            reconnected = true;
         } else if (this.queue.size) {
             game = this.queue.first();
             player = new Player(socket, user);
@@ -66,7 +75,12 @@ export default class RankedGameManager extends GameManager {
             player = new Player(socket, user);
         }
 
-        if(!game) return;
+        if(!game) {
+            socket.emit('error', {
+                message: 'GAME_NOT_FOUND'
+            });
+            return socket.disconnect();
+        }
 
         socket.onAny((name, data) => {
             game.handle(player, { name, data });
@@ -75,7 +89,7 @@ export default class RankedGameManager extends GameManager {
         socket.on('disconnect', () => this.disconnect(player));
 
         // TODO: check if player already in a game (or in this game), if so reject (or rejoin)
-        if(!socket.handshake.query.id) game.add(player);
+        if(!reconnected) game.add(player);
 
         if (game.players.size === this.options.maxPlayerCount) {
             this.state = GAME_STATES.STARTING;

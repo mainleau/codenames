@@ -250,22 +250,21 @@ export default class Game {
         if (player) {
             player.socket = socket;
             player.user = user;
+            socket.emit('game-joined', {
+                ...this.toJSON(),
+                player: player
+            });
+            socket.emit('player-list', this.players);
+            socket.emit('word-list',
+            player.role === GAME_ROLES.SPYMASTER
+                ? this.words.toJSON({ withTeam: true })
+                : this.words.toJSON()
+            );
+            socket.emit('clue-list', this.clues);
         } else {
             player = new Player(socket, user);
             this.add(player);
         }
-
-        socket.emit('game-joined', {
-            ...this.toJSON(),
-            player: player
-        });
-        socket.emit('player-list', this.players);
-        socket.emit('word-list',
-        player.role === GAME_ROLES.SPYMASTER
-            ? this.words.toJSON({ withTeam: true })
-            : this.words.toJSON()
-        );
-        socket.emit('clue-list', this.clues);
 
         socket.join(this.id);
         return player;
@@ -279,7 +278,7 @@ export default class Game {
     update(player, data, force = false) {
         if(
             (this.rules & GAME_RULES.TEAM_ROLE_LOCK
-            || (this.state === GAME_STATES.STARTED && GAME_RULES.TEAM_ROLE_LOCK_WHEN_STARTED)) && !force
+            || (this.state === GAME_STATES.STARTED && this.rules & GAME_RULES.TEAM_ROLE_LOCK_WHEN_STARTED)) && !force
         ) {
             throw new Error('TEAM_ROLE_LOCKED');
         }

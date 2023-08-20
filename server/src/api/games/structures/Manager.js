@@ -39,7 +39,9 @@ export default class Manager {
                     }
                 });
                 if(isNaN(mode)) {
-                    socket.emit('error', 'INVALID_GAME_ID');
+                    socket.emit('error', {
+                        message: 'GAME_NOT_FOUND'
+                    });
                     return socket.disconnect();
                 }
             }
