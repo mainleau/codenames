@@ -640,10 +640,10 @@
     .mobile #clue-word-input {
         width: 140px;
         height: 24px;
-        border-width: 5px;
+        border-width: 4px;
     }
     .mobile #clue-count-container {
-        border-width: 5px;
+        border-width: 4px;
         height: 24px;
         width: 24px;
     }
