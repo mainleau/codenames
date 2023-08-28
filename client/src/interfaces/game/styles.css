@@ -482,7 +482,7 @@
     background-color: bisque;
 }
 
-#game #top-board #game-status-component {
+#game #game-status-component {
     font-size: 2em;
     background-color: white;
     padding: 16px 40px;
@@ -513,10 +513,6 @@
     justify-content: space-between;
 }
 
-.mobile #game {
-    font-size: 0.6em;
-}
-
 .mobile #left, .mobile #right {
     width: 33vw;
 }
@@ -525,11 +521,41 @@
     .mobile #clue-bar {
         transform: scale(0.6);
     }
+    .mobile #game {
+        font-size: 0.73em;
+    }
+}
+
+@media (max-width: 650px) {
+    .mobile #game {
+        font-size: 0.7em;
+    }
 }
 
 @media (max-width: 500px) {
     .mobile #clue-bar {
         transform: scale(0.5);
+    }
+    .mobile #game {
+        font-size: 0.58em;
+    }
+}
+
+@media (max-width: 420px) {
+    .mobile #clue-bar {
+        transform: scale(0.48);
+    }
+    .mobile #game {
+        font-size: 0.5em;
+    }
+}
+
+@media (max-width: 390px) {
+    .mobile #clue-bar {
+        transform: scale(0.45);
+    }
+    .mobile #game {
+        font-size: 0.5em;
     }
 }
 
@@ -542,14 +568,19 @@
 }
 
 .mobile .team {
-    height: 100%;
+    height: unset;
+}
+
+.mobile .team .list-container {
+    min-height: 200px;
+    height: unset;
 }
 
 .mobile #game #top-board {
     margin: 10px;
 }
 
-.mobile #game #top-board #game-status-component {
+.mobile #game #game-status-component {
     padding: 8px 12px;
 }
 
@@ -557,6 +588,38 @@
     padding: 0 10px 10px;
 }
 
+.mobile #left #left-panel, .mobile #right #right-panel {
+    height: 100%;
+}
+
+.mobile #top-bar {
+    display: flex;
+}
+
+.mobile #top-bar #top-left-panel, .mobile #top-bar #top-right-panel {
+    padding: 10px;
+    height: fit-content;
+}
+
+.mobile #game #game-status-component {
+    flex: 1;
+    margin: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile .options {
+    padding: 6px 8px;
+    gap: 8px;
+}
+
+.mobile #top-bar {
+    background-color: bisque;
+    padding-bottom: 4px;
+}
+
 .mobile .card {
-    border-width: 4px;
+    border-width: 5px;
+    border-radius: 14px;
 }

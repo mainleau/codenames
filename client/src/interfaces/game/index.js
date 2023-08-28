@@ -162,9 +162,13 @@ export default class GameInterface extends Interface {
             const bottomPanel = document.createElement('div');
             bottomPanel.id = 'bottom-panel';
             bottomPanel.append(left, right);
-            topRightPanel.remove();
-            topLeftPanel.remove();
-            content.append(middlePanel, bottomPanel);
+            topBoard.remove();
+
+            const topBar = document.createElement('div');
+            topBar.id = 'top-bar';
+            topBar.append(topLeftPanel, gameStatus, topRightPanel);
+
+            content.append(topBar, middlePanel, bottomPanel);
         } else {
             content.append(left, middlePanel, right);
         }
