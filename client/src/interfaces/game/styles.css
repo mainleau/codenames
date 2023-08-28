@@ -548,10 +548,12 @@
         width: 30px;
     }
     .mobile #clue-word-input {
+        border-width: 5px;
         width: 200px;
         height: 40px;
     }
     .mobile #clue-count-container {
+        border-width: 5px;
         height: 40px;
         width: 40px;
     }
@@ -588,15 +590,15 @@
         width: 30px;
     }
     #give-clue-cta {
-        border-width: 6px;
+        border-width: 4px;
     }
     .mobile #clue-word-input {
         width: 170px;
         height: 28px;
-        border-width: 6px;
+        border-width: 4px;
     }
     .mobile #clue-count-container {
-        border-width: 6px;
+        border-width: 4px;
         height: 28px;
         width: 28px;
     }
@@ -636,15 +638,15 @@
         width: 28px;
     }
     #give-clue-cta {
-        border-width: 5px;
+        border-width: 4px;
     }
     .mobile #clue-word-input {
         width: 160px;
         height: 24px;
-        border-width: 5px;
+        border-width: 4px;
     }
     .mobile #clue-count-container {
-        border-width: 5px;
+        border-width: 4px;
         height: 24px;
         width: 24px;
     }
