@@ -507,12 +507,9 @@
     flex-direction: column;
 }
 
-.mobile #middle-panel {
-    min-height: 50vh;
-}
-
 .mobile #bottom-panel {
     display: flex;
+    flex: 1;
     justify-content: space-between;
 }
 
@@ -525,5 +522,41 @@
 }
 
 @media (max-width: 600px) {
+    .mobile #clue-bar {
+        transform: scale(0.6);
+    }
+}
 
+@media (max-width: 500px) {
+    .mobile #clue-bar {
+        transform: scale(0.5);
+    }
+}
+
+.mobile #middle-panel {
+    flex: unset;
+}
+
+.mobile #bottom-board {
+    height: fit-content;
+}
+
+.mobile .team {
+    height: 100%;
+}
+
+.mobile #game #top-board {
+    margin: 10px;
+}
+
+.mobile #game #top-board #game-status-component {
+    padding: 8px 12px;
+}
+
+.mobile #game #middle-panel #board-wrapper {
+    padding: 0 10px 10px;
+}
+
+.mobile .card {
+    border-width: 4px;
 }
