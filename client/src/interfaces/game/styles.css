@@ -524,6 +524,13 @@
 }
 
 @media (max-width: 600px) {
+    .mobile #game #middle-panel #board-wrapper {
+        padding: 0 10px 10px;
+    }
+    .mobile #game .card {
+        border-width: 5px;
+        border-radius: 14px;
+    }
     .mobile .level-container {
         width: 26px;
         height: 26px;
@@ -557,6 +564,13 @@
 }
 
 @media (max-width: 500px) {
+    .mobile #game #middle-panel #board-wrapper {
+        padding: 0 7px 7px;
+    }
+    .mobile #game .card {
+        border-width: 4px;
+        border-radius: 13px;
+    }
     .mobile .level-container {
         width: 22px;
         height: 22px;
@@ -572,6 +586,9 @@
     .mobile #clue-count-selector > div {
         border-radius: 8px;
         width: 30px;
+    }
+    #give-clue-cta {
+        border-width: 6px;
     }
     .mobile #clue-word-input {
         width: 170px;
@@ -592,6 +609,16 @@
 }
 
 @media (max-width: 420px) {
+    .mobile #game #middle-panel #board-wrapper {
+        padding: 0 6px 6px;
+    }
+    .mobile #game .card {
+        border-width: 4px;
+        border-radius: 12px;
+    }
+    .mobile #game #board {
+        grid-gap: 4px;
+    }
     .mobile .level-container {
         width: 18px;
         height: 18px;
@@ -607,6 +634,9 @@
     .mobile #clue-count-selector > div {
         border-radius: 7px;
         width: 28px;
+    }
+    #give-clue-cta {
+        border-width: 5px;
     }
     .mobile #clue-word-input {
         width: 160px;
@@ -627,6 +657,13 @@
 }
 
 @media (max-width: 390px) {
+    .mobile #game #middle-panel #board-wrapper {
+        padding: 0 5px 5px;
+    }
+    .mobile #game .card {
+        border-width: 3px;
+        border-radius: 11px;
+    }
     .mobile #game #bottom-board #clue-bar {
         gap: 10px;
     }
@@ -637,13 +674,16 @@
         border-radius: 7px;
         width: 26px;
     }
+    #give-clue-cta {
+        border-width: 3px;
+    }
     .mobile #clue-word-input {
         width: 140px;
         height: 24px;
-        border-width: 4px;
+        border-width: 3px;
     }
     .mobile #clue-count-container {
-        border-width: 4px;
+        border-width: 3px;
         height: 24px;
         width: 24px;
     }
@@ -681,10 +721,6 @@
     padding: 8px 12px;
 }
 
-.mobile #game #middle-panel #board-wrapper {
-    padding: 0 10px 10px;
-}
-
 .mobile #game #left #left-panel, .mobile #game #right #right-panel {
     height: 100%;
 }
@@ -714,9 +750,4 @@
 .mobile #game #top-bar {
     background-color: bisque;
     padding-bottom: 4px;
-}
-
-.mobile #game .card {
-    border-width: 5px;
-    border-radius: 14px;
 }
