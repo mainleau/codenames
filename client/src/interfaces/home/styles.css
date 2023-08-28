@@ -603,3 +603,21 @@
         padding: 60px;
     }
 }
+
+@media (max-height: 800px) {
+    #games-container .live-game {
+        height: 80px;
+    }
+}
+
+@media (max-height: 750px) {
+    #games-container .live-game {
+        height: 70px;
+    }
+}
+
+@media (max-height: 730px) {
+    #games-container .live-game {
+        height: 50px;
+    }
+}
