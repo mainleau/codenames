@@ -524,6 +524,10 @@
 }
 
 @media (max-width: 600px) {
+    .mobile #game #bottom-board {
+        height: 100px;
+        min-height: unset;
+    }
     .mobile #game #middle-panel #board-wrapper {
         padding: 0 10px 10px;
     }
@@ -566,6 +570,9 @@
 }
 
 @media (max-width: 500px) {
+    .mobile #game #bottom-board {
+        height: 80px;
+    }
     .mobile #game #middle-panel #board-wrapper {
         padding: 0 7px 7px;
     }
@@ -611,6 +618,9 @@
 }
 
 @media (max-width: 420px) {
+    .mobile #game #bottom-board {
+        height: 70px;
+    }
     .mobile #game #middle-panel #board-wrapper {
         padding: 0 6px 6px;
     }
@@ -659,6 +669,9 @@
 }
 
 @media (max-width: 390px) {
+    .mobile #game #bottom-board {
+        height: 60px;
+    }
     .mobile #game #middle-panel #board-wrapper {
         padding: 0 5px 5px;
     }
@@ -699,11 +712,6 @@
 
 .mobile #game #middle-panel {
     flex: unset;
-}
-
-.mobile #game #bottom-board {
-    height: 100px;
-    min-height: unset;
 }
 
 .mobile #game .team {
