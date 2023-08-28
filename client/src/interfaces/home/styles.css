@@ -1,5 +1,5 @@
 #home {
-    height: auto;
+    height: 100%;
     display: flex;
     flex-direction: column;
     background-color: #5E4747;
@@ -10,7 +10,6 @@
     display: flex;
     gap: 20px;
     justify-content: space-between;
-    height: 560px;
 }
 
 #profile-component {
