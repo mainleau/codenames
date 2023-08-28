@@ -232,6 +232,8 @@
 }
 
 #left-panel, #right-panel {
+    display: flex;
+    flex-direction: column;
     height: 100%;
 }
 
@@ -248,7 +250,6 @@
 }
 
 .up-banner {
-    height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -516,8 +517,18 @@
 .mobile #game #left, .mobile #game #right {
     width: 33vw;
 }
+@media (max-width: 1600px) {
+    #game #bottom-board #clue-bar {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
 
 @media (max-width: 600px) {
+    #game #bottom-board #clue-bar {
+        flex-direction: row;
+        gap: 30px;
+    }
     .mobile .level-container {
         width: 26px;
         height: 26px;
@@ -574,7 +585,7 @@
 }
 
 .mobile #game .team {
-    height: unset;
+    height: 100%;
 }
 
 .mobile #game .team .list-container {
