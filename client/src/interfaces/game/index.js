@@ -72,6 +72,7 @@ export default class GameInterface extends Interface {
         });
 
         window.addEventListener('resize', () => {
+            if(!document.body.contains(this.element)) return;
             this.rerender();
         });
     }

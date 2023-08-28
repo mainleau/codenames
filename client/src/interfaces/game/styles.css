@@ -503,22 +503,22 @@
     cursor: pointer;
 }
 
-.mobile #content {
+.mobile #game #content {
     flex-direction: column;
 }
 
-.mobile #bottom-panel {
+.mobile #game #bottom-panel {
     display: flex;
     flex: 1;
     justify-content: space-between;
 }
 
-.mobile #left, .mobile #right {
+.mobile #game #left, .mobile #game #right {
     width: 33vw;
 }
 
 @media (max-width: 600px) {
-    .mobile #clue-bar {
+    .mobile #game #clue-bar {
         transform: scale(0.6);
     }
     .mobile #game {
@@ -533,7 +533,7 @@
 }
 
 @media (max-width: 500px) {
-    .mobile #clue-bar {
+    .mobile #game #clue-bar {
         transform: scale(0.5);
     }
     .mobile #game {
@@ -542,7 +542,7 @@
 }
 
 @media (max-width: 420px) {
-    .mobile #clue-bar {
+    .mobile #game #clue-bar {
         transform: scale(0.48);
     }
     .mobile #game {
@@ -551,7 +551,7 @@
 }
 
 @media (max-width: 390px) {
-    .mobile #clue-bar {
+    .mobile #game #clue-bar {
         transform: scale(0.45);
     }
     .mobile #game {
@@ -559,19 +559,19 @@
     }
 }
 
-.mobile #middle-panel {
+.mobile #game #middle-panel {
     flex: unset;
 }
 
-.mobile #bottom-board {
+.mobile #game #bottom-board {
     height: fit-content;
 }
 
-.mobile .team {
+.mobile #game .team {
     height: unset;
 }
 
-.mobile .team .list-container {
+.mobile #game .team .list-container {
     min-height: 200px;
     height: unset;
 }
@@ -588,15 +588,15 @@
     padding: 0 10px 10px;
 }
 
-.mobile #left #left-panel, .mobile #right #right-panel {
+.mobile #game #left #left-panel, .mobile #game #right #right-panel {
     height: 100%;
 }
 
-.mobile #top-bar {
+.mobile #game #top-bar {
     display: flex;
 }
 
-.mobile #top-bar #top-left-panel, .mobile #top-bar #top-right-panel {
+.mobile #game #top-bar #top-left-panel, .mobile #game #top-bar #top-right-panel {
     padding: 10px;
     height: fit-content;
 }
@@ -609,17 +609,17 @@
     justify-content: center;
 }
 
-.mobile .options {
+.mobile #game .options {
     padding: 6px 8px;
     gap: 8px;
 }
 
-.mobile #top-bar {
+.mobile #game #top-bar {
     background-color: bisque;
     padding-bottom: 4px;
 }
 
-.mobile .card {
+.mobile #game .card {
     border-width: 5px;
     border-radius: 14px;
 }
