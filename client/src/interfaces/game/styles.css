@@ -235,14 +235,16 @@
     height: 100%;
 }
 
+#right, #left {
+    width: 350px;
+}
+
 #left-panel {
     background-color: #BEF3EB;
-    width: 350px;
 }
 
 #right-panel {
     background-color: salmon;
-    width: 350px;
 }
 
 .up-banner {
@@ -476,7 +478,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 350px;
     height: 90px;
     background-color: bisque;
 }
@@ -500,4 +501,29 @@
 .options > span {
     text-shadow: #473535 2px 2px 0;
     cursor: pointer;
+}
+
+.mobile #content {
+    flex-direction: column;
+}
+
+.mobile #middle-panel {
+    min-height: 50vh;
+}
+
+.mobile #bottom-panel {
+    display: flex;
+    justify-content: space-between;
+}
+
+.mobile #game {
+    font-size: 0.6em;
+}
+
+.mobile #left, .mobile #right {
+    width: 33vw;
+}
+
+@media (max-width: 600px) {
+
 }

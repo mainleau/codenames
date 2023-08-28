@@ -65,10 +65,14 @@ export default class GameInterface extends Interface {
                 this.app.goHome();
                 this.app.alert('Partie introuvable', "Cette partie n'existe pas ou n'est plus disponible.");
             } else if(data.message === 'INVALID_NICKNAME') {
-                this.app.alert('Surnom invalide', "Un surnom doit contenir entre 1 et 16 caractères.");
+                this.app.alert('Surnom invalide', 'Un surnom doit contenir entre 1 et 16 caractères.');
             } else {
                 this.app.alert('Erreur sécifique', data.message);
             }
+        });
+
+        window.addEventListener('resize', () => {
+            this.rerender();
         });
     }
 
@@ -154,7 +158,16 @@ export default class GameInterface extends Interface {
         const content = document.createElement('div');
         content.id = 'content';
 
-        content.append(left, middlePanel, right);
+        if(this.app.type === 'mobile') {
+            const bottomPanel = document.createElement('div');
+            bottomPanel.id = 'bottom-panel';
+            bottomPanel.append(left, right);
+            topRightPanel.remove();
+            topLeftPanel.remove();
+            content.append(middlePanel, bottomPanel);
+        } else {
+            content.append(left, middlePanel, right);
+        }
 
         this.element.append(content);
         return this.element;

@@ -1,11 +1,8 @@
 import Manager from './core/Manager.js';
 import AuthenticationInterface from './interfaces/authentication/index.js';
 import HomeInterface from './interfaces/home/index.js';
-import RegisterInterface from './interfaces/authentication/RegisterInterface.js';
-import './styles.css';
-import { isUUID } from './utils/index.js';
-import GameInterface from './interfaces/game/index.js';
 import AlertModal from './interfaces/home/modals/AlertModal.js';
+import './styles.css';
 
 window.onload = () => new Application().launch();
 
@@ -19,6 +16,14 @@ class Application {
         this.manager = new Manager(this);
     }
 
+    set type(value) {
+        return this.element.className = value;
+    }
+
+    get type() {
+        return this.element.classList.contains('mobile') ? 'mobile' : 'desktop';
+    }
+
     launch() {
         if(this.launched) throw new Error('APPLICATION_ALREADY_LAUNCHED');
         this.launched = true;
@@ -26,6 +31,11 @@ class Application {
         this.element = document.createElement('div');
         this.element.id = 'app';
         document.body.replaceChildren(this.element);
+        
+        this.type = window.innerWidth < 600 ? 'mobile' : 'desktop';
+        window.onresize = () => {
+            this.type = window.innerWidth < 600 ? 'mobile' : 'desktop';
+        }
 
         this.manager.init();
     }
