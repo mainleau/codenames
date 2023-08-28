@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     background-color: #5E4747;
-    height: 100vh;
+    height: 100%;
     justify-content: center;
     align-items: center;
 }
@@ -40,8 +40,8 @@
 
 #authentication #login {
     z-index: 1;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
