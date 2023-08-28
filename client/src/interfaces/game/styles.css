@@ -660,8 +660,7 @@
 }
 
 .mobile #game #bottom-board {
-    height: fit-content;
-    padding: 20px 0;
+    height: 100px;
     min-height: unset;
 }
 
