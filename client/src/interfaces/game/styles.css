@@ -352,7 +352,7 @@
 }
 
 #game .username-component {
-    margin-left: 25px;
+    margin-left: 10px;
     width: fit-content;
 }
 
@@ -518,6 +518,10 @@
 }
 
 @media (max-width: 600px) {
+    .mobile .level-container {
+        width: 26px;
+        height: 26px;
+    }
     .mobile #game #clue-bar {
         transform: scale(0.6);
     }
@@ -526,13 +530,11 @@
     }
 }
 
-@media (max-width: 650px) {
-    .mobile #game {
-        font-size: 0.7em;
-    }
-}
-
 @media (max-width: 500px) {
+    .mobile .level-container {
+        width: 22px;
+        height: 22px;
+    }
     .mobile #game #clue-bar {
         transform: scale(0.5);
     }
@@ -542,6 +544,10 @@
 }
 
 @media (max-width: 420px) {
+    .mobile .level-container {
+        width: 18px;
+        height: 18px;
+    }
     .mobile #game #clue-bar {
         transform: scale(0.48);
     }
