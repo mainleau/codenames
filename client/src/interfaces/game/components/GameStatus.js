@@ -31,11 +31,11 @@ export default class GameStatus extends Component {
         element.id = 'game-status-component';
 
         const gameStatusText = document.createElement('span');
-        gameStatusText.textContent = this.game.state === null ? '...'
+        gameStatusText.innerHTML = this.game.state === null ? '...'
         : this.game.state === 0 ? 'En attente de joueurs...'
         : this.game.state === 4 ? 'La partie va commencer...'
-        : this.game.turn.role === 1 ? 'Les espions cherchent un indice'
-        : 'Les agents cherchent les cartes';
+        : this.game.turn.role === 1 ? `Les <span class="team-${this.game.turn.team}">espions</span> cherchent un indice`
+        : `Les <span class="team-${this.game.turn.team}">agents</span> cherchent les cartes`;
 
         element.append(gameStatusText);
         return element;

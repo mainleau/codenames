@@ -14,6 +14,10 @@ export default class GameInterface extends Interface {
         this.manager = app.manager;
         this.game = game;
 
+        this.game.socket.on('word-list', data => {
+            this.game.words.add(data);
+        });
+
         this.game.socket.on('game-rewards', data => {
             const endComponent = new EndComponent(this.game, this.app, data).create();
             this.element.appendChild(endComponent);
@@ -24,6 +28,7 @@ export default class GameInterface extends Interface {
         });
 
         this.game.socket.on('game-joined', data => {
+            this.game.teamStarted = data.teamStarted
             this.game.id = data.id;
             this.game.socket.io.opts.query = `action=join-game&id=${data.id}&mode=${data.mode}`;
             this.game.state = data.state;
@@ -58,6 +63,7 @@ export default class GameInterface extends Interface {
         this.game.socket.on('game-started', data => {
             this.game.turn = data.turn;
             this.game.state = 1;
+            this.game.teamStarted = data.turn.team;
         });
 
         this.game.socket.on('error', (data) => {
@@ -65,10 +71,15 @@ export default class GameInterface extends Interface {
                 this.app.goHome();
                 this.app.alert('Partie introuvable', "Cette partie n'existe pas ou n'est plus disponible.");
             } else if(data.message === 'INVALID_NICKNAME') {
-                this.app.alert('Surnom invalide', "Un surnom doit contenir entre 1 et 16 caractères.");
+                this.app.alert('Surnom invalide', 'Un surnom doit contenir entre 1 et 16 caractères.');
             } else {
                 this.app.alert('Erreur sécifique', data.message);
             }
+        });
+
+        window.addEventListener('resize', () => {
+            if(!document.body.contains(this.element)) return;
+            this.rerender();
         });
     }
 
@@ -154,7 +165,20 @@ export default class GameInterface extends Interface {
         const content = document.createElement('div');
         content.id = 'content';
 
-        content.append(left, middlePanel, right);
+        if(this.app.type === 'mobile') {
+            const bottomPanel = document.createElement('div');
+            bottomPanel.id = 'bottom-panel';
+            bottomPanel.append(left, right);
+            topBoard.remove();
+
+            const topBar = document.createElement('div');
+            topBar.id = 'top-bar';
+            topBar.append(topLeftPanel, gameStatus, topRightPanel);
+
+            content.append(topBar, middlePanel, bottomPanel);
+        } else {
+            content.append(left, middlePanel, right);
+        }
 
         this.element.append(content);
         return this.element;

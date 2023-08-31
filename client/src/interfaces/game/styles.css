@@ -119,6 +119,16 @@
     justify-content: center;
 }
 
+#game .team-0 {
+    font-weight: bold;
+    color: #88ADA8;
+}
+
+#game .team-1 {
+    font-weight: bold;
+    color: #B85F55;
+}
+
 #clue-bar {
     display: flex;
     position: relative;
@@ -143,7 +153,6 @@
 
 #clue-count-selector {
     padding: 10px 30px;
-    height: 50px;
     background-color: bisque;
     border-radius: 20px;
     position: absolute;
@@ -232,21 +241,24 @@
 }
 
 #left-panel, #right-panel {
+    display: flex;
+    flex-direction: column;
     height: 100%;
+}
+
+#right, #left {
+    width: 350px;
 }
 
 #left-panel {
     background-color: #BEF3EB;
-    width: 350px;
 }
 
 #right-panel {
     background-color: salmon;
-    width: 350px;
 }
 
 .up-banner {
-    height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -350,7 +362,7 @@
 }
 
 #game .username-component {
-    margin-left: 25px;
+    margin-left: 10px;
     width: fit-content;
 }
 
@@ -476,12 +488,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 350px;
     height: 90px;
     background-color: bisque;
 }
 
-#game #top-board #game-status-component {
+#game #game-status-component {
     font-size: 2em;
     background-color: white;
     padding: 16px 40px;
@@ -500,4 +511,272 @@
 .options > span {
     text-shadow: #473535 2px 2px 0;
     cursor: pointer;
+}
+
+.mobile #game #content {
+    flex-direction: column;
+}
+
+.mobile #game #bottom-panel {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+}
+
+.mobile #game #left, .mobile #game #right {
+    width: 33vw;
+}
+@media (max-width: 1600px) {
+    #game #bottom-board #clue-bar {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 600px) {
+    .mobile #game #bottom-board {
+        height: 100px;
+        min-height: unset;
+    }
+    .mobile #game #middle-panel #board-wrapper {
+        padding: 0 10px 10px;
+    }
+    .mobile #game .card {
+        border-width: 5px;
+        border-radius: 14px;
+    }
+    .mobile .level-container {
+        width: 26px;
+        height: 26px;
+    }
+    .mobile #game #bottom-board #clue-bar {
+        flex-direction: row;
+        gap: 14px;
+    }
+    .mobile #clue-count-selector {
+        padding: 6px 16px;
+        top: -65px;
+    }
+    .mobile #clue-count-selector > div {
+        border-radius: 8px;
+        width: 30px;
+    }
+    .mobile #clue-word-input {
+        border-width: 5px;
+        width: 200px;
+        height: 40px;
+    }
+    .mobile #clue-count-container {
+        border-width: 5px;
+        height: 40px;
+        width: 40px;
+    }
+    .mobile #give-clue-cta {
+        padding: 8px 30px;
+    }
+    .mobile #game {
+        font-size: 0.71em;
+    }
+}
+
+@media (max-width: 570px) {
+    .team-title {
+        font-size: 1.5em;
+    }
+}
+
+@media (max-width: 500px) {
+    .mobile #game #bottom-board {
+        height: 80px;
+    }
+    .mobile #game #middle-panel #board-wrapper {
+        padding: 0 7px 7px;
+    }
+    .mobile #game .card {
+        border-width: 4px;
+        border-radius: 13px;
+    }
+    .mobile .level-container {
+        width: 22px;
+        height: 22px;
+    }
+    .mobile #game #bottom-board #clue-bar {
+        gap: 12px;
+    }
+    .mobile #clue-count-selector {
+        gap: 6px;
+        padding: 5px 12px;
+        top: -60px;
+    }
+    .mobile #clue-count-selector > div {
+        border-radius: 8px;
+        width: 30px;
+    }
+    #give-clue-cta {
+        border-width: 4px;
+    }
+    .mobile #clue-word-input {
+        width: 170px;
+        height: 28px;
+        border-width: 4px;
+    }
+    .mobile #clue-count-container {
+        border-width: 4px;
+        height: 28px;
+        width: 28px;
+    }
+    .mobile #give-clue-cta {
+        padding: 5px 22px;
+    }
+    .mobile #game {
+        font-size: 0.58em;
+    }
+}
+
+@media (max-width: 420px) {
+    .mobile #game #bottom-board {
+        height: 70px;
+    }
+    .mobile #game #middle-panel #board-wrapper {
+        padding: 0 6px 6px;
+    }
+    .mobile #game .card {
+        border-width: 4px;
+        border-radius: 12px;
+    }
+    .mobile #game #board {
+        grid-gap: 4px;
+    }
+    .mobile .level-container {
+        width: 18px;
+        height: 18px;
+    }
+    .mobile #game #bottom-board #clue-bar {
+        gap: 10px;
+    }
+    .mobile #clue-count-selector {
+        gap: 5px;
+        margin-bottom: 0;
+        top: -50px;
+    }
+    .mobile #clue-count-selector > div {
+        border-radius: 7px;
+        width: 28px;
+    }
+    #give-clue-cta {
+        border-width: 4px;
+    }
+    .mobile #clue-word-input {
+        width: 160px;
+        height: 24px;
+        border-width: 4px;
+    }
+    .mobile #clue-count-container {
+        border-width: 4px;
+        height: 24px;
+        width: 24px;
+    }
+    .mobile #give-clue-cta {
+        padding: 5px 22px;
+    }
+    .mobile #game {
+        font-size: 0.5em;
+    }
+}
+
+@media (max-width: 390px) {
+    .mobile #game #game-status-component {
+        font-size: 1.6em;
+    }
+    .mobile #game #bottom-board {
+        height: 60px;
+    }
+    .mobile #game #middle-panel #board-wrapper {
+        padding: 0 5px 5px;
+    }
+    .mobile #game .card {
+        border-width: 3px;
+        border-radius: 11px;
+    }
+    .mobile #game #bottom-board #clue-bar {
+        gap: 10px;
+    }
+    .mobile #clue-count-selector {
+        gap: 4px;
+    }
+    .mobile #clue-count-selector > div {
+        border-radius: 7px;
+        width: 26px;
+    }
+    #give-clue-cta {
+        border-width: 3px;
+    }
+    .mobile #clue-word-input {
+        width: 140px;
+        height: 24px;
+        border-width: 3px;
+    }
+    .mobile #clue-count-container {
+        border-width: 3px;
+        height: 24px;
+        width: 24px;
+    }
+    .mobile #give-clue-cta {
+        padding: 4px 10px;
+    }
+    .mobile #game {
+        font-size: 0.5em;
+    }
+}
+
+.mobile #game #middle-panel {
+    flex: unset;
+}
+
+.mobile #game .team {
+    height: 100%;
+}
+
+.mobile #game .team .list-container {
+    min-height: 200px;
+    height: unset;
+}
+
+.mobile #game #top-board {
+    margin: 10px;
+}
+
+.mobile #game #game-status-component {
+    padding: 8px 12px;
+}
+
+.mobile #game #left #left-panel, .mobile #game #right #right-panel {
+    height: 100%;
+}
+
+.mobile #game #top-bar {
+    display: flex;
+}
+
+.mobile #game #top-bar #top-left-panel, .mobile #game #top-bar #top-right-panel {
+    padding: 10px;
+    height: fit-content;
+}
+
+.mobile #game #game-status-component {
+    flex: 1;
+    margin: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile #game .options {
+    padding: 6px 8px;
+    gap: 8px;
+}
+
+.mobile #game #top-bar {
+    background-color: bisque;
+    padding-bottom: 4px;
 }

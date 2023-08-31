@@ -1,9 +1,8 @@
 #home {
-    height: auto;
+    height: 100%;
     display: flex;
     flex-direction: column;
     background-color: #5E4747;
-    height: 100vh;
     overflow: hidden;
 }
 
@@ -11,7 +10,6 @@
     display: flex;
     gap: 20px;
     justify-content: space-between;
-    height: 560px;
 }
 
 #profile-component {
@@ -545,6 +543,34 @@
 }
 
 @media (max-width: 1200px) {
+    #home #middle {
+        gap: 30px;
+    }
+    #home .live-game {
+        flex-direction: row;
+        aspect-ratio: unset;
+        width: 100%;
+        height: 90px;
+    }
+    #home .live-game .name {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #home .live-game .time {
+        display: none;
+    }
+    #home .live-game .teams {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+    }
+    #home .live-game .teams > div {
+        padding: 10px;
+    }
     #home #games-container {
         width: 425px;
     }
@@ -556,7 +582,7 @@
     }
     #games-container > :last-child {
         grid-template-columns: unset;
-        padding: 50px 135px;
+        padding: 40px;
     }
     #game-ctas {
         flex-direction: column;
@@ -574,6 +600,24 @@
         font-size: 1.3em;
     }
     #games-container > :last-child {
-        padding: 50px 122px;
+        padding: 60px;
+    }
+}
+
+@media (max-height: 800px) {
+    #games-container .live-game {
+        height: 80px;
+    }
+}
+
+@media (max-height: 750px) {
+    #games-container .live-game {
+        height: 70px;
+    }
+}
+
+@media (max-height: 730px) {
+    #games-container .live-game {
+        height: 50px;
     }
 }

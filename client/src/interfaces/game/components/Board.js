@@ -12,8 +12,7 @@ export default class Board extends Component {
             this.rerender();
         });
 
-        this.game.socket.on('word-list', data => {
-            this.game.words.add(data);
+        this.game.socket.on('word-list', () => {
             this.rerender();
         });
 
