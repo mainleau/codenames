@@ -119,6 +119,16 @@
     justify-content: center;
 }
 
+#game .team-0 {
+    font-weight: bold;
+    color: #88ADA8;
+}
+
+#game .team-1 {
+    font-weight: bold;
+    color: #B85F55;
+}
+
 #clue-bar {
     display: flex;
     position: relative;
@@ -569,6 +579,12 @@
     }
 }
 
+@media (max-width: 570px) {
+    .team-title {
+        font-size: 1.5em;
+    }
+}
+
 @media (max-width: 500px) {
     .mobile #game #bottom-board {
         height: 80px;
@@ -669,6 +685,9 @@
 }
 
 @media (max-width: 390px) {
+    .mobile #game #game-status-component {
+        font-size: 1.6em;
+    }
     .mobile #game #bottom-board {
         height: 60px;
     }

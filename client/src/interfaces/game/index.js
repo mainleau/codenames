@@ -14,6 +14,10 @@ export default class GameInterface extends Interface {
         this.manager = app.manager;
         this.game = game;
 
+        this.game.socket.on('word-list', data => {
+            this.game.words.add(data);
+        });
+
         this.game.socket.on('game-rewards', data => {
             const endComponent = new EndComponent(this.game, this.app, data).create();
             this.element.appendChild(endComponent);
@@ -24,6 +28,7 @@ export default class GameInterface extends Interface {
         });
 
         this.game.socket.on('game-joined', data => {
+            this.game.teamStarted = data.teamStarted
             this.game.id = data.id;
             this.game.socket.io.opts.query = `action=join-game&id=${data.id}&mode=${data.mode}`;
             this.game.state = data.state;
@@ -58,6 +63,7 @@ export default class GameInterface extends Interface {
         this.game.socket.on('game-started', data => {
             this.game.turn = data.turn;
             this.game.state = 1;
+            this.game.teamStarted = data.turn.team;
         });
 
         this.game.socket.on('error', (data) => {

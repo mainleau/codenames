@@ -12,6 +12,7 @@ export default class Game {
     ended = false;
     clueRemainder = null;
     name = null;
+    teamStarted = null;
     constructor(
         manager,
         options = {
@@ -134,6 +135,7 @@ export default class Game {
 
         this.state = GAME_STATES.STARTED;
         this.turn.team = Math.floor(Math.random() * this.teams.length);
+        this.teamStarted = this.turn.team;
 
         const shuffledWords = this.words.random(this.words.size);
 
@@ -216,6 +218,7 @@ export default class Game {
         // TODO: shuffle words option
         player.socket.emit('game-joined', {
             ...this.toJSON(),
+            teamStarted: this.teamStarted,
             player,
         });
 
@@ -252,6 +255,7 @@ export default class Game {
             player.user = user;
             socket.emit('game-joined', {
                 ...this.toJSON(),
+                teamStarted: this.teamStarted,
                 player: player
             });
             socket.emit('player-list', this.players);
