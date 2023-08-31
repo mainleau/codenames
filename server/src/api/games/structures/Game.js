@@ -336,9 +336,9 @@ export default class Game {
             throw new Error('NOT_YOUR_TURN');
         }
         if (
-            typeof data.word !== 'string' ||
-            !data.word.match(this.options.clueWordRegex) ||
-            data.word.length > this.options.maxClueWordLength
+            typeof data.word !== 'string' || (this.rules & GAME_RULES.RESTRICTED_CLUE_WORD && (
+                !data.word.match(this.options.clueWordRegex) || data.word.length > this.options.maxClueWordLength
+            ))
         ) {
             throw new Error('INVALID_CLUE_WORD');
         }

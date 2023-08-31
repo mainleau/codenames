@@ -32,7 +32,7 @@ export default class UserController {
     }
 
     async fetchStatsByUserId(req, res, next) {
-        const id = req.id || req.params.id;
+        const id = req.params.id;
 
         var stats;
         try {
