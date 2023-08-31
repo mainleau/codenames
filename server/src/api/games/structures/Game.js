@@ -280,12 +280,6 @@ export default class Game {
     }
 
     update(player, data, force = false) {
-        if(
-            (this.rules & GAME_RULES.TEAM_ROLE_LOCK
-            || (this.state === GAME_STATES.STARTED && this.rules & GAME_RULES.TEAM_ROLE_LOCK_WHEN_STARTED)) && !force
-        ) {
-            throw new Error('TEAM_ROLE_LOCKED');
-        }
         var updated = false;
 
         if ('team' in data) {
@@ -293,6 +287,13 @@ export default class Game {
                 throw new Error('INVALID_TEAM');
             }
             if (player.team !== data.team) updated = true;
+
+            if(
+                (this.rules & GAME_RULES.TEAM_ROLE_LOCK
+                || (this.state === GAME_STATES.STARTED && this.rules & GAME_RULES.TEAM_ROLE_LOCK_WHEN_STARTED)) && !force
+            ) {
+                throw new Error('TEAM_ROLE_LOCKED');
+            }
 
             player.team = data.team;
         }
@@ -308,7 +309,7 @@ export default class Game {
             if (this.state === GAME_STATES.STARTED) this.sendWords(player);
         }
 
-        if('nickname' in data && (this.rules & GAME_RULES.NICKNAMES_ALLOWED)) {
+        if('nickname' in data) {
             if(
                 typeof data.nickname !== 'string' || data.nickname.length < 1
                     || data.nickname.length > this.options.maxNicknameLength
@@ -317,6 +318,12 @@ export default class Game {
             }
                 
             if(player.nickname !== data.nickname) updated = true;
+
+            if(
+                this.rules & GAME_RULES.GAME_RULES.NICKNAMES_ALLOWED && !force
+            ) {
+                throw new Error('NICKNAME_CHANGE_NOT_ALLOWED');
+            }
 
             player.nickname = data.nickname;
         }

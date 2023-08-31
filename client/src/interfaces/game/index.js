@@ -72,6 +72,8 @@ export default class GameInterface extends Interface {
                 this.app.alert('Partie introuvable', "Cette partie n'existe pas ou n'est plus disponible.");
             } else if(data.message === 'INVALID_NICKNAME') {
                 this.app.alert('Surnom invalide', 'Un surnom doit contenir entre 1 et 16 caractères.');
+            } else if(data.message === 'ACCOUNT_REQUIRED') {
+                this.app.alert('Compte requis', 'Un compte est requis pour jouer dans ce mode.');
             } else {
                 this.app.alert('Erreur sécifique', data.message);
             }
