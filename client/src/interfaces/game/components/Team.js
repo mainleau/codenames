@@ -26,6 +26,10 @@ export default class Team extends Component {
         this.game.socket.on('player-updated', data => {
             const player = this.game.players.get(data.id);
 
+            if(player.id === this.game.player.id) {
+                this.game.selectedCards = [];
+            }
+            
             // If(player.id === this.playerId) {
             //     if(data.role === 0) {
             //         this.words.forEach((word, index) => {

@@ -140,10 +140,10 @@ export default class Game {
         const shuffledWords = this.words.random(this.words.size);
 
         shuffledWords.slice(0, 9).forEach(word => {
-            this.words.get(word.id).team = 0;
+            this.words.get(word.id).team = this.teamStarted;
         });
         shuffledWords.slice(9, 17).forEach(word => {
-            this.words.get(word.id).team = 1;
+            this.words.get(word.id).team = +!this.teamStarted;
         });
 
         Array.from({ length: this.settings.deathWordCount }, (_, index) => {

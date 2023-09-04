@@ -65,6 +65,15 @@ export default class BottomBoard extends Component {
             ? this.game.words.selected.size
             : '-';
 
+        this.game.gateway.on('select-card', () => {
+            clueCountContainer.classList.add('disabled');
+            clueCountText.textContent = this.game.selectedCards.length;
+            if(this.game.selectedCards.length === 0) {
+                clueCountContainer.classList.remove('disabled');
+                clueCountText.textContent = '-';
+            }
+        });
+
         clueCountContainer.appendChild(clueCountText);
 
         const clueCountSelector = new ClueCountSelector(this.game).create(clueCountText);

@@ -20,9 +20,9 @@ export default class Board extends Component {
             this.rerender();
         });
 
-        this.game.socket.on('card-selected', data => {
-            this.rerender();
-        });
+        // this.game.socket.on('card-selected', () => {
+        //     this.rerender();
+        // });
     }
 
     create() {
@@ -72,10 +72,21 @@ export default class Board extends Component {
                                 this.game.player.team ? 'second-team' : 'first-team',
                             )
                         ) return;
-                        this.game.emit('select-card', {
-                            word: this.game.words.at(index).id,
-                            selected: !card.classList.contains('selected'),
-                        });
+                            if(this.game.selectedCards.includes(word.id)) {
+                                card.classList.remove('selected');
+                                const index = this.game.selectedCards.indexOf(word.id);
+                                this.game.selectedCards.splice(index, 1);
+                                console.log(this.game.selectedCards)
+                                this.game.gateway.emit('select-card');
+                            } else {
+                                this.game.selectedCards.push(word.id);
+                                card.classList.add('selected');
+                                this.game.gateway.emit('select-card');
+                            }
+                        // this.game.emit('select-card', {
+                        //     word: this.game.words.at(index).id,
+                        //     selected: !card.classList.contains('selected'),
+                        // });
                     } else if (
                         this.game.turn.role === this.game.player.role &&
                         this.game.player.role === 0

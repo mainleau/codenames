@@ -2,6 +2,7 @@ import Team from './Team.js';
 import ClueManager from '../managers/ClueManager.js';
 import PlayerManager from '../managers/PlayerManager.js';
 import WordManager from '../managers/WordManager.js';
+import EventEmitter from '../../../utils/EventEmitter.js';
 
 export default class Game {
     started = null;
@@ -17,6 +18,8 @@ export default class Game {
 
     constructor(app, socket, options = { teamCount: 2 }) {
         this.manager = app.manager;
+
+        this.gateway = new EventEmitter();
 
         this.name = null;
 
