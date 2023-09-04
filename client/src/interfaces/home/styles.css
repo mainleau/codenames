@@ -604,6 +604,23 @@
     }
 }
 
+@media (max-width: 800px) {
+    #profile-modal {
+        width: 400px !important;
+        height: 560px !important;
+    }
+}
+
+@media (max-width: 500px) {
+    #profile-modal {
+        width: 300px !important;
+        height: 420px !important;
+    }
+    #bar {
+        width: 250px;
+    }
+}
+
 @media (max-height: 800px) {
     #games-container .live-game {
         height: 80px;
