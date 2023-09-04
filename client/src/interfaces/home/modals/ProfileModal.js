@@ -24,7 +24,7 @@ export default class ProfileModal extends Modal {
 
         let XPBar = '';
         if (complete) {
-            XPBar = new XPBarComponent(this.api, user).create();
+            XPBar = new XPBarComponent(this.api, user, this.mask).create();
         }
 
         topHeader.append(username, XPBar);
