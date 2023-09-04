@@ -26,6 +26,10 @@ export default class Team extends Component {
         this.game.socket.on('player-updated', data => {
             const player = this.game.players.get(data.id);
 
+            if(player.id === this.game.player.id) {
+                this.game.selectedCards = [];
+            }
+            
             // If(player.id === this.playerId) {
             //     if(data.role === 0) {
             //         this.words.forEach((word, index) => {
@@ -71,7 +75,7 @@ export default class Team extends Component {
 
                 const user = new User(this.game.manager.api, player);
 
-                const username = new UsernameComponent(user, !!player.level, player.nickname).create();
+                const username = new UsernameComponent(user, !!player.level, player.nickname, user.id === this.game.player.id, this.game.manager.api).create();
                 line.append(username);
                 return line;
             });

@@ -780,3 +780,19 @@
     background-color: bisque;
     padding-bottom: 4px;
 }
+
+@media (max-width: 600px) {
+    .mobile #settings-component {
+        border-width: 12px;
+        font-size: 0.8em;
+        width: 340px;
+        height: 476px;
+    }
+}
+
+@media (max-width: 500px) {
+    .mobile #settings-component {
+        width: 320px;
+        height: 448px;
+    }
+}

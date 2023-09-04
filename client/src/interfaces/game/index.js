@@ -42,7 +42,7 @@ export default class GameInterface extends Interface {
             this.game.playerId = data.player.id;
             this.game.name = data.name || `Partie ${data.id.slice(0, 3)}`;
             if(!data.name && data.hostId === data.player.id) {
-                if(this.settings) return;
+                if(document.body.contains(this.settings)) return;
                 this.settings = new SettingsComponent(this.game, data).create();
                 this.app.element.append(this.settings);
             }
@@ -58,6 +58,17 @@ export default class GameInterface extends Interface {
                 },
             );
             this.game.turn.role ^= true;
+        });
+
+        this.game.socket.on('card-selected', data => {
+            this.game.words.get(data.word).selected = data.selected;
+        });
+
+        this.game.socket.on('card-revealed', data => {
+            const word = this.game.words.get(data.word);
+            word.revealed = true;
+            word.team = data.team;
+            this.game.clueRemainder = data.clueRemainder;
         });
 
         this.game.socket.on('game-started', data => {
@@ -80,7 +91,7 @@ export default class GameInterface extends Interface {
         });
 
         window.addEventListener('resize', () => {
-            if(!document.body.contains(this.element)) return;
+            // if(!document.body.contains(this.element)) return;
             this.rerender();
         });
     }

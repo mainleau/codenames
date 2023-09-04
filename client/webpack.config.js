@@ -11,7 +11,7 @@ module.exports = {
     mode: 'development',
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'Nom de code (BÊTA)',
+            title: 'Nom de code',
             meta: {
                 charset: 'utf-8',
             },

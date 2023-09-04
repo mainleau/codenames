@@ -56,6 +56,6 @@ export default class Manager {
     }
 
     get games() {
-        return new Collection(...Object.keys(GAME_MODES).map(key => this[key]));
+        return new Collection(Object.keys(GAME_MODES).map(key => this[key]).flatMap(manager => [...manager]));
     }
 }

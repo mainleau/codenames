@@ -47,7 +47,7 @@ export default class FriendListComponent extends Component {
             if (friend.currentGameId) {
                 status.onclick = () => {
                     document.body.firstChild.children[0].remove();
-                    this.manager.games.join(friend.currentGameId, 0x01);
+                    this.app.manager.games.join(friend.currentGameId);
                 };
             }
 

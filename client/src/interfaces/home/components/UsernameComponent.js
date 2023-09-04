@@ -7,7 +7,6 @@ export default class UsernameComponent extends Component {
 
         this.user = user;
         this.api = api;
-
         this.onclick = onclick;
 
         this.user.nickname = nickname;
