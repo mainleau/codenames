@@ -8,7 +8,8 @@ export default class RankedGame extends Game {
 
         this.mode = GAME_MODES.RANKED_GAME;
 
-        this.rules = GAME_RULES.RANDOM_ROLE | GAME_RULES.RANDOM_TEAM | GAME_RULES.TEAM_ROLE_LOCK;
+        this.rules = GAME_RULES.RANDOM_ROLE | GAME_RULES.RANDOM_TEAM | GAME_RULES.TEAM_ROLE_LOCK
+            | GAME_RULES.RESTRICTED_CLUE_WORD;
     }
 
     handle(player, event) {
