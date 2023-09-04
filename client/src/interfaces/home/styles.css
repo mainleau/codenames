@@ -605,16 +605,25 @@
 }
 
 @media (max-width: 800px) {
-    #profile-modal {
+    #profile-modal, #ranking-modal {
         width: 400px !important;
         height: 560px !important;
     }
 }
 
 @media (max-width: 500px) {
-    #profile-modal {
+    .modal {
+        border-width: 12px !important;
+    }
+    #profile-modal, #ranking-modal {
         width: 300px !important;
         height: 420px !important;
+    }
+    #ranking-container {
+        margin: 25px;
+    }
+    #ranking-modal > :first-child {
+        font-size: 1.9em;
     }
     #bar {
         width: 250px;

@@ -4,6 +4,10 @@ import HomeInterface from './interfaces/home/index.js';
 import AlertModal from './interfaces/home/modals/AlertModal.js';
 import './styles.css';
 
+if(location.hostname !== 'localhost') {
+    document.body.style.overflow = 'hidden';
+}
+
 window.onload = () => new Application().launch();
 
 // TODO: create component where admin should be able to select server dev/prod

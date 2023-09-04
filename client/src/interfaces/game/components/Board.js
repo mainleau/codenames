@@ -16,16 +16,11 @@ export default class Board extends Component {
             this.rerender();
         });
 
-        this.game.socket.on('card-revealed', data => {
-            const word = this.game.words.get(data.word);
-            word.revealed = true;
-            word.team = data.team;
-            this.game.clueRemainder = data.clueRemainder;
+        this.game.socket.on('card-revealed', () => {
             this.rerender();
         });
 
         this.game.socket.on('card-selected', data => {
-            this.game.words.get(data.word).selected = data.selected;
             this.rerender();
         });
     }

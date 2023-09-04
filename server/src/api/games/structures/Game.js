@@ -239,12 +239,14 @@ export default class Game {
         player.emit('player-list', this.players);
     }
 
-    remove(player) {
-        // Player.currentGameId = null;
-        if(this.state === GAME_STATES.LOBBY) this.players.delete(player.id);
-        this.broadcast('player-leaved', {
-            id: player.id,
-        });
+    remove(player, force = false) {
+        // player.currentGameId = null;
+        if(this.state === GAME_STATES.LOBBY || force) {
+            this.players.delete(player.id);
+            this.broadcast('player-leaved', {
+                id: player.id,
+            });
+        }
     }
 
     rejoin(socket, user) {

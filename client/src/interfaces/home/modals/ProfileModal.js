@@ -22,12 +22,19 @@ export default class ProfileModal extends Modal {
 
         const username = new UsernameComponent(user, false).create();
 
-        let XPBar = '';
         if (complete) {
-            XPBar = new XPBarComponent(this.api, user, this.mask).create();
+            this.XPBar = new XPBarComponent(this.api, user, this.mask);
+            this.XPBar.create();
+
+
+            this.api.core.users.fetchById(user.id).then(user => {
+                this.XPBar.user = user;
+                this.XPBar.rerender();
+            });
         }
 
-        topHeader.append(username, XPBar);
+        topHeader.append(username);
+        if(complete) topHeader.append(this.XPBar.element);
 
         const bottomHeader = document.createElement('div');
         bottomHeader.id = 'bottom-header';

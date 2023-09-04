@@ -36,7 +36,7 @@ export default class RankingModal extends Modal {
         header.style.marginBottom = '10px';
         header.style.fontWeight = 'bold';
 
-        const headerTexts = ['Rang', 'Points'].map(text => {
+        const headerTexts = ['Rang', this.type === 0 ? 'XP' : 'Points'].map(text => {
             const headerText = document.createElement('span');
             headerText.textContent = text;
             return headerText;

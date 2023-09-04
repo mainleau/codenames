@@ -71,7 +71,7 @@ export default class Team extends Component {
 
                 const user = new User(this.game.manager.api, player);
 
-                const username = new UsernameComponent(user, !!player.level, player.nickname).create();
+                const username = new UsernameComponent(user, !!player.level, player.nickname, user.id === this.game.player.id, this.game.manager.api).create();
                 line.append(username);
                 return line;
             });
