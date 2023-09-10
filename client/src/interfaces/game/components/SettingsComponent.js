@@ -1,11 +1,11 @@
 import Component from '../../../structures/Component';
 
 export default class SettingsComponent extends Component {
-    constructor(game) {
+    constructor(app, game, th) {
         super();
         this.game = game;
-
-        this.gameInterface = document.body.firstChild.firstChild;
+        this.gameInterface = app.element
+        this.th = th;
     }
 
     create() {
@@ -65,6 +65,7 @@ export default class SettingsComponent extends Component {
             });
             this.element.remove();
             mask.remove();
+            this.th.needSettings = false;
         };
 
         const confirmCTAText = document.createElement('span');

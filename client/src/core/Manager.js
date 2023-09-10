@@ -1,7 +1,6 @@
-import GameInterface from '../interfaces/game/index.js';
 import REST from '../rest/REST.js';
 import routes from '../rest/routes.js';
-import { isUUID, jwt } from '../utils/index.js';
+import { isUUID } from '../utils/index.js';
 import GameHandler from './GameHandler.js';
 
 // TODO: add special items for 10 first players, 100 first players, 1000, 10000 etc.

@@ -13,7 +13,7 @@ export default class GameList extends Component {
                 }
                 this.fetchGames();
             },
-            10 * 60 * 1000,
+            15 * 1000,
         );
     }
 

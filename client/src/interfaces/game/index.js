@@ -43,7 +43,8 @@ export default class GameInterface extends Interface {
             this.game.name = data.name || `Partie ${data.id.slice(0, 3)}`;
             if(!data.name && data.hostId === data.player.id) {
                 if(document.body.contains(this.settings)) return;
-                this.settings = new SettingsComponent(this.game, data).create();
+                this.needSettings = true;
+                this.settings = new SettingsComponent(this.app, game, this).create();
                 this.app.element.append(this.settings);
             }
         });
@@ -90,9 +91,14 @@ export default class GameInterface extends Interface {
             }
         });
 
-        window.addEventListener('resize', () => {
-            // if(!document.body.contains(this.element)) return;
+        this.game.gateway.on('change-window-type', () => {
             this.rerender();
+            if(this.needSettings) {
+                if(!document.body.contains(this.settings)) {
+                    this.settings = new SettingsComponent(this.app, this.game).create();
+                    this.app.element.append(this.settings);
+                }
+            }
         });
     }
 

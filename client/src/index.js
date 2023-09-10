@@ -38,7 +38,13 @@ class Application {
         
         this.type = window.innerWidth < 600 ? 'mobile' : 'desktop';
         window.onresize = () => {
-            this.type = window.innerWidth < 600 ? 'mobile' : 'desktop';
+            const type = this.type;
+            const newType = window.innerWidth < 600 ? 'mobile' : 'desktop';
+            if(type === newType) return;
+
+            this.type = newType;
+
+            this.manager.games.intf.game.gateway.emit('change-window-type');
         }
 
         this.manager.init();

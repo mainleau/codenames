@@ -92,3 +92,70 @@
     border-radius: 30px;
     margin-right: 60px;
 }
+
+@media (max-width: 1000px) {
+    #authentication #back-button {
+        margin: 0;
+    }
+    #authentication #login {
+        flex-direction: column;
+        gap: 30px;
+    }
+}
+
+@media (max-width: 800px) {
+    #authentication #login-container {
+        width: 500px;
+        height: 500px;
+    }
+    #authentication #back-button {
+        padding: 16px;
+        font-size: 2.2em;
+    }
+}
+
+@media (max-width: 600px) {
+    #authentication {
+        font-size: 0.9em;
+    }
+    #authentication #login-container {
+        width: 450px;
+        height: 450px;
+    }
+    #authentication input {
+        width: 300px;
+    }
+}
+
+@media (max-width: 500px) {
+    #authentication {
+        font-size: 0.8em;
+    }
+    #authentication #login-container {
+        width: 400px;
+    }
+    #authentication #login-button {
+        padding: 12.8px 32px;
+    }
+    #authentication input {
+        width: 280px;
+    }
+}
+
+@media (max-width: 450px) {
+    #authentication input {
+        width: 260px;
+    }
+    #authentication #login-container {
+        width: 350px;
+    }
+}
+
+@media (max-width: 400px) {
+    #authentication input {
+        width: 240px;
+    }
+    #authentication #login-container {
+        width: 320px;
+    }
+}
