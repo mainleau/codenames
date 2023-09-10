@@ -44,7 +44,7 @@ class Application {
 
             this.type = newType;
 
-            this.manager.games.intf.game.gateway.emit('change-window-type');
+            if(this.manager.games.intf) this.manager.games.intf.game.gateway.emit('change-window-type');
         }
 
         this.manager.init();
@@ -56,6 +56,7 @@ class Application {
     }
 
     goHome() {
+        this.manager.games.intf = null;
         new HomeInterface(this).make();
     }
 
